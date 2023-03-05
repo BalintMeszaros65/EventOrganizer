@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,7 +29,6 @@ public class AppUser {
     @NotNull
     @ElementCollection
     List<String> roles;
-    @NotNull
     @OneToMany
     List<BookedEvent> bookedEvents;
 
@@ -53,7 +53,7 @@ public class AppUser {
     }
 
     public BigDecimal calculateAveragePricePaidForOneTicket() {
-        if (bookedEvents.size() == 0) {
+        if (bookedEvents == null) {
             return BigDecimal.ZERO;
         } else {
             int numberOfTickets = bookedEvents.stream()
@@ -67,6 +67,9 @@ public class AppUser {
     }
 
     public void bookEvent(BookedEvent bookedEvent) {
+        if (bookedEvents == null) {
+            bookedEvents = new ArrayList<>();
+        }
         bookedEvents.add(bookedEvent);
     }
 
