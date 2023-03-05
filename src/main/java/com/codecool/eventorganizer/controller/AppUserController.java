@@ -27,4 +27,9 @@ public class AppUserController {
     public ResponseEntity<String> registerOrganizer(@RequestBody AppUser appUser) {
         return appUserService.registerOrganizer(appUser);
     }
+
+    @PostMapping("/api/admin/register")
+    public ResponseEntity<String> registerAdmin(@RequestBody AppUser appUser) {
+        return appUserService.registerAdmin(appUser);
+    }
 }
