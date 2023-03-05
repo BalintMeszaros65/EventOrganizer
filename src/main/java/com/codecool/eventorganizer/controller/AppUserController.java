@@ -22,4 +22,9 @@ public class AppUserController {
     public ResponseEntity<String> registerUser(@RequestBody AppUser appUser) {
         return appUserService.registerUser(appUser);
     }
+
+    @PostMapping("/api/organizer/register")
+    public ResponseEntity<String> registerOrganizer(@RequestBody AppUser appUser) {
+        return appUserService.registerOrganizer(appUser);
+    }
 }
