@@ -22,7 +22,7 @@ public class AppUserService {
         appUserRepository.save(appUser);
     }
 
-    public AppUser getAppUser(UUID id) {
+    public AppUser getUser(UUID id) {
         Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
         if (optionalAppUser.isPresent()) {
             return optionalAppUser.get();
