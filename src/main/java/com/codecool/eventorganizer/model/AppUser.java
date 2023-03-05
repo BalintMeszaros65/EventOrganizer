@@ -64,4 +64,17 @@ public class AppUser {
             return amountPaid.divide(BigDecimal.valueOf(numberOfTickets), RoundingMode.HALF_UP);
         }
     }
+
+    public void bookEvent(BookedEvent bookedEvent) {
+        bookedEvents.add(bookedEvent);
+    }
+
+    public void refundEvent(BookedEvent bookedEvent) throws Exception {
+        if (bookedEvent.canBeRefunded()) {
+            bookedEvents.remove(bookedEvent);
+        } else {
+            // TODO make custom exception(s)
+            throw new Exception();
+        }
+    }
 }
