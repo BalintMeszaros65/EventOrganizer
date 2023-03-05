@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Entity
 public class AppUser {
@@ -24,6 +23,7 @@ public class AppUser {
     private String firstName;
     @NotNull
     private String lastName;
+    // TODO billing address and others for payment later?
     @NotNull
     @ElementCollection
     List<String> roles;
