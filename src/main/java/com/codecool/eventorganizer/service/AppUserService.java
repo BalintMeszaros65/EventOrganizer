@@ -57,6 +57,24 @@ public class AppUserService {
         return ResponseEntity.status(HttpStatus.CREATED).body(token);
     }
 
+    public ResponseEntity<String> registerOrganizer(AppUser appUser) {
+        if (appUser.getEmail() == null || appUser.getPassword() == null || appUser.getFirstName() == null
+                || appUser.getLastName() == null) {
+            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in AppUser\n");
+        } else {
+            if (IsEmailAlreadyInUse(appUser.getEmail())) {
+                throw new CustomExceptions.EmailAlreadyUsedException("Email is already registered.\n");
+            } else {
+                appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+                appUser.setRoles(List.of("ROLE_ORGANIZER"));
+                saveAndUpdateUser(appUser);
+            }
+        }
+        // TODO token creation after security
+        String token = "placeholder";
+        return ResponseEntity.status(HttpStatus.CREATED).body(token);
+    }
+
     private boolean IsEmailAlreadyInUse(String email) {
         return appUserRepository.existsByEmail(email);
     }
