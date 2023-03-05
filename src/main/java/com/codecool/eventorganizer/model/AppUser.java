@@ -15,7 +15,7 @@ public class AppUser {
     private UUID id;
     @NotNull
     @Column(unique = true)
-    private String username;
+    private String email;
     // TODO encode in service
     @NotNull
     private String password;
@@ -35,8 +35,8 @@ public class AppUser {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
