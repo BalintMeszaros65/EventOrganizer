@@ -26,7 +26,7 @@ public class Event {
     @NotNull
     private int availableTickets;
     @NotNull
-    private LocalDateTime eventDate;
+    private LocalDateTime eventDateAndTime;
     @NotNull
     private int daysBeforeBookingIsClosed;
 
@@ -46,8 +46,8 @@ public class Event {
         return basePrice;
     }
 
-    public LocalDateTime getEventDate() {
-        return eventDate;
+    public LocalDateTime getEventDateAndTime() {
+        return eventDateAndTime;
     }
 
     public void initializeTicketsToBeSold(int ticketsSoldThroughOurApp) throws Exception {
@@ -95,10 +95,10 @@ public class Event {
 
     public boolean canBeBooked(int ticketCount) {
         // TODO ask if LocalDate works as I think
-        return availableTickets >= ticketCount && eventDate.minusDays(daysBeforeBookingIsClosed).isBefore(LocalDateTime.now());
+        return availableTickets >= ticketCount && eventDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(LocalDateTime.now());
     }
 
     public boolean canBeRefunded() {
-        return venue.isThereRefund() && eventDate.minusDays(daysBeforeBookingIsClosed).isBefore(LocalDateTime.now());
+        return venue.isThereRefund() && eventDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(LocalDateTime.now());
     }
 }
