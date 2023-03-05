@@ -21,6 +21,7 @@ public class BookedEvent {
     private int ticketsBought;
     @NotNull
     private LocalDateTime dateOfBooking;
+    // TODO billing address and others for payment later?
 
     public UUID getId() {
         return id;
