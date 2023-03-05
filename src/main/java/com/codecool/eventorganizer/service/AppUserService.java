@@ -23,7 +23,7 @@ public class AppUserService {
         appUserRepository.save(appUser);
     }
 
-    public AppUser getUser(UUID id) {
+    public AppUser getUserById(UUID id) {
         Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
         if (optionalAppUser.isPresent()) {
             return optionalAppUser.get();
@@ -34,5 +34,9 @@ public class AppUserService {
 
     public void deleteUser(UUID id) {
         appUserRepository.deleteById(id);
+    }
+
+    private boolean IsEmailAlreadyInUse(String email) {
+        return appUserRepository.existsByEmail(email);
     }
 }
