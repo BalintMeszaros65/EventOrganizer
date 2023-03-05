@@ -96,6 +96,19 @@ public class AppUserService {
         return ResponseEntity.status(HttpStatus.CREATED).body(token);
     }
 
+    public ResponseEntity<String> loginUser(AppUser appUser) {
+        Optional<AppUser> optionalAppUser = appUserRepository.getAppUserByEmail(appUser.getEmail());
+        if (optionalAppUser.isPresent()) {
+            AppUser savedAppUser = optionalAppUser.get();
+            if (passwordEncoder.matches(appUser.getPassword(), savedAppUser.getPassword())) {
+                // TODO token creation after security
+                String token = "placeholder";
+                return ResponseEntity.status(HttpStatus.OK).body(token);
+            }
+        }
+        throw new CustomExceptions.MissingAttributeException("Unable to login");
+    }
+
     private boolean IsEmailAlreadyInUse(String email) {
         return appUserRepository.existsByEmail(email);
     }

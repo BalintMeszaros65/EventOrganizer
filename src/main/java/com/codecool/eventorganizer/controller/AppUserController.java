@@ -4,6 +4,7 @@ import com.codecool.eventorganizer.model.AppUser;
 import com.codecool.eventorganizer.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,5 +34,10 @@ public class AppUserController {
     @PostMapping("/api/admin/register")
     public ResponseEntity<String> registerAdmin(@RequestBody AppUser appUser) {
         return appUserService.registerAdmin(appUser);
+    }
+
+    @GetMapping("/api/user/login")
+    public ResponseEntity<String> loginUser(@RequestBody AppUser appUser) {
+        return appUserService.loginUser(appUser);
     }
 }
