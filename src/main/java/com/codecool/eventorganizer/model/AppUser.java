@@ -44,12 +44,24 @@ public class AppUser {
         return password;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     public List<String> getRoles() {
         return roles;
     }
 
     public List<BookedEvent> getBookedEvents() {
         return bookedEvents;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public BigDecimal calculateAveragePricePaidForOneTicket() {
