@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Service
 public class BookedEventService {
-    BookedEventRepository bookedEventRepository;
+    private final BookedEventRepository bookedEventRepository;
 
     @Autowired
     public BookedEventService(BookedEventRepository bookedEventRepository) {

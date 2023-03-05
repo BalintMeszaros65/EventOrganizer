@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Service
 public class EventService {
-    EventRepository eventRepository;
+    private final EventRepository eventRepository;
 
     @Autowired
     public EventService(EventRepository eventRepository) {
