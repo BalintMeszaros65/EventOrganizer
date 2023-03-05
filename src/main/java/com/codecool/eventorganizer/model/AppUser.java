@@ -51,14 +51,17 @@ public class AppUser {
         return bookedEvents;
     }
 
-    public BigDecimal calculateAveragePayedPriceOfTicket() {
+    public BigDecimal calculateAveragePricePaidForOneTicket() {
         if (bookedEvents.size() == 0) {
             return BigDecimal.ZERO;
         } else {
-            return bookedEvents.stream()
-                    .map(BookedEvent::getAmountPayed)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add)
-                    .divide(BigDecimal.valueOf(bookedEvents.size()), RoundingMode.HALF_UP);
+            int numberOfTickets = bookedEvents.stream()
+                .map(BookedEvent::getTicketsBought)
+                .reduce(0, Integer::sum);
+            BigDecimal amountPaid = bookedEvents.stream()
+                .map(BookedEvent::getAmountPayed)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+            return amountPaid.divide(BigDecimal.valueOf(numberOfTickets), RoundingMode.HALF_UP);
         }
     }
 }
