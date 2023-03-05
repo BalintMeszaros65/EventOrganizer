@@ -28,6 +28,8 @@ public class Event {
     @NotNull
     private LocalDateTime eventDateAndTime;
     @NotNull
+    private double eventLengthInHours;
+    @NotNull
     private int daysBeforeBookingIsClosed;
 
     public UUID getId() {
