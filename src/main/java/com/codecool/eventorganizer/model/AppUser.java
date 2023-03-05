@@ -1,5 +1,6 @@
 package com.codecool.eventorganizer.model;
 
+import com.codecool.eventorganizer.exception.CustomExceptions;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -69,12 +70,11 @@ public class AppUser {
         bookedEvents.add(bookedEvent);
     }
 
-    public void refundEvent(BookedEvent bookedEvent) throws Exception {
+    public void refundBookedEvent(BookedEvent bookedEvent) {
         if (bookedEvent.canBeRefunded()) {
             bookedEvents.remove(bookedEvent);
         } else {
-            // TODO make custom exception(s)
-            throw new Exception();
+            throw new CustomExceptions.EventCanNotBeRefunded("This booked event can't be refunded.");
         }
     }
 }

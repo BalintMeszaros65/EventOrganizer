@@ -1,5 +1,6 @@
 package com.codecool.eventorganizer.model;
 
+import com.codecool.eventorganizer.exception.CustomExceptions;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -77,30 +78,39 @@ public class Event {
         return currentPrice;
     }
 
-    public void bookTicket(int ticketCount) throws Exception {
+    public void bookTicket(int ticketCount) {
         if (canBeBooked(ticketCount)) {
             availableTickets -= ticketCount;
         } else {
-            // TODO make custom exception(s)
-            throw new Exception();
+            LocalDateTime endOfBooking = eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed);
+            throw new CustomExceptions.EventCanNotBeBooked(
+                endOfBooking.isBefore(LocalDateTime.now()) ?
+                String.format("Not enough tickets left (%s)", availableTickets)
+                : String.format("Booking for event ended at %s", endOfBooking)
+            );
         }
     }
 
-    public void refundTicket(int ticketCount) throws Exception {
+    public void refundTicket(int ticketCount) {
         if (canBeRefunded()) {
             availableTickets += ticketCount;
         } else {
-            // TODO make custom exception(s)
-            throw new Exception();
+            throw new CustomExceptions.EventCanNotBeRefunded(
+                venue.isThereRefund() ?
+                String.format("Refunding for event ended at %s", eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed))
+                : "Refunding is not allowed by the venue."
+            );
         }
     }
 
     public boolean canBeBooked(int ticketCount) {
         // TODO ask if LocalDate works as I think
-        return availableTickets >= ticketCount && eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(LocalDateTime.now());
+        return availableTickets >= ticketCount &&
+            eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(LocalDateTime.now());
     }
 
     public boolean canBeRefunded() {
-        return venue.isThereRefund() && eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(LocalDateTime.now());
+        return venue.isThereRefund() &&
+            eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(LocalDateTime.now());
     }
 }
