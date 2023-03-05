@@ -57,6 +57,8 @@ public class AppUserService {
         return ResponseEntity.status(HttpStatus.CREATED).body(token);
     }
 
+
+    // TODO logic to verify after security
     public ResponseEntity<String> registerOrganizer(AppUser appUser) {
         if (appUser.getEmail() == null || appUser.getPassword() == null || appUser.getFirstName() == null
                 || appUser.getLastName() == null) {
@@ -75,6 +77,7 @@ public class AppUserService {
         return ResponseEntity.status(HttpStatus.CREATED).body(token);
     }
 
+    // TODO logic to verify after security
     public ResponseEntity<String> registerAdmin(AppUser appUser) {
         if (appUser.getEmail() == null || appUser.getPassword() == null || appUser.getFirstName() == null
                 || appUser.getLastName() == null) {

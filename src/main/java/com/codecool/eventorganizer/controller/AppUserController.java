@@ -23,11 +23,13 @@ public class AppUserController {
         return appUserService.registerUser(appUser);
     }
 
+    // TODO logic to verify after security
     @PostMapping("/api/organizer/register")
     public ResponseEntity<String> registerOrganizer(@RequestBody AppUser appUser) {
         return appUserService.registerOrganizer(appUser);
     }
 
+    // TODO logic to verify after security
     @PostMapping("/api/admin/register")
     public ResponseEntity<String> registerAdmin(@RequestBody AppUser appUser) {
         return appUserService.registerAdmin(appUser);
