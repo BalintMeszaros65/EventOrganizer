@@ -20,9 +20,10 @@ public class BookedEvent {
     @NotNull
     private int ticketsBought;
     @NotNull
-    // TODO ask if it is enough to make it unique or should it save AppUser also just to make it sure
     private LocalDateTime dateOfBooking;
-    // TODO billing address and others for payment later?
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    private AppUser appUser;
 
     public UUID getId() {
         return id;
