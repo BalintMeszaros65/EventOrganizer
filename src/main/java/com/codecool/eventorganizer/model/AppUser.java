@@ -64,6 +64,10 @@ public class AppUser {
         this.password = password;
     }
 
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
     public BigDecimal calculateAveragePricePaidForOneTicket() {
         if (bookedEvents == null) {
             return BigDecimal.ZERO;
