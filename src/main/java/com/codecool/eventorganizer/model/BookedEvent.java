@@ -34,8 +34,7 @@ public class BookedEvent {
         return ticketsBought;
     }
 
-    // TODO make custom exception(s)
-    public void refund() throws Exception {
-        event.refundTicket(ticketsBought);
+    public boolean canBeRefunded() {
+        return event.canBeRefunded();
     }
 }
