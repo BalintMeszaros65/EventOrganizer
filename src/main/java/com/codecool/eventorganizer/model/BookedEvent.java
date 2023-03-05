@@ -26,6 +26,10 @@ public class BookedEvent {
         return id;
     }
 
+    public Event getEvent() {
+        return event;
+    }
+
     public BigDecimal getAmountPayed() {
         return amountPayed;
     }
