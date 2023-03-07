@@ -132,8 +132,8 @@ public class AppUserService {
     }
 
     public ResponseEntity<String> updateUserInformation(AppUser appUser) {
-        // TODO change id getter to work from context after security
-        AppUser savedAppUser = getUserById(appUser.getId());
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        AppUser savedAppUser = getUserByEmail(email);
         if (!savedAppUser.getEmail().equals(appUser.getEmail())) {
             throw new CustomExceptions.EmailCanNotBeChangedException("You can not change your registered email.");
         }
@@ -146,13 +146,17 @@ public class AppUserService {
     }
 
     public ResponseEntity<String> changePassword(String newPassword) {
-        // TODO after security
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("To be implemented.");
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        AppUser savedAppUser = getUserByEmail(email);
+        savedAppUser.setPassword(passwordEncoder.encode(newPassword));
+        saveAndUpdateUser(savedAppUser);
+        return ResponseEntity.status(HttpStatus.OK).body("Password has been changed.");
     }
 
     public ResponseEntity<String> deleteUser() {
-        // TODO after security
-        // appUserRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("To be implemented.");
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        AppUser savedAppUser = getUserByEmail(email);
+        appUserRepository.deleteById(savedAppUser.getId());
+        return ResponseEntity.status(HttpStatus.OK).body("User has been deleted.");
     }
 }
