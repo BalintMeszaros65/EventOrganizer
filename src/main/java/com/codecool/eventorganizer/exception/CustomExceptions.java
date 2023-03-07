@@ -26,4 +26,16 @@ public class CustomExceptions {
             super(message);
         }
     }
+
+    public static class EmailCanNotBeChangedException extends IllegalArgumentException {
+        public EmailCanNotBeChangedException(String message) {
+            super(message);
+        }
+    }
+
+    public static class PasswordChangeIsDifferentEndpointException extends IllegalArgumentException {
+        public PasswordChangeIsDifferentEndpointException(String message) {
+            super(message);
+        }
+    }
 }
