@@ -97,7 +97,7 @@ public class AppUserService {
     }
 
     public ResponseEntity<String> loginUser(AppUser appUser) {
-        Optional<AppUser> optionalAppUser = appUserRepository.getAppUserByEmail(appUser.getEmail());
+        Optional<AppUser> optionalAppUser = appUserRepository.findAppUserByEmail(appUser.getEmail());
         if (optionalAppUser.isPresent()) {
             AppUser savedAppUser = optionalAppUser.get();
             if (passwordEncoder.matches(appUser.getPassword(), savedAppUser.getPassword())) {
