@@ -18,7 +18,6 @@ public class AppUser {
     @NotNull
     @Column(unique = true)
     private String email;
-    // TODO encode in service
     @NotNull
     private String password;
     @NotNull
@@ -93,7 +92,7 @@ public class AppUser {
         if (bookedEvent.canBeRefunded()) {
             bookedEvents.remove(bookedEvent);
         } else {
-            throw new CustomExceptions.EventCanNotBeRefunded("This booked event can't be refunded.");
+            throw new CustomExceptions.EventCanNotBeRefundedException("This booked event can't be refunded.");
         }
     }
 }
