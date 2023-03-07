@@ -21,21 +21,16 @@ public class AppUserController {
         return appUserService.registerUser(appUser);
     }
 
-    // TODO logic to verify after security
-    @PostMapping("/api/organizer/register")
-    public ResponseEntity<String> registerOrganizer(@RequestBody AppUser appUser) {
-        return appUserService.registerOrganizer(appUser);
+    @PostMapping("/api/organizer/register/{secret_key}")
+    public ResponseEntity<String> registerOrganizer(@RequestBody AppUser appUser,
+                                                    @PathVariable(name = "secret_key") String secretKey) {
+        return appUserService.registerOrganizer(appUser, secretKey);
     }
 
-    // TODO logic to verify after security
-    @PostMapping("/api/admin/register")
-    public ResponseEntity<String> registerAdmin(@RequestBody AppUser appUser) {
-        return appUserService.registerAdmin(appUser);
-    }
-
-    @GetMapping("/api/user/login")
-    public ResponseEntity<String> loginUser(@RequestBody AppUser appUser) {
-        return appUserService.loginUser(appUser);
+    @PostMapping("/api/admin/register/{secret_key}")
+    public ResponseEntity<String> registerAdmin(@RequestBody AppUser appUser,
+                                                @PathVariable(name = "secret_key") String secretKey) {
+        return appUserService.registerAdmin(appUser, secretKey);
     }
 
     @PutMapping("/api/user/update-information")

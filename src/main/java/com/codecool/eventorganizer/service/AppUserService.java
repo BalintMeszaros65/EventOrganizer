@@ -53,77 +53,49 @@ public class AppUserService {
     }
 
     public ResponseEntity<String> registerUser(AppUser appUser) {
+        checkIfAllRequiredDataExists(appUser);
+        checkIfEmailIsAlreadyRegistered(appUser);
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+        appUser.setRoles(List.of("ROLE_USER"));
+        saveAndUpdateUser(appUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
+    }
+
+    public ResponseEntity<String> registerOrganizer(AppUser appUser, String secretKey) {
+        if (!"organizer".equals(secretKey)) {
+            throw new IllegalArgumentException("Secret key for registering an organizer account is not matching.");
+        }
+        checkIfAllRequiredDataExists(appUser);
+        checkIfEmailIsAlreadyRegistered(appUser);
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+        appUser.setRoles(List.of("ROLE_ORGANIZER"));
+        saveAndUpdateUser(appUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
+    }
+
+    public ResponseEntity<String> registerAdmin(AppUser appUser, String secretKey) {
+        if (!"admin".equals(secretKey)) {
+            throw new IllegalArgumentException("Secret key for registering an admin account is not matching.");
+        }
+        checkIfAllRequiredDataExists(appUser);
+        checkIfEmailIsAlreadyRegistered(appUser);
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+        appUser.setRoles(List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
+        saveAndUpdateUser(appUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
+    }
+
+    private void checkIfEmailIsAlreadyRegistered(AppUser appUser) {
+        if (appUserRepository.existsByEmail(appUser.getEmail())) {
+            throw new CustomExceptions.EmailAlreadyUsedException("Email is already registered.\n");
+        }
+    }
+
+    private static void checkIfAllRequiredDataExists(AppUser appUser) {
         if (appUser.getEmail() == null || appUser.getPassword() == null || appUser.getFirstName() == null
                 || appUser.getLastName() == null) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in AppUser\n");
-        } else {
-            if (IsEmailAlreadyInUse(appUser.getEmail())) {
-                throw new CustomExceptions.EmailAlreadyUsedException("Email is already registered.\n");
-            } else {
-                appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-                appUser.setRoles(List.of("ROLE_USER"));
-                saveAndUpdateUser(appUser);
-            }
         }
-        // TODO token creation after security
-        String token = "placeholder";
-        return ResponseEntity.status(HttpStatus.CREATED).body(token);
-    }
-
-
-    // TODO logic to verify after security
-    public ResponseEntity<String> registerOrganizer(AppUser appUser) {
-        if (appUser.getEmail() == null || appUser.getPassword() == null || appUser.getFirstName() == null
-                || appUser.getLastName() == null) {
-            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in AppUser\n");
-        } else {
-            if (IsEmailAlreadyInUse(appUser.getEmail())) {
-                throw new CustomExceptions.EmailAlreadyUsedException("Email is already registered.\n");
-            } else {
-                appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-                appUser.setRoles(List.of("ROLE_ORGANIZER"));
-                saveAndUpdateUser(appUser);
-            }
-        }
-        // TODO token creation after security
-        String token = "placeholder";
-        return ResponseEntity.status(HttpStatus.CREATED).body(token);
-    }
-
-    // TODO logic to verify after security
-    public ResponseEntity<String> registerAdmin(AppUser appUser) {
-        if (appUser.getEmail() == null || appUser.getPassword() == null || appUser.getFirstName() == null
-                || appUser.getLastName() == null) {
-            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in AppUser\n");
-        } else {
-            if (IsEmailAlreadyInUse(appUser.getEmail())) {
-                throw new CustomExceptions.EmailAlreadyUsedException("Email is already registered.\n");
-            } else {
-                appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-                appUser.setRoles(List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
-                saveAndUpdateUser(appUser);
-            }
-        }
-        // TODO token creation after security
-        String token = "placeholder";
-        return ResponseEntity.status(HttpStatus.CREATED).body(token);
-    }
-
-    public ResponseEntity<String> loginUser(AppUser appUser) {
-        Optional<AppUser> optionalAppUser = appUserRepository.findByEmail(appUser.getEmail());
-        if (optionalAppUser.isPresent()) {
-            AppUser savedAppUser = optionalAppUser.get();
-            if (passwordEncoder.matches(appUser.getPassword(), savedAppUser.getPassword())) {
-                // TODO token creation after security
-                String token = "placeholder";
-                return ResponseEntity.status(HttpStatus.OK).body(token);
-            }
-        }
-        throw new CustomExceptions.MissingAttributeException("Unable to login");
-    }
-
-    private boolean IsEmailAlreadyInUse(String email) {
-        return appUserRepository.existsByEmail(email);
     }
 
     private String generateToken(AppUser appUser) {
