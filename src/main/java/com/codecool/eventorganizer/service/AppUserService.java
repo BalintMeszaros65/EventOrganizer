@@ -35,10 +35,6 @@ public class AppUserService {
         }
     }
 
-    public void deleteUser(UUID id) {
-        appUserRepository.deleteById(id);
-    }
-
     public ResponseEntity<String> registerUser(AppUser appUser) {
         if (appUser.getEmail() == null || appUser.getPassword() == null || appUser.getFirstName() == null
                 || appUser.getLastName() == null) {
@@ -129,6 +125,12 @@ public class AppUserService {
 
     public ResponseEntity<String> changePassword(String newPassword) {
         // TODO after security
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("To be implemented.");
+    }
+
+    public ResponseEntity<String> deleteUser() {
+        // TODO after security
+        // appUserRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("To be implemented.");
     }
 }

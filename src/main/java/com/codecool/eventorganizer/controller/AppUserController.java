@@ -47,4 +47,9 @@ public class AppUserController {
     public ResponseEntity<String> changePasswordOfUser(@RequestParam String newPassword) {
         return appUserService.changePassword(newPassword);
     }
+
+    @DeleteMapping("/api/user/delete")
+    public ResponseEntity<String> deleteUser() {
+        return appUserService.deleteUser();
+    }
 }
