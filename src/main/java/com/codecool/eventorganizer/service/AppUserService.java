@@ -112,4 +112,23 @@ public class AppUserService {
     private boolean IsEmailAlreadyInUse(String email) {
         return appUserRepository.existsByEmail(email);
     }
+
+    public ResponseEntity<String> updateUserInformation(AppUser appUser) {
+        // TODO change id getter to work from context after security
+        AppUser savedAppUser = getUserById(appUser.getId());
+        if (!savedAppUser.getEmail().equals(appUser.getEmail())) {
+            throw new CustomExceptions.EmailCanNotBeChangedException("You can not change your registered email.");
+        }
+        if (!savedAppUser.getPassword().equals(appUser.getPassword())) {
+            throw new CustomExceptions.PasswordChangeIsDifferentEndpointException("Password change is" +
+                    "not allowed at this endpoint.");
+        }
+        saveAndUpdateUser(appUser);
+        return ResponseEntity.status(HttpStatus.OK).body("User information updated.");
+    }
+
+    public ResponseEntity<String> changePassword(String newPassword) {
+        // TODO after security
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("To be implemented.");
+    }
 }
