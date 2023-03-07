@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
 
-    AppUser appUser;
+    private final AppUser appUser;
 
     public CustomUserDetails(AppUser appUser) {
         this.appUser = appUser;
