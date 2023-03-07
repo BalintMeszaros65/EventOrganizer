@@ -35,6 +35,15 @@ public class AppUserService {
         }
     }
 
+    public AppUser getUserByEmail(String email) {
+        Optional<AppUser> optionalAppUser = appUserRepository.findByEmail(email);
+        if (optionalAppUser.isPresent()) {
+            return optionalAppUser.get();
+        } else {
+            throw new NoSuchElementException("User not found by given id.");
+        }
+    }
+
     public ResponseEntity<String> registerUser(AppUser appUser) {
         if (appUser.getEmail() == null || appUser.getPassword() == null || appUser.getFirstName() == null
                 || appUser.getLastName() == null) {
