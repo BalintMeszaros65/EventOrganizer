@@ -1,5 +1,6 @@
-package com.codecool.eventorganizer.model;
+package com.codecool.eventorganizer.security;
 
+import com.codecool.eventorganizer.model.AppUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

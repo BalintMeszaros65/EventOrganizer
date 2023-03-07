@@ -1,7 +1,6 @@
-package com.codecool.eventorganizer.service;
+package com.codecool.eventorganizer.security;
 
 import com.codecool.eventorganizer.model.AppUser;
-import com.codecool.eventorganizer.model.CustomUserDetails;
 import com.codecool.eventorganizer.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
