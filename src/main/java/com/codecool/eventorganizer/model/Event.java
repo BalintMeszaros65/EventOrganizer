@@ -58,8 +58,9 @@ public class Event {
             this.ticketsSoldThroughOurApp = ticketsSoldThroughOurApp;
             availableTickets = ticketsSoldThroughOurApp;
         } else {
-            // TODO make custom exception(s)
-            throw new Exception();
+            throw new CustomExceptions.NotEnoughTicketsLeftException(
+                    String.format("Not enough tickets left (%s)", availableTickets)
+            );
         }
     }
 
@@ -83,7 +84,7 @@ public class Event {
             availableTickets -= ticketCount;
         } else {
             LocalDateTime endOfBooking = eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed);
-            throw new CustomExceptions.EventCanNotBeBooked(
+            throw new CustomExceptions.EventCanNotBeBookedException(
                 endOfBooking.isBefore(LocalDateTime.now()) ?
                 String.format("Not enough tickets left (%s)", availableTickets)
                 : String.format("Booking for event ended at %s", endOfBooking)
@@ -95,7 +96,7 @@ public class Event {
         if (canBeRefunded()) {
             availableTickets += ticketCount;
         } else {
-            throw new CustomExceptions.EventCanNotBeRefunded(
+            throw new CustomExceptions.EventCanNotBeRefundedException(
                 venue.isThereRefund() ?
                 String.format("Refunding for event ended at %s", eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed))
                 : "Refunding is not allowed by the venue."
