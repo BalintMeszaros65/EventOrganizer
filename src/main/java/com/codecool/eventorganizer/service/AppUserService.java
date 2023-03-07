@@ -126,6 +126,11 @@ public class AppUserService {
         return appUserRepository.existsByEmail(email);
     }
 
+    private String generateToken(AppUser appUser) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(appUser.getEmail());
+        return jwtUtil.generateToken(userDetails);
+    }
+
     public ResponseEntity<String> updateUserInformation(AppUser appUser) {
         // TODO change id getter to work from context after security
         AppUser savedAppUser = getUserById(appUser.getId());
