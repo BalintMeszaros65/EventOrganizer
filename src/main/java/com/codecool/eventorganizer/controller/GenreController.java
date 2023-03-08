@@ -5,6 +5,7 @@ import com.codecool.eventorganizer.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,4 +23,8 @@ public class GenreController {
         return genreService.createGenre(genre);
     }
 
+    @PutMapping("/api/genre/update")
+    public ResponseEntity<String> updateGenre(@RequestBody Genre genre) {
+        return genreService.updateGenre(genre);
+    }
 }

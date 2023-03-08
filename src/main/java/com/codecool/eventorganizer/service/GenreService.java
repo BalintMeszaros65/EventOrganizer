@@ -47,4 +47,17 @@ public class GenreService {
         return ResponseEntity.status(HttpStatus.CREATED).body("Genre created successfully.");
     }
 
+
+    public ResponseEntity<String> updateGenre(Genre genre) {
+        UUID id = genre.getId();
+        if (id == null || genre.getName() == null || genre.getType() == null || "".equals(genre.getName())
+                || "".equals(genre.getType())) {
+            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in genre.");
+        }
+        if (!genreRepository.existsById(id)) {
+            throw new NoSuchElementException("Genre not found by given id.");
+        }
+        saveAndUpdateGenre(genre);
+        return ResponseEntity.status(HttpStatus.OK).body("Genre updated successfully.");
+    }
 }
