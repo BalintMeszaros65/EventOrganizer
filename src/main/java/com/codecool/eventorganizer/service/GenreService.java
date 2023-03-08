@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -63,5 +64,13 @@ public class GenreService {
 
     public List<Genre> getAllGenreByType(String type) {
         return genreRepository.findAllByType(type);
+    }
+
+    public Genre getGenreById(UUID genreId) {
+        Optional<Genre> optionalGenre = genreRepository.findById(genreId);
+        if (optionalGenre.isPresent()) {
+            return optionalGenre.get();
+        }
+        throw new NoSuchElementException("No genre found by given id.");
     }
 }
