@@ -34,8 +34,13 @@ public class GenreService {
         }
     }
 
-    public void deleteGenre(UUID id) {
+    public ResponseEntity<String> deleteGenre(Genre genre) {
+        UUID id = genre.getId();
+        if (!genreRepository.existsById(id)) {
+            throw new NoSuchElementException("Genre not found by given id.");
+        }
         genreRepository.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Genre deleted successfully.");
     }
 
     public ResponseEntity<String> createGenre(Genre genre) {
