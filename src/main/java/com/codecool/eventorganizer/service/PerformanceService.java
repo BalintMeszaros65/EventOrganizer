@@ -34,14 +34,33 @@ public class PerformanceService {
         }
     }
 
-    public void deletePerformance(UUID id) {
+    // TODO implement logic to handle booked events (already done and upcoming)
+    public ResponseEntity<String> deletePerformance(Performance performance) {
+        UUID id = performance.getId();
+        if (!performanceRepository.existsById(id)) {
+            throw new NoSuchElementException("Performance not found by given id.");
+        }
         performanceRepository.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Performance deleted successfully.");
     }
 
     public ResponseEntity<String> createPerformance(Performance performance) {
         String name = performance.getName();
         if (performance.getGenre() == null || name == null || "".equals(name)) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in performance.");
+        }
+        saveAndUpdatePerformance(performance);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Performance successfully created.");
+    }
+
+    public ResponseEntity<String> updatePerformance(Performance performance) {
+        String name = performance.getName();
+        UUID id = performance.getId();
+        if (id == null || performance.getGenre() == null || name == null || "".equals(name)) {
+            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in performance.");
+        }
+        if (!performanceRepository.existsById(id)) {
+            throw new NoSuchElementException("Performance not found by given id.");
         }
         saveAndUpdatePerformance(performance);
         return ResponseEntity.status(HttpStatus.CREATED).body("Performance successfully created.");
