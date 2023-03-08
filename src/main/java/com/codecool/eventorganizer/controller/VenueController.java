@@ -20,5 +20,10 @@ public class VenueController {
         return venueService.createVenue(venue);
     }
 
+    @PutMapping("/api/venue/update")
+    public ResponseEntity<String> updateVenue(@RequestBody Venue venue) {
+        return venueService.updateVenue(venue);
+    }
+
 
 }

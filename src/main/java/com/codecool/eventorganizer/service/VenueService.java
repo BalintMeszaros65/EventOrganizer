@@ -64,5 +64,10 @@ public class VenueService {
         return ResponseEntity.status(HttpStatus.CREATED).body("Venue successfully created.");
     }
 
-
+    public ResponseEntity<String> updateVenue(Venue venue) {
+        checkIfRequiredDataExists(venue);
+        checkIfVenueExists(venue.getId());
+        saveAndUpdateVenue(venue);
+        return ResponseEntity.status(HttpStatus.OK).body("Venue successfully updated.");
+    }
 }
