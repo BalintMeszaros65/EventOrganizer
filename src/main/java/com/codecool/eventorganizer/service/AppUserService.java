@@ -92,9 +92,12 @@ public class AppUserService {
     }
 
     private static void checkIfAllRequiredDataExists(AppUser appUser) {
-        if (appUser.getEmail() == null || appUser.getPassword() == null || appUser.getFirstName() == null
-                || appUser.getLastName() == null || "".equals(appUser.getEmail()) || "".equals(appUser.getPassword())
-                || "".equals(appUser.getFirstName()) || "".equals(appUser.getLastName())) {
+        String email = appUser.getEmail();
+        String password = appUser.getPassword();
+        String firstName = appUser.getFirstName();
+        String lastName = appUser.getLastName();
+        if (email == null ||  password == null || firstName == null || lastName == null
+                || "".equals(email) || "".equals(password) || "".equals(firstName) || "".equals(lastName)) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in AppUser\n");
         }
     }
