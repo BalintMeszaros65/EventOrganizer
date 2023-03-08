@@ -30,6 +30,7 @@ public class AppUserService {
         this.jwtUtil = jwtUtil;
     }
 
+    // basic CRUD operations
     public void saveAndUpdateUser(AppUser appUser) {
         appUserRepository.save(appUser);
     }
@@ -52,46 +53,14 @@ public class AppUserService {
         }
     }
 
-    public ResponseEntity<String> registerUser(AppUser appUser) {
-        checkIfAllRequiredDataExists(appUser);
-        checkIfEmailIsAlreadyRegistered(appUser);
-        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-        appUser.setRoles(List.of("ROLE_USER"));
-        saveAndUpdateUser(appUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
-    }
-
-    public ResponseEntity<String> registerOrganizer(AppUser appUser, String secretKey) {
-        if (!"organizer".equals(secretKey)) {
-            throw new IllegalArgumentException("Secret key for registering an organizer account is not matching.");
-        }
-        checkIfAllRequiredDataExists(appUser);
-        checkIfEmailIsAlreadyRegistered(appUser);
-        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-        appUser.setRoles(List.of("ROLE_ORGANIZER"));
-        saveAndUpdateUser(appUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
-    }
-
-    public ResponseEntity<String> registerAdmin(AppUser appUser, String secretKey) {
-        if (!"admin".equals(secretKey)) {
-            throw new IllegalArgumentException("Secret key for registering an admin account is not matching.");
-        }
-        checkIfAllRequiredDataExists(appUser);
-        checkIfEmailIsAlreadyRegistered(appUser);
-        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-        appUser.setRoles(List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
-        saveAndUpdateUser(appUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
-    }
-
+    //helper methods
     private void checkIfEmailIsAlreadyRegistered(AppUser appUser) {
         if (appUserRepository.existsByEmail(appUser.getEmail())) {
             throw new CustomExceptions.EmailAlreadyUsedException("Email is already registered.\n");
         }
     }
 
-    private static void checkIfAllRequiredDataExists(AppUser appUser) {
+    private static void checkIfRequiredDataExists(AppUser appUser) {
         String email = appUser.getEmail();
         String password = appUser.getPassword();
         String firstName = appUser.getFirstName();
@@ -105,6 +74,41 @@ public class AppUserService {
     private String generateToken(AppUser appUser) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(appUser.getEmail());
         return jwtUtil.generateToken(userDetails);
+    }
+
+
+    // logic
+    public ResponseEntity<String> registerUser(AppUser appUser) {
+        checkIfRequiredDataExists(appUser);
+        checkIfEmailIsAlreadyRegistered(appUser);
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+        appUser.setRoles(List.of("ROLE_USER"));
+        saveAndUpdateUser(appUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
+    }
+
+    public ResponseEntity<String> registerOrganizer(AppUser appUser, String secretKey) {
+        if (!"organizer".equals(secretKey)) {
+            throw new IllegalArgumentException("Secret key for registering an organizer account is not matching.");
+        }
+        checkIfRequiredDataExists(appUser);
+        checkIfEmailIsAlreadyRegistered(appUser);
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+        appUser.setRoles(List.of("ROLE_ORGANIZER"));
+        saveAndUpdateUser(appUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
+    }
+
+    public ResponseEntity<String> registerAdmin(AppUser appUser, String secretKey) {
+        if (!"admin".equals(secretKey)) {
+            throw new IllegalArgumentException("Secret key for registering an admin account is not matching.");
+        }
+        checkIfRequiredDataExists(appUser);
+        checkIfEmailIsAlreadyRegistered(appUser);
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+        appUser.setRoles(List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
+        saveAndUpdateUser(appUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }
 
     public ResponseEntity<String> updateUserInformation(AppUser appUser) {
