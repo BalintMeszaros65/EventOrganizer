@@ -25,5 +25,8 @@ public class VenueController {
         return venueService.updateVenue(venue);
     }
 
-
+    @DeleteMapping("/api/venue/delete")
+    public ResponseEntity<String> deleteVenue(@RequestBody Venue venue) {
+        return venueService.deleteVenue(venue);
+    }
 }
