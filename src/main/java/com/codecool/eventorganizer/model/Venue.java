@@ -53,4 +53,16 @@ public class Venue {
     public String getCity() {
         return city;
     }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public String getHouse() {
+        return house;
+    }
 }
