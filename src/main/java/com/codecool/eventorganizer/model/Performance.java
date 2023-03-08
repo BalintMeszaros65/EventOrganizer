@@ -17,4 +17,20 @@ public class Performance {
     @NotNull
     @ManyToOne
     private Genre genre;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
 }
