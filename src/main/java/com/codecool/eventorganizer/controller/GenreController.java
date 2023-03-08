@@ -37,4 +37,9 @@ public class GenreController {
     public List<String> getGenreTypes() {
         return genreService.getAllGenreTypes();
     }
+
+    @GetMapping("/api/genre/get-all-by-type/{type}")
+    public List<Genre> getAllGenreByType(@PathVariable String type) {
+        return genreService.getAllGenreByType(type);
+    }
 }

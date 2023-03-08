@@ -60,4 +60,8 @@ public class GenreService {
         saveAndUpdateGenre(genre);
         return ResponseEntity.status(HttpStatus.OK).body("Genre updated successfully.");
     }
+
+    public List<Genre> getAllGenreByType(String type) {
+        return genreRepository.findAllByType(type);
+    }
 }
