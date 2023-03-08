@@ -89,8 +89,8 @@ public class AppUser {
     }
 
     public void refundBookedEvent(BookedEvent bookedEvent) {
-        if (bookedEvent.canBeRefunded()) {
-            bookedEvents.remove(bookedEvent);
+        if (bookedEvent.canBeRefunded() && !bookedEvent.isRefunded()) {
+            bookedEvent.setRefunded(true);
         } else {
             throw new CustomExceptions.EventCanNotBeRefundedException("This booked event can't be refunded.");
         }
