@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class GenreController {
     GenreService genreService;
@@ -29,5 +31,10 @@ public class GenreController {
     @DeleteMapping("/api/genre/delete")
     public ResponseEntity<String> deleteGenre(@RequestBody Genre genre) {
         return genreService.deleteGenre(genre);
+    }
+
+    @GetMapping("/api/genre/types")
+    public List<String> getGenreTypes() {
+        return genreService.getAllGenreTypes();
     }
 }

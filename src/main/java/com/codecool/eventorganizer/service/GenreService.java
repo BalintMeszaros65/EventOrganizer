@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,13 +25,8 @@ public class GenreService {
         genreRepository.save(genre);
     }
 
-    public Genre getGenre(UUID id) {
-        Optional<Genre> optionalGenre = genreRepository.findById(id);
-        if (optionalGenre.isPresent()) {
-            return optionalGenre.get();
-        } else {
-            throw new NoSuchElementException("Genre not found by given id.");
-        }
+    public List<String> getAllGenreTypes() {
+        return genreRepository.findAllDistinctType();
     }
 
     public ResponseEntity<String> deleteGenre(Genre genre) {
