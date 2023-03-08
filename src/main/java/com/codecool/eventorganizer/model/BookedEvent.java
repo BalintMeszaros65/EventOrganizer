@@ -24,6 +24,21 @@ public class BookedEvent {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private AppUser appUser;
+    // storing genre in case event or performance gets deleted,
+    // so that the suggestions algorithm will be able to still use it
+    @ManyToOne
+    @NotNull
+    private Genre genre;
+    @NotNull
+    private boolean isRefunded;
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
 
     public UUID getId() {
         return id;
