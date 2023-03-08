@@ -93,7 +93,8 @@ public class AppUserService {
 
     private static void checkIfAllRequiredDataExists(AppUser appUser) {
         if (appUser.getEmail() == null || appUser.getPassword() == null || appUser.getFirstName() == null
-                || appUser.getLastName() == null) {
+                || appUser.getLastName() == null || "".equals(appUser.getEmail()) || "".equals(appUser.getPassword())
+                || "".equals(appUser.getFirstName()) || "".equals(appUser.getLastName())) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in AppUser\n");
         }
     }
@@ -113,11 +114,17 @@ public class AppUserService {
             throw new CustomExceptions.PasswordChangeIsDifferentEndpointException("Password change is" +
                     "not allowed at this endpoint.");
         }
+        if ("".equals(appUser.getLastName()) || "".equals(appUser.getFirstName())) {
+            throw new CustomExceptions.MissingAttributeException("Last and first name can not be empty.");
+        }
         saveAndUpdateUser(appUser);
         return ResponseEntity.status(HttpStatus.OK).body("User information updated.");
     }
 
     public ResponseEntity<String> changePassword(String newPassword) {
+        if ("".equals(newPassword)) {
+            throw new CustomExceptions.MissingAttributeException("Password can not be empty.");
+        }
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         AppUser savedAppUser = getUserByEmail(email);
         savedAppUser.setPassword(passwordEncoder.encode(newPassword));
