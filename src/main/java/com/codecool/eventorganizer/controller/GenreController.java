@@ -25,6 +25,7 @@ public class GenreController {
         return genreService.updateGenre(genre);
     }
 
+    // TODO ask performance wise RequestBody/RequestParam/PathVariable
     @DeleteMapping("/api/genre/delete")
     public ResponseEntity<String> deleteGenre(@RequestBody Genre genre) {
         return genreService.deleteGenre(genre);
