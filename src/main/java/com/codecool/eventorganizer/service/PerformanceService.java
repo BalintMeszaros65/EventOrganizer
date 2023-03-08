@@ -21,6 +21,7 @@ public class PerformanceService {
         this.performanceRepository = performanceRepository;
     }
 
+    // basic CRUD operations
     public void saveAndUpdatePerformance(Performance performance) {
         performanceRepository.save(performance);
     }
@@ -34,35 +35,40 @@ public class PerformanceService {
         }
     }
 
-    // TODO implement logic to handle booked events (already done and upcoming)
-    public ResponseEntity<String> deletePerformance(Performance performance) {
-        UUID id = performance.getId();
+    // helper methods
+    private void checkIfPerformanceExists(UUID id) {
         if (!performanceRepository.existsById(id)) {
             throw new NoSuchElementException("Performance not found by given id.");
         }
-        performanceRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Performance deleted successfully.");
     }
 
-    public ResponseEntity<String> createPerformance(Performance performance) {
+    private static void checkIfRequiredDataExists(Performance performance) {
         String name = performance.getName();
         if (performance.getGenre() == null || name == null || "".equals(name)) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in performance.");
         }
+    }
+
+    // logic
+    public ResponseEntity<String> createPerformance(Performance performance) {
+        checkIfRequiredDataExists(performance);
         saveAndUpdatePerformance(performance);
         return ResponseEntity.status(HttpStatus.CREATED).body("Performance successfully created.");
     }
 
     public ResponseEntity<String> updatePerformance(Performance performance) {
-        String name = performance.getName();
         UUID id = performance.getId();
-        if (id == null || performance.getGenre() == null || name == null || "".equals(name)) {
-            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in performance.");
-        }
-        if (!performanceRepository.existsById(id)) {
-            throw new NoSuchElementException("Performance not found by given id.");
-        }
+        checkIfRequiredDataExists(performance);
+        checkIfPerformanceExists(id);
         saveAndUpdatePerformance(performance);
         return ResponseEntity.status(HttpStatus.CREATED).body("Performance successfully created.");
+    }
+
+    // TODO implement logic to handle booked events (already done and upcoming)
+    public ResponseEntity<String> deletePerformance(Performance performance) {
+        UUID id = performance.getId();
+        checkIfPerformanceExists(id);
+        performanceRepository.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Performance deleted successfully.");
     }
 }
