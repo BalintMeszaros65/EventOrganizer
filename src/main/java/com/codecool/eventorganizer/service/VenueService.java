@@ -1,8 +1,11 @@
 package com.codecool.eventorganizer.service;
 
+import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.Venue;
 import com.codecool.eventorganizer.repository.VenueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -18,6 +21,7 @@ public class VenueService {
         this.venueRepository = venueRepository;
     }
 
+    // basic CRUD operations
     public void saveAndUpdateVenue(Venue venue) {
         venueRepository.save(venue);
     }
@@ -31,7 +35,34 @@ public class VenueService {
         }
     }
 
-    public void deleteVenue(UUID id) {
-        venueRepository.deleteById(id);
+    // helper methods
+    private void checkIfVenueExists(UUID id) {
+        if (!venueRepository.existsById(id)) {
+            throw new NoSuchElementException("Venue not found by given id.");
+        }
     }
+
+    private static void checkIfRequiredDataExists(Venue venue) {
+        int capacity = venue.getCapacity();
+        String name = venue.getName();
+        String country = venue.getCountry();
+        String city = venue.getCity();
+        String zipCode = venue.getZipCode();
+        String street  = venue.getStreet();
+        String house = venue.getHouse();
+        if (capacity == 0 || name == null || country == null || city == null || zipCode == null || street == null
+            || house == null || "".equals(name) || "".equals(country) || "".equals(city) || "".equals(zipCode)
+                || "".equals(street) || "".equals(house)) {
+            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in venue.");
+        }
+    }
+
+    // logic
+    public ResponseEntity<String> createVenue(Venue venue) {
+        checkIfRequiredDataExists(venue);
+        saveAndUpdateVenue(venue);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Venue successfully created.");
+    }
+
+
 }
