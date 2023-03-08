@@ -1,7 +1,7 @@
 package com.codecool.eventorganizer.exception;
 
 // TODO ask if plural naming is conventional or not
-public class CustomExceptions {
+public abstract class CustomExceptions {
     // TODO ask if state is good here or not
     public static class EventCanNotBeRefundedException extends IllegalStateException {
         public EventCanNotBeRefundedException(String message) {
