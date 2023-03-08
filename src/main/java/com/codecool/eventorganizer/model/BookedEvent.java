@@ -59,4 +59,12 @@ public class BookedEvent {
     public boolean canBeRefunded() {
         return event.canBeRefunded();
     }
+
+    public boolean isRefunded() {
+        return isRefunded;
+    }
+
+    public void setRefunded(boolean refunded) {
+        isRefunded = refunded;
+    }
 }
