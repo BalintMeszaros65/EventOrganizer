@@ -91,6 +91,9 @@ public class AppUser {
     public void refundBookedEvent(BookedEvent bookedEvent) {
         if (bookedEvent.canBeRefunded() && !bookedEvent.isRefunded()) {
             bookedEvent.setRefunded(true);
+            Event event = bookedEvent.getEvent();
+            int ticketCount = bookedEvent.getTicketsBought();
+            event.refundTicket(ticketCount);
         } else {
             throw new CustomExceptions.EventCanNotBeRefundedException("This booked event can't be refunded.");
         }
