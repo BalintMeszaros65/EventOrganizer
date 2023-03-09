@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
@@ -20,7 +20,7 @@ public class BookedEvent {
     @NotNull
     private int ticketsBought;
     @NotNull
-    private LocalDateTime dateOfBooking;
+    private ZonedDateTime dateOfBooking;
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private AppUser appUser;

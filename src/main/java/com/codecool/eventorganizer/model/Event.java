@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 // TODO check in service if ticketsSoldThroughOurApp > Venue.capacity and throw error if true
@@ -27,7 +27,7 @@ public class Event {
     @NotNull
     private int availableTickets;
     @NotNull
-    private LocalDateTime eventStartingDateAndTime;
+    private ZonedDateTime eventStartingDateAndTime;
     @NotNull
     private double eventLengthInHours;
     @NotNull
@@ -49,7 +49,7 @@ public class Event {
         return basePrice;
     }
 
-    public LocalDateTime getEventStartingDateAndTime() {
+    public ZonedDateTime getEventStartingDateAndTime() {
         return eventStartingDateAndTime;
     }
 
@@ -83,9 +83,9 @@ public class Event {
         if (canBeBooked(ticketCount)) {
             availableTickets -= ticketCount;
         } else {
-            LocalDateTime endOfBooking = eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed);
+            ZonedDateTime endOfBooking = eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed);
             throw new CustomExceptions.EventCanNotBeBookedException(
-                endOfBooking.isBefore(LocalDateTime.now()) ?
+                endOfBooking.isBefore(ZonedDateTime.now()) ?
                 String.format("Not enough tickets left (%s)", availableTickets)
                 : String.format("Booking for event ended at %s", endOfBooking)
             );
@@ -107,11 +107,11 @@ public class Event {
     public boolean canBeBooked(int ticketCount) {
         // TODO ask if LocalDate works as I think
         return availableTickets >= ticketCount &&
-            eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(LocalDateTime.now());
+            eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(ZonedDateTime.now());
     }
 
     public boolean canBeRefunded() {
         return venue.isThereRefund() &&
-            eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(LocalDateTime.now());
+            eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(ZonedDateTime.now());
     }
 }
