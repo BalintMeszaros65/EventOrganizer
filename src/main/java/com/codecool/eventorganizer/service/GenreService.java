@@ -8,10 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class GenreService {
@@ -28,7 +26,12 @@ public class GenreService {
     }
 
     public List<String> getAllGenreTypes() {
-        return genreRepository.findAllDistinctType();
+        List<Genre> genres = genreRepository.findAll();
+        return genres.stream()
+                .map(Genre::getType)
+                .distinct()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     // helper methods
