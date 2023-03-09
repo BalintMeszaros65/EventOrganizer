@@ -42,4 +42,10 @@ public abstract class CustomExceptions {
             super(message);
         }
     }
+
+    public static class TicketCountCanNotExceedVenueCapacityException extends IllegalArgumentException {
+        public TicketCountCanNotExceedVenueCapacityException(String message) {
+            super(message);
+        }
+    }
 }
