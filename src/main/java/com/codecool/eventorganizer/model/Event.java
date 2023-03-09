@@ -105,7 +105,6 @@ public class Event {
     }
 
     public boolean canBeBooked(int ticketCount) {
-        // TODO ask if LocalDate works as I think
         return availableTickets >= ticketCount &&
             eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(ZonedDateTime.now());
     }
