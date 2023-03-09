@@ -49,8 +49,24 @@ public class Event {
         return basePrice;
     }
 
+    public int getTicketsSoldThroughOurApp() {
+        return ticketsSoldThroughOurApp;
+    }
+
+    public int getAvailableTickets() {
+        return availableTickets;
+    }
+
+    public double getEventLengthInHours() {
+        return eventLengthInHours;
+    }
+
     public ZonedDateTime getEventStartingDateAndTime() {
         return eventStartingDateAndTime;
+    }
+
+    public void setAvailableTickets(int availableTickets) {
+        this.availableTickets = availableTickets;
     }
 
     public void initializeTicketsToBeSold(int ticketsSoldThroughOurApp) throws Exception {
