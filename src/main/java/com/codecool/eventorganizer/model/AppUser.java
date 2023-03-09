@@ -88,6 +88,8 @@ public class AppUser {
         bookedEvents.add(bookedEvent);
     }
 
+
+    // TODO move event logic to a new bookingAndRefunding service?
     public void refundBookedEvent(BookedEvent bookedEvent) {
         if (bookedEvent.canBeRefunded() && !bookedEvent.isRefunded()) {
             bookedEvent.setRefunded(true);
