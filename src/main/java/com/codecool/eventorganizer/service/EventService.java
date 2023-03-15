@@ -47,8 +47,8 @@ public class EventService {
         Venue venue = event.getVenue();
         Performance performance = event.getPerformance();
         if (venue == null || performance == null || BigDecimal.ZERO.equals(event.getBasePrice())
-            || event.getTicketsSoldThroughOurApp() == 0 || event.getEventStartingDateAndTime() == null
-            || event.getEventLengthInHours() == 0.0 || !event.isCancelled()) {
+            || event.getTicketsSoldThroughOurApp() <= 0 || event.getEventStartingDateAndTime() == null
+            || event.getEventLengthInHours() <= 0.0 || !event.isCancelled()) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in event.");
         }
         Venue savedVenue = venueService.getVenue(venue.getId());

@@ -50,7 +50,7 @@ public class VenueService {
         String zipCode = venue.getZipCode();
         String street  = venue.getStreet();
         String house = venue.getHouse();
-        if (capacity == 0 || name == null || country == null || city == null || zipCode == null || street == null
+        if (capacity <= 0 || name == null || country == null || city == null || zipCode == null || street == null
             || house == null || "".equals(name) || "".equals(country) || "".equals(city) || "".equals(zipCode)
                 || "".equals(street) || "".equals(house)) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in venue.");
