@@ -25,6 +25,15 @@ public class GenreService {
         genreRepository.save(genre);
     }
 
+    public Genre getGenreById(UUID id) {
+        Optional<Genre> optionalGenre = genreRepository.findById(id);
+        if (optionalGenre.isPresent()) {
+            return optionalGenre.get();
+        } else {
+            throw new NoSuchElementException("Genre not found by given id.");
+        }
+    }
+
     public List<String> getAllGenreTypes() {
         List<Genre> genres = genreRepository.findAll();
         return genres.stream()
