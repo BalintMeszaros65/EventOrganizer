@@ -42,10 +42,6 @@ public class EventService {
         }
     }
 
-    public void deleteEvent(UUID id) {
-        eventRepository.deleteById(id);
-    }
-
     // helper methods
     private void checkIfRequiredDataExists(Event event) {
         Venue venue = event.getVenue();
@@ -94,5 +90,11 @@ public class EventService {
         return ResponseEntity.status(HttpStatus.OK).body("Event successfully updated.");
     }
 
+    public ResponseEntity<String> deleteEvent(Event event) {
+        UUID id = event.getId();
+        checkIfEventExists(id);
+        eventRepository.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Event successfully deleted.");
+    }
 
 }

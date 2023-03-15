@@ -4,10 +4,7 @@ import com.codecool.eventorganizer.model.Event;
 import com.codecool.eventorganizer.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class EventController {
@@ -27,5 +24,11 @@ public class EventController {
     @PutMapping("/api/event/update")
     public ResponseEntity<String> updateEvent(@RequestBody Event event) {
         return eventService.updateEvent(event);
+    }
+
+    // Admin role only!
+    @DeleteMapping("/api/event/delete")
+    public ResponseEntity<String> deleteEvent(@RequestBody Event event) {
+        return eventService.deleteEvent(event);
     }
 }
