@@ -18,7 +18,7 @@ public class BookedEvent {
     @NotNull
     private BigDecimal amountPayed;
     @NotNull
-    private int ticketsBought;
+    private int ticketsCount;
     @NotNull
     private ZonedDateTime dateOfBooking;
     @NotNull
@@ -52,8 +52,8 @@ public class BookedEvent {
         return amountPayed;
     }
 
-    public int getTicketsBought() {
-        return ticketsBought;
+    public int getTicketsCount() {
+        return ticketsCount;
     }
 
     public boolean canBeRefunded() {
