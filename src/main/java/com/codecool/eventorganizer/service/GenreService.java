@@ -52,21 +52,21 @@ public class GenreService {
     public ResponseEntity<String> createGenre(Genre genre) {
         checkIfRequiredDataExists(genre);
         saveAndUpdateGenre(genre);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Genre created successfully.");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Genre successfully created.");
     }
 
     public ResponseEntity<String> updateGenre(Genre genre) {
         checkIfRequiredDataExists(genre);
         checkIfGenreExists(genre.getId());
         saveAndUpdateGenre(genre);
-        return ResponseEntity.status(HttpStatus.OK).body("Genre updated successfully.");
+        return ResponseEntity.status(HttpStatus.OK).body("Genre successfully updated.");
     }
 
     public ResponseEntity<String> deleteGenre(Genre genre) {
         UUID id = genre.getId();
         checkIfGenreExists(id);
         genreRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Genre deleted successfully.");
+        return ResponseEntity.status(HttpStatus.OK).body("Genre successfully deleted.");
     }
 
     public List<Genre> getAllGenreByType(String type) {
