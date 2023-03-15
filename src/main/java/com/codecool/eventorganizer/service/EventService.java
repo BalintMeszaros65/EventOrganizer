@@ -76,6 +76,9 @@ public class EventService {
     public ResponseEntity<String> createEvent(Event event) {
         checkIfRequiredDataExists(event);
         event.initializeTicketsToBeSold(event.getTicketsSoldThroughOurApp(), 0);
+        if (event.getId() != null) {
+            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
+        }
         saveAndUpdateEvent(event);
         return ResponseEntity.status(HttpStatus.CREATED).body("Event successfully created.");
     }

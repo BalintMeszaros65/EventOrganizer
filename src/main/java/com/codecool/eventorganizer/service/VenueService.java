@@ -60,6 +60,9 @@ public class VenueService {
     // logic
     public ResponseEntity<String> createVenue(Venue venue) {
         checkIfRequiredDataExists(venue);
+        if (venue.getId() != null) {
+            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
+        }
         saveAndUpdateVenue(venue);
         return ResponseEntity.status(HttpStatus.CREATED).body("Venue successfully created.");
     }

@@ -60,6 +60,9 @@ public class GenreService {
     // logic
     public ResponseEntity<String> createGenre(Genre genre) {
         checkIfRequiredDataExists(genre);
+        if (genre.getId() != null) {
+            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
+        }
         saveAndUpdateGenre(genre);
         return ResponseEntity.status(HttpStatus.CREATED).body("Genre successfully created.");
     }

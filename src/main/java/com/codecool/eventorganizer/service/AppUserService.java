@@ -76,6 +76,11 @@ public class AppUserService {
         return jwtUtil.generateToken(userDetails);
     }
 
+    private static void checkIfIdDoesNotExist(AppUser appUser) {
+        if (appUser.getId() != null) {
+            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
+        }
+    }
 
     // logic
     public ResponseEntity<String> registerUser(AppUser appUser) {
@@ -83,6 +88,7 @@ public class AppUserService {
         checkIfEmailIsAlreadyRegistered(appUser);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_USER"));
+        checkIfIdDoesNotExist(appUser);
         saveAndUpdateUser(appUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }
@@ -95,6 +101,7 @@ public class AppUserService {
         checkIfEmailIsAlreadyRegistered(appUser);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_ORGANIZER"));
+        checkIfIdDoesNotExist(appUser);
         saveAndUpdateUser(appUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }
@@ -107,6 +114,7 @@ public class AppUserService {
         checkIfEmailIsAlreadyRegistered(appUser);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
+        checkIfIdDoesNotExist(appUser);
         saveAndUpdateUser(appUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }

@@ -48,4 +48,10 @@ public abstract class CustomExceptions {
             super(message);
         }
     }
+
+    public static class IdCanNotExistWhenCreatingEntityException extends IllegalArgumentException {
+        public IdCanNotExistWhenCreatingEntityException() {
+            super("When creating entity id should not exist.");
+        }
+    }
 }

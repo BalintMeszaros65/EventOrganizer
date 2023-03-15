@@ -52,6 +52,9 @@ public class PerformanceService {
     // logic
     public ResponseEntity<String> createPerformance(Performance performance) {
         checkIfRequiredDataExists(performance);
+        if (performance.getId() != null) {
+            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
+        }
         saveAndUpdatePerformance(performance);
         return ResponseEntity.status(HttpStatus.CREATED).body("Performance successfully created.");
     }
