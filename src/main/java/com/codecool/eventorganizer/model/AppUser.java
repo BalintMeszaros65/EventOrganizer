@@ -72,7 +72,7 @@ public class AppUser {
             return BigDecimal.ZERO;
         } else {
             int numberOfTickets = bookedEvents.stream()
-                .map(BookedEvent::getTicketsBought)
+                .map(BookedEvent::getTicketsCount)
                 .reduce(0, Integer::sum);
             BigDecimal amountPaid = bookedEvents.stream()
                 .map(BookedEvent::getAmountPayed)
@@ -92,9 +92,9 @@ public class AppUser {
     // TODO move event logic to a new bookingAndRefunding service?
     public void refundBookedEvent(BookedEvent bookedEvent) {
         if (bookedEvent.canBeRefunded() && !bookedEvent.isRefunded()) {
-            bookedEvent.setRefunded(true);
+            bookedEvent.setRefunded();
             Event event = bookedEvent.getEvent();
-            int ticketCount = bookedEvent.getTicketsBought();
+            int ticketCount = bookedEvent.getTicketsCount();
             event.refundTicket(ticketCount);
         } else {
             throw new CustomExceptions.EventCanNotBeRefundedException("This booked event can't be refunded.");
