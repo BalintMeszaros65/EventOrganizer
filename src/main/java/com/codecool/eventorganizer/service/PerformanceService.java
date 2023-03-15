@@ -60,7 +60,7 @@ public class PerformanceService {
         checkIfRequiredDataExists(performance);
         checkIfPerformanceExists(performance.getId());
         saveAndUpdatePerformance(performance);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Performance successfully created.");
+        return ResponseEntity.status(HttpStatus.OK).body("Performance successfully updated.");
     }
 
     // TODO implement logic to handle booked events (already done and upcoming)
@@ -68,6 +68,6 @@ public class PerformanceService {
         UUID id = performance.getId();
         checkIfPerformanceExists(id);
         performanceRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Performance deleted successfully.");
+        return ResponseEntity.status(HttpStatus.OK).body("Performance successfully deleted.");
     }
 }
