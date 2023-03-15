@@ -47,7 +47,7 @@ public class EventService {
     }
 
     // helper methods
-    public void checkIfRequiredDataExists(Event event) {
+    private void checkIfRequiredDataExists(Event event) {
         Venue venue = event.getVenue();
         Performance performance = event.getPerformance();
         if (venue == null || performance == null || BigDecimal.ZERO.equals(event.getBasePrice())

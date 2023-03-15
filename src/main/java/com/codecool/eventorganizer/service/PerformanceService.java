@@ -36,7 +36,7 @@ public class PerformanceService {
     }
 
     // helper methods
-    public void checkIfPerformanceExists(UUID id) {
+    private void checkIfPerformanceExists(UUID id) {
         if (!performanceRepository.existsById(id)) {
             throw new NoSuchElementException("Performance not found by given id.");
         }

@@ -36,7 +36,7 @@ public class VenueService {
     }
 
     // helper methods
-    public void checkIfVenueExists(UUID id) {
+    private void checkIfVenueExists(UUID id) {
         if (!venueRepository.existsById(id)) {
             throw new NoSuchElementException("Venue not found by given id.");
         }
