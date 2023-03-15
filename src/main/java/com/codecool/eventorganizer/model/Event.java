@@ -64,16 +64,22 @@ public class Event {
         return eventStartingDateAndTime;
     }
 
-    public void initializeTicketsToBeSold(int ticketsSoldThroughOurApp) {
+    public void initializeTicketsToBeSold(int ticketsSoldThroughOurApp, int ticketsAlreadySold) {
         int venueCapacity = venue.getCapacity();
-        if (venueCapacity >= ticketsSoldThroughOurApp) {
-            this.ticketsSoldThroughOurApp = ticketsSoldThroughOurApp;
-            availableTickets = ticketsSoldThroughOurApp;
-        } else {
+        if (venueCapacity < ticketsSoldThroughOurApp) {
             throw new CustomExceptions.TicketCountCanNotExceedVenueCapacityException(
                     String.format("Can not sell more tickets than venue's max capacity (%s)", venueCapacity)
             );
+
         }
+        if (ticketsSoldThroughOurApp < ticketsAlreadySold) {
+            throw new CustomExceptions.NotEnoughTicketsLeftException(
+                    String.format("Can not sell less tickets than already sold tickets count (%s)."
+                            , ticketsAlreadySold)
+            );
+        }
+        this.ticketsSoldThroughOurApp = ticketsSoldThroughOurApp;
+        availableTickets = ticketsSoldThroughOurApp - ticketsAlreadySold;
     }
 
     public BigDecimal currentPriceOfTicket() {
