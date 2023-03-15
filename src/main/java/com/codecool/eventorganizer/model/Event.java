@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-// TODO check in service if ticketsSoldThroughOurApp > Venue.capacity and throw error if true
 @Entity
 public class Event {
     @Id
@@ -65,17 +64,14 @@ public class Event {
         return eventStartingDateAndTime;
     }
 
-    public void setAvailableTickets(int availableTickets) {
-        this.availableTickets = availableTickets;
-    }
-
-    public void initializeTicketsToBeSold(int ticketsSoldThroughOurApp) throws Exception {
-        if (venue.getCapacity() >= ticketsSoldThroughOurApp) {
+    public void initializeTicketsToBeSold(int ticketsSoldThroughOurApp) {
+        int venueCapacity = venue.getCapacity();
+        if (venueCapacity >= ticketsSoldThroughOurApp) {
             this.ticketsSoldThroughOurApp = ticketsSoldThroughOurApp;
             availableTickets = ticketsSoldThroughOurApp;
         } else {
-            throw new CustomExceptions.NotEnoughTicketsLeftException(
-                    String.format("Not enough tickets left (%s)", availableTickets)
+            throw new CustomExceptions.TicketCountCanNotExceedVenueCapacityException(
+                    String.format("Can not sell more tickets than venue's max capacity (%s)", venueCapacity)
             );
         }
     }
