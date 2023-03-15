@@ -57,9 +57,8 @@ public class PerformanceService {
     }
 
     public ResponseEntity<String> updatePerformance(Performance performance) {
-        UUID id = performance.getId();
         checkIfRequiredDataExists(performance);
-        checkIfPerformanceExists(id);
+        checkIfPerformanceExists(performance.getId());
         saveAndUpdatePerformance(performance);
         return ResponseEntity.status(HttpStatus.CREATED).body("Performance successfully created.");
     }
