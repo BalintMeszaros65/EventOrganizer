@@ -31,6 +31,8 @@ public class Event {
     private double eventLengthInHours;
     @NotNull
     private int daysBeforeBookingIsClosed;
+    @NotNull
+    private boolean isCancelled;
 
     public UUID getId() {
         return id;
@@ -62,6 +64,14 @@ public class Event {
 
     public ZonedDateTime getEventStartingDateAndTime() {
         return eventStartingDateAndTime;
+    }
+
+    public boolean isCancelled() {
+        return isCancelled;
+    }
+
+    public void cancel() {
+        isCancelled = true;
     }
 
     public void initializeTicketsToBeSold(int ticketsSoldThroughOurApp, int ticketsAlreadySold) {
@@ -123,12 +133,12 @@ public class Event {
     }
 
     public boolean canBeBooked(int ticketCount) {
-        return availableTickets >= ticketCount &&
+        return availableTickets >= ticketCount && !isCancelled &&
             eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(ZonedDateTime.now());
     }
 
     public boolean canBeRefunded() {
-        return venue.isThereRefund() &&
+        return venue.isThereRefund() && !isCancelled &&
             eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(ZonedDateTime.now());
     }
 }
