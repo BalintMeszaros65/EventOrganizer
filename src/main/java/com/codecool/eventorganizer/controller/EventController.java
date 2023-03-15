@@ -31,4 +31,6 @@ public class EventController {
     public ResponseEntity<String> deleteEvent(@RequestBody Event event) {
         return eventService.deleteEvent(event);
     }
+
+    // TODO add event/cancel after booking/refunding service
 }
