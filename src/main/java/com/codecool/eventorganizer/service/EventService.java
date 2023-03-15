@@ -65,11 +65,34 @@ public class EventService {
         }
     }
 
+    private void checkIfEventExists(UUID id) {
+        if (!eventRepository.existsById(id)) {
+            throw new NoSuchElementException("Event not found by given id.");
+        }
+    }
+
+    private void setupUpdatedEventAvailableTickets(Event savedEvent, Event updatedEvent) {
+        int ticketsAlreadySold = savedEvent.getTicketsSoldThroughOurApp() - savedEvent.getAvailableTickets();
+        updatedEvent.initializeTicketsToBeSold(updatedEvent.getTicketsSoldThroughOurApp(), ticketsAlreadySold);
+    }
+
     // logic
     public ResponseEntity<String> createEvent(Event event) {
         checkIfRequiredDataExists(event);
-        event.initializeTicketsToBeSold(event.getTicketsSoldThroughOurApp());
+        event.initializeTicketsToBeSold(event.getTicketsSoldThroughOurApp(), 0);
         saveAndUpdateEvent(event);
         return ResponseEntity.status(HttpStatus.CREATED).body("Event successfully created.");
     }
+
+    public ResponseEntity<String> updateEvent(Event event) {
+        UUID id = event.getId();
+        checkIfRequiredDataExists(event);
+        checkIfEventExists(id);
+        Event savedEvent = getEvent(id);
+        setupUpdatedEventAvailableTickets(savedEvent, event);
+        saveAndUpdateEvent(event);
+        return ResponseEntity.status(HttpStatus.OK).body("Event successfully updated.");
+    }
+
+
 }

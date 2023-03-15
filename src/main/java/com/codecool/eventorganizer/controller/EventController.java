@@ -5,6 +5,7 @@ import com.codecool.eventorganizer.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +20,12 @@ public class EventController {
     }
 
     @PostMapping("/api/event/create")
-    private ResponseEntity<String> createEvent(@RequestBody Event event) {
+    public ResponseEntity<String> createEvent(@RequestBody Event event) {
         return eventService.createEvent(event);
+    }
+
+    @PutMapping("/api/event/update")
+    public ResponseEntity<String> updateEvent(@RequestBody Event event) {
+        return eventService.updateEvent(event);
     }
 }
