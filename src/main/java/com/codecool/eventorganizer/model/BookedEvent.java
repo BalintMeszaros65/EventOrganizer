@@ -56,6 +56,14 @@ public class BookedEvent {
         return ticketsCount;
     }
 
+    public ZonedDateTime getDateOfBooking() {
+        return dateOfBooking;
+    }
+
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
     public boolean canBeRefunded() {
         return event.canBeRefunded() && !isRefunded;
     }
@@ -64,7 +72,19 @@ public class BookedEvent {
         return isRefunded;
     }
 
-    public void setRefunded(boolean refunded) {
-        isRefunded = refunded;
+    public void setRefunded() {
+        isRefunded = true;
+    }
+
+    public void setAmountPayed(BigDecimal amountPayed) {
+        this.amountPayed = amountPayed;
+    }
+
+    public void setDateOfBooking(ZonedDateTime dateOfBooking) {
+        this.dateOfBooking = dateOfBooking;
+    }
+
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
     }
 }
