@@ -142,11 +142,14 @@ public class AppUserService {
     }
 
     public ResponseEntity<String> changePassword(String newPassword) {
-        if ("".equals(newPassword)) {
+        if ("".equals(newPassword) || newPassword == null) {
             throw new CustomExceptions.MissingAttributeException("Password can not be empty.");
         }
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         AppUser savedAppUser = getUserByEmail(email);
+        if (passwordEncoder.matches(newPassword, savedAppUser.getPassword())) {
+            throw new CustomExceptions.MissingAttributeException("New password can not be the old password.");
+        }
         savedAppUser.setPassword(passwordEncoder.encode(newPassword));
         saveAndUpdateUser(savedAppUser);
         return ResponseEntity.status(HttpStatus.OK).body("Password has been changed.");
