@@ -99,7 +99,6 @@ public class Event {
                             , ticketsAlreadySold)
             );
         }
-        this.ticketsSoldThroughOurApp = ticketsSoldThroughOurApp;
         availableTickets = ticketsSoldThroughOurApp - ticketsAlreadySold;
     }
 
@@ -121,6 +120,9 @@ public class Event {
     }
 
     public void bookTickets(int ticketCount) {
+        if (ticketCount <= 0) {
+            throw new IllegalArgumentException("Can not buy 0 or negative number of tickets.");
+        }
         if (canBeBooked(ticketCount)) {
             availableTickets -= ticketCount;
         } else {
@@ -134,6 +136,9 @@ public class Event {
     }
 
     public void refundTicket(int ticketCount) {
+        if (ticketCount <= 0) {
+            throw new IllegalArgumentException("Can not refund 0 or negative number of tickets.");
+        }
         if (canBeRefunded()) {
             availableTickets += ticketCount;
         } else {
