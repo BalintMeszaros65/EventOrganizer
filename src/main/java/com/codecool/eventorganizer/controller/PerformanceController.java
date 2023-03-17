@@ -25,6 +25,7 @@ public class PerformanceController {
         return performanceService.updatePerformance(performance);
     }
 
+    // Admin role only!
     @DeleteMapping("/api/performance/delete")
     public ResponseEntity<String> deletePerformance(@RequestBody Performance performance) {
         return performanceService.deletePerformance(performance);

@@ -25,6 +25,7 @@ public class VenueController {
         return venueService.updateVenue(venue);
     }
 
+    // Admin role only!
     @DeleteMapping("/api/venue/delete")
     public ResponseEntity<String> deleteVenue(@RequestBody Venue venue) {
         return venueService.deleteVenue(venue);

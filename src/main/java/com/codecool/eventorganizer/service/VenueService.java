@@ -77,6 +77,7 @@ public class VenueService {
         return ResponseEntity.status(HttpStatus.OK).body("Venue successfully updated.");
     }
 
+    // Admin role only!
     public ResponseEntity<String> deleteVenue(Venue venue) {
         UUID id = venue.getId();
         checkIfVenueExists(id);
