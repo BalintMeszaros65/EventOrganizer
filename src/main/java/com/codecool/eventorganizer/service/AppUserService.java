@@ -82,6 +82,22 @@ public class AppUserService {
         }
     }
 
+    private void checkIfUpdatedInformationIsLegit(AppUser appUser) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        AppUser savedAppUser = getUserByEmail(email);
+        if (!savedAppUser.getEmail().equals(appUser.getEmail())) {
+            throw new CustomExceptions.EmailCanNotBeChangedException("You can not change your registered email.");
+        }
+        if (!savedAppUser.getPassword().equals(appUser.getPassword())) {
+            throw new CustomExceptions.PasswordChangeIsDifferentEndpointException(
+                    "Password change is not allowed at this endpoint."
+            );
+        }
+        if ("".equals(appUser.getLastName()) || "".equals(appUser.getFirstName())) {
+            throw new CustomExceptions.MissingAttributeException("Last and first name can not be empty.");
+        }
+    }
+
     // logic
     public ResponseEntity<String> registerUser(AppUser appUser) {
         checkIfRequiredDataExists(appUser);
@@ -120,18 +136,7 @@ public class AppUserService {
     }
 
     public ResponseEntity<String> updateUserInformation(AppUser appUser) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        AppUser savedAppUser = getUserByEmail(email);
-        if (!savedAppUser.getEmail().equals(appUser.getEmail())) {
-            throw new CustomExceptions.EmailCanNotBeChangedException("You can not change your registered email.");
-        }
-        if (!savedAppUser.getPassword().equals(appUser.getPassword())) {
-            throw new CustomExceptions.PasswordChangeIsDifferentEndpointException("Password change is" +
-                    "not allowed at this endpoint.");
-        }
-        if ("".equals(appUser.getLastName()) || "".equals(appUser.getFirstName())) {
-            throw new CustomExceptions.MissingAttributeException("Last and first name can not be empty.");
-        }
+        checkIfUpdatedInformationIsLegit(appUser);
         saveAndUpdateUser(appUser);
         return ResponseEntity.status(HttpStatus.OK).body("User information updated.");
     }
