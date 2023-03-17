@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class GenreController {
@@ -27,9 +28,9 @@ public class GenreController {
         return genreService.updateGenre(genre);
     }
 
-    @DeleteMapping("/api/genre/delete")
-    public ResponseEntity<String> deleteGenre(@RequestBody Genre genre) {
-        return genreService.deleteGenre(genre);
+    @DeleteMapping("/api/genre/delete/{id}")
+    public ResponseEntity<String> deleteGenre(@PathVariable UUID id) {
+        return genreService.deleteGenre(id);
     }
 
     @GetMapping("/api/genre/types")

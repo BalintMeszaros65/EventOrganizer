@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 public class EventController {
 
@@ -27,10 +29,8 @@ public class EventController {
     }
 
     // Admin role only!
-    @DeleteMapping("/api/event/delete")
-    public ResponseEntity<String> deleteEvent(@RequestBody Event event) {
-        return eventService.deleteEvent(event);
+    @DeleteMapping("/api/event/delete/{id}")
+    public ResponseEntity<String> deleteEvent(@PathVariable UUID id) {
+        return eventService.deleteEvent(id);
     }
-
-    // TODO add event/cancel after booking/refunding service
 }

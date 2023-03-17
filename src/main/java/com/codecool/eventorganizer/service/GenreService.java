@@ -77,8 +77,7 @@ public class GenreService {
         return ResponseEntity.status(HttpStatus.OK).body("Genre successfully updated.");
     }
 
-    public ResponseEntity<String> deleteGenre(Genre genre) {
-        UUID id = genre.getId();
+    public ResponseEntity<String> deleteGenre(UUID id) {
         checkIfGenreExists(id);
         genreRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Genre successfully deleted.");

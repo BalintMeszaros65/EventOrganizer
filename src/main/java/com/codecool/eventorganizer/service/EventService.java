@@ -91,9 +91,9 @@ public class EventService {
         }
     }
 
-    private void checkIfEventIsFullyRefundedAndCancelled(Event event) {
-        Event savedEvent = getEventById(event.getId());
-        if (savedEvent.getAvailableTickets() != savedEvent.getTicketsSoldThroughOurApp() || !savedEvent.isCancelled()) {
+    private void checkIfEventIsFullyRefundedAndCancelled(UUID id) {
+        Event event = getEventById(id);
+        if (event.getAvailableTickets() != event.getTicketsSoldThroughOurApp() || !event.isCancelled()) {
             throw new CustomExceptions.EventMustBeRefundedAndCancelledBeforeDeletingException();
         }
     }
@@ -122,10 +122,8 @@ public class EventService {
     }
 
     // Admin role only!
-    public ResponseEntity<String> deleteEvent(Event event) {
-        UUID id = event.getId();
-        checkIfEventExists(id);
-        checkIfEventIsFullyRefundedAndCancelled(event);
+    public ResponseEntity<String> deleteEvent(UUID id) {
+        checkIfEventIsFullyRefundedAndCancelled(id);
         eventRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Event successfully deleted.");
     }

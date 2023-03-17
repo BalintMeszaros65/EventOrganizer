@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 public class VenueController {
     private final VenueService venueService;
@@ -26,8 +28,8 @@ public class VenueController {
     }
 
     // Admin role only!
-    @DeleteMapping("/api/venue/delete")
-    public ResponseEntity<String> deleteVenue(@RequestBody Venue venue) {
-        return venueService.deleteVenue(venue);
+    @DeleteMapping("/api/venue/delete/{id}")
+    public ResponseEntity<String> deleteVenue(@PathVariable UUID id) {
+        return venueService.deleteVenue(id);
     }
 }

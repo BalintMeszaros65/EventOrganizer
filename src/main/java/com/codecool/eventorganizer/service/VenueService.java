@@ -78,8 +78,7 @@ public class VenueService {
     }
 
     // Admin role only!
-    public ResponseEntity<String> deleteVenue(Venue venue) {
-        UUID id = venue.getId();
+    public ResponseEntity<String> deleteVenue(UUID id) {
         checkIfVenueExists(id);
         venueRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Venue successfully deleted.");

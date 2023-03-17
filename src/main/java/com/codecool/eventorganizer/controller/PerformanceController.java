@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 public class PerformanceController {
     private final PerformanceService performanceService;
@@ -26,8 +28,8 @@ public class PerformanceController {
     }
 
     // Admin role only!
-    @DeleteMapping("/api/performance/delete")
-    public ResponseEntity<String> deletePerformance(@RequestBody Performance performance) {
-        return performanceService.deletePerformance(performance);
+    @DeleteMapping("/api/performance/delete/{id}")
+    public ResponseEntity<String> deletePerformance(@PathVariable UUID id) {
+        return performanceService.deletePerformance(id);
     }
 }

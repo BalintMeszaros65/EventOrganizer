@@ -67,8 +67,7 @@ public class PerformanceService {
 
     // Admin role only!
     // TODO implement logic to handle booked events (already done and upcoming)
-    public ResponseEntity<String> deletePerformance(Performance performance) {
-        UUID id = performance.getId();
+    public ResponseEntity<String> deletePerformance(UUID id) {
         checkIfPerformanceExists(id);
         performanceRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Performance successfully deleted.");
