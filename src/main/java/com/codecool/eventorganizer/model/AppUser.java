@@ -1,6 +1,5 @@
 package com.codecool.eventorganizer.model;
 
-import com.codecool.eventorganizer.exception.CustomExceptions;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -81,23 +80,10 @@ public class AppUser {
         }
     }
 
-    public void bookEvent(BookedEvent bookedEvent) {
+    public void storeBookedEvent(BookedEvent bookedEvent) {
         if (bookedEvents == null) {
             bookedEvents = new ArrayList<>();
         }
         bookedEvents.add(bookedEvent);
-    }
-
-
-    // TODO move event logic to a new bookingAndRefunding service?
-    public void refundBookedEvent(BookedEvent bookedEvent) {
-        if (bookedEvent.canBeRefunded() && !bookedEvent.isRefunded()) {
-            bookedEvent.setRefunded();
-            Event event = bookedEvent.getEvent();
-            int ticketCount = bookedEvent.getTicketsCount();
-            event.refundTicket(ticketCount);
-        } else {
-            throw new CustomExceptions.EventCanNotBeRefundedException("This booked event can't be refunded.");
-        }
     }
 }
