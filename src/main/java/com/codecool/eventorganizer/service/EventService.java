@@ -56,7 +56,7 @@ public class EventService {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in event.");
         }
         if (startingDateAndTime.isBefore(ZonedDateTime.now())) {
-            throw new IllegalArgumentException("Starting date and time can not be before in the past.");
+            throw new IllegalArgumentException("Starting date and time can not be in the past.");
         }
         Venue savedVenue = venueService.getVenueById(venue.getId());
         Performance savedPerformance = performanceService.getPerformanceById(performance.getId());
@@ -128,5 +128,11 @@ public class EventService {
         checkIfEventIsFullyRefundedAndCancelled(event);
         eventRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Event successfully deleted.");
+    }
+
+    public void bookTickets(Event event, int ticketCount) {
+        Event savedEvent = getEventById(event.getId());
+        savedEvent.bookTickets(ticketCount);
+        eventRepository.save(savedEvent);
     }
 }
