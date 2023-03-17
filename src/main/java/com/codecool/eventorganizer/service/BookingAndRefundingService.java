@@ -43,4 +43,9 @@ public class BookingAndRefundingService {
         appUserService.addBookedEventToCurrentUser(savedBookedEvent);
         return ResponseEntity.status(HttpStatus.CREATED).body("Event booked successfully.");
     }
+
+    public ResponseEntity<String> cancelEvent(UUID eventId) {
+        // TODO implement
+        return ResponseEntity.status(HttpStatus.OK).body("Event cancelled successfully.");
+    }
 }
