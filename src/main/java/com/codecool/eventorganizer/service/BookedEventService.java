@@ -38,12 +38,11 @@ public class BookedEventService {
 
     private void checkIfRequiredDataExists(BookedEvent bookedEvent) {
         Event event = bookedEvent.getEvent();
-        AppUser appUser = bookedEvent.getAppUser();
         Genre genre = bookedEvent.getGenre();
         int ticketsBooked = bookedEvent.getTicketsCount();
         BigDecimal amountPayed = bookedEvent.getAmountPayed();
         if (event == null || amountPayed == null || BigDecimal.ZERO.equals(amountPayed) || ticketsBooked <= 0
-             || bookedEvent.getDateOfBooking() == null || appUser == null || genre == null ||
+             || bookedEvent.getDateOfBooking() == null || genre == null ||
                 bookedEvent.isRefunded()) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in booked event.");
         }
@@ -54,20 +53,30 @@ public class BookedEventService {
         if (!event.equals(savedEvent)) {
             throw new IllegalArgumentException("Event's data does not match with the one in database.");
         }
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        AppUser savedAppUser = appUserService.getUserByEmail(email);
-        if (!appUser.equals(savedAppUser)) {
-            throw new IllegalArgumentException("Current user data does not match with the one in booked event.");
-        }
         Genre savedGenre = genreService.getGenreById(genre.getId());
         if (!genre.equals(savedGenre)) {
             throw new IllegalArgumentException("Genre's data does not match with the one in database.");
         }
     }
 
+    private AppUser getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return appUserService.getUserByEmail(email);
+    }
+
+    private void checkIfCurrentUserEqualsBookedEventUser(BookedEvent bookedEvent) {
+        if (!getCurrentUser().equals(bookedEvent.getAppUser())) {
+            throw new CustomExceptions.CurrentUserIsNotTheOneWhoBookedTheEventException();
+        }
+    }
+
     // logic
+
     public BookedEvent saveBookedEvent(BookedEvent bookedEvent) {
         checkIfRequiredDataExists(bookedEvent);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        AppUser appUser = appUserService.getUserByEmail(email);
+        bookedEvent.setAppUser(appUser);
         if (bookedEvent.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
