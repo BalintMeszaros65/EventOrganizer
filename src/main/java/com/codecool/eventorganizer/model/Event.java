@@ -20,6 +20,9 @@ public class Event {
     @ManyToOne
     private Performance performance;
     @NotNull
+    @ManyToOne
+    private AppUser organizer;
+    @NotNull
     private BigDecimal basePrice;
     @NotNull
     private int ticketsSoldThroughOurApp;
@@ -64,6 +67,14 @@ public class Event {
 
     public ZonedDateTime getEventStartingDateAndTime() {
         return eventStartingDateAndTime;
+    }
+
+    public AppUser getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(AppUser organizer) {
+        this.organizer = organizer;
     }
 
     public boolean isCancelled() {
