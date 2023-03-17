@@ -4,6 +4,8 @@ import com.codecool.eventorganizer.model.AppUser;
 import com.codecool.eventorganizer.model.BookedEvent;
 import com.codecool.eventorganizer.model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +34,13 @@ public class BookingAndRefundingService {
 
     // logic
 
-    public void bookEvent(UUID eventId, int ticketCount) {
+    public ResponseEntity<String> bookEvent(UUID eventId, int ticketCount) {
         Event event = eventService.getEventById(eventId);
         BigDecimal amountToBePayed = event.currentPriceOfTickets(ticketCount);
         // TODO payment later?
         eventService.bookTickets(event, ticketCount);
         BookedEvent savedBookedEvent = bookedEventService.saveBookedEvent(new BookedEvent(event, amountToBePayed, ticketCount));
         appUserService.addBookedEventToCurrentUser(savedBookedEvent);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Event booked successfully.");
     }
 }
