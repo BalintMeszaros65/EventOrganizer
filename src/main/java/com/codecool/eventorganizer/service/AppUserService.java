@@ -2,6 +2,7 @@ package com.codecool.eventorganizer.service;
 
 import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.AppUser;
+import com.codecool.eventorganizer.model.BookedEvent;
 import com.codecool.eventorganizer.repository.AppUserRepository;
 import com.codecool.eventorganizer.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,12 @@ public class AppUserService {
 
     //helper methods
 
+    private AppUser getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        AppUser savedAppUser = getUserByEmail(email);
+        return savedAppUser;
+    }
+
     private void checkIfEmailIsAlreadyRegistered(AppUser appUser) {
         if (appUserRepository.existsByEmail(appUser.getEmail())) {
             throw new CustomExceptions.EmailAlreadyUsedException("Email is already registered.\n");
@@ -81,15 +88,17 @@ public class AppUserService {
     }
 
     private void checkIfUpdatedInformationIsValid(AppUser appUser) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        AppUser savedAppUser = getUserByEmail(email);
-        if (!savedAppUser.getEmail().equals(appUser.getEmail())) {
+        AppUser currentUser = getCurrentUser();
+        if (!currentUser.getEmail().equals(appUser.getEmail())) {
             throw new CustomExceptions.EmailCanNotBeChangedException("You can not change your registered email.");
         }
-        if (!savedAppUser.getPassword().equals(appUser.getPassword())) {
+        if (!currentUser.getPassword().equals(appUser.getPassword())) {
             throw new CustomExceptions.PasswordChangeIsDifferentEndpointException(
-                    "Password change is not allowed at this endpoint."
+                    "Changing password is not allowed at this endpoint."
             );
+        }
+        if (!currentUser.getBookedEvents().equals(appUser.getBookedEvents())) {
+            throw new IllegalArgumentException("Changing booked events is not allowed at this endpoint.");
         }
         if ("".equals(appUser.getLastName()) || "".equals(appUser.getFirstName())) {
             throw new CustomExceptions.MissingAttributeException("Last and first name can not be empty.");
@@ -134,6 +143,7 @@ public class AppUserService {
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }
 
+    // Only for name, role, billing address
     public ResponseEntity<String> updateUserInformation(AppUser appUser) {
         checkIfUpdatedInformationIsValid(appUser);
         appUserRepository.save(appUser);
@@ -144,20 +154,24 @@ public class AppUserService {
         if ("".equals(newPassword) || newPassword == null) {
             throw new CustomExceptions.MissingAttributeException("Password can not be empty.");
         }
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        AppUser savedAppUser = getUserByEmail(email);
-        if (passwordEncoder.matches(newPassword, savedAppUser.getPassword())) {
+        AppUser currentUser = getCurrentUser();
+        if (passwordEncoder.matches(newPassword, currentUser.getPassword())) {
             throw new CustomExceptions.MissingAttributeException("New password can not be the old password.");
         }
-        savedAppUser.setPassword(passwordEncoder.encode(newPassword));
-        appUserRepository.save(savedAppUser);
+        currentUser.setPassword(passwordEncoder.encode(newPassword));
+        appUserRepository.save(currentUser);
         return ResponseEntity.status(HttpStatus.OK).body("Password has been changed.");
     }
 
     public ResponseEntity<String> deleteUser() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        AppUser savedAppUser = getUserByEmail(email);
-        appUserRepository.deleteById(savedAppUser.getId());
+        AppUser currentUser = getCurrentUser();
+        appUserRepository.deleteById(currentUser.getId());
         return ResponseEntity.status(HttpStatus.OK).body("User has been deleted.");
+    }
+
+    public void addBookedEventToUser(BookedEvent bookedEvent) {
+        AppUser currentUser = getCurrentUser();
+        currentUser.storeBookedEvent(bookedEvent);
+        appUserRepository.save(currentUser);
     }
 }
