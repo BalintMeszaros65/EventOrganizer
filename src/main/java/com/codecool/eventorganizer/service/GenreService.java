@@ -22,10 +22,6 @@ public class GenreService {
 
     // basic CRUD operations
 
-    public void saveAndUpdateGenre(Genre genre) {
-        genreRepository.save(genre);
-    }
-
     public Genre getGenreById(UUID id) {
         Optional<Genre> optionalGenre = genreRepository.findById(id);
         if (optionalGenre.isPresent()) {
@@ -70,14 +66,14 @@ public class GenreService {
         if (genre.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
-        saveAndUpdateGenre(genre);
+        genreRepository.save(genre);
         return ResponseEntity.status(HttpStatus.CREATED).body("Genre successfully created.");
     }
 
     public ResponseEntity<String> updateGenre(Genre genre) {
         checkIfRequiredDataExists(genre);
         checkIfGenreExists(genre.getId());
-        saveAndUpdateGenre(genre);
+        genreRepository.save(genre);
         return ResponseEntity.status(HttpStatus.OK).body("Genre successfully updated.");
     }
 

@@ -49,7 +49,7 @@ public class BookedEventService {
         if (!event.canBeBooked(ticketsBooked)) {
             throw new CustomExceptions.EventCanNotBeBookedException("Event can not be booked.");
         }
-        Event savedEvent = eventService.getEvent(event.getId());
+        Event savedEvent = eventService.getEventById(event.getId());
         if (!event.equals(savedEvent)) {
             throw new IllegalArgumentException("Event's data does not match with the one in database.");
         }

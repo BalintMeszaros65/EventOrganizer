@@ -23,10 +23,6 @@ public class PerformanceService {
 
     // basic CRUD operations
 
-    public void saveAndUpdatePerformance(Performance performance) {
-        performanceRepository.save(performance);
-    }
-
     public Performance getPerformanceById(UUID id) {
         Optional<Performance> optionalPerformance = performanceRepository.findById(id);
         if (optionalPerformance.isPresent()) {
@@ -58,14 +54,14 @@ public class PerformanceService {
         if (performance.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
-        saveAndUpdatePerformance(performance);
+        performanceRepository.save(performance);
         return ResponseEntity.status(HttpStatus.CREATED).body("Performance successfully created.");
     }
 
     public ResponseEntity<String> updatePerformance(Performance performance) {
         checkIfRequiredDataExists(performance);
         checkIfPerformanceExists(performance.getId());
-        saveAndUpdatePerformance(performance);
+        performanceRepository.save(performance);
         return ResponseEntity.status(HttpStatus.OK).body("Performance successfully updated.");
     }
 

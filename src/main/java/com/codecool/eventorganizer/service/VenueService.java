@@ -27,7 +27,7 @@ public class VenueService {
         venueRepository.save(venue);
     }
 
-    public Venue getVenue(UUID id) {
+    public Venue getVenueById(UUID id) {
         Optional<Venue> optionalVenue = venueRepository.findById(id);
         if (optionalVenue.isPresent()) {
             return optionalVenue.get();
@@ -66,14 +66,14 @@ public class VenueService {
         if (venue.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
-        saveAndUpdateVenue(venue);
+        venueRepository.save(venue);
         return ResponseEntity.status(HttpStatus.CREATED).body("Venue successfully created.");
     }
 
     public ResponseEntity<String> updateVenue(Venue venue) {
         checkIfRequiredDataExists(venue);
         checkIfVenueExists(venue.getId());
-        saveAndUpdateVenue(venue);
+        venueRepository.save(venue);
         return ResponseEntity.status(HttpStatus.OK).body("Venue successfully updated.");
     }
 

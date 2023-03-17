@@ -32,10 +32,6 @@ public class AppUserService {
 
     // basic CRUD operations
 
-    public void saveAndUpdateUser(AppUser appUser) {
-        appUserRepository.save(appUser);
-    }
-
     public AppUser getUserById(UUID id) {
         Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
         if (optionalAppUser.isPresent()) {
@@ -108,7 +104,7 @@ public class AppUserService {
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_USER"));
         checkIfIdDoesNotExist(appUser);
-        saveAndUpdateUser(appUser);
+        appUserRepository.save(appUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }
 
@@ -121,7 +117,7 @@ public class AppUserService {
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_ORGANIZER"));
         checkIfIdDoesNotExist(appUser);
-        saveAndUpdateUser(appUser);
+        appUserRepository.save(appUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }
 
@@ -134,13 +130,13 @@ public class AppUserService {
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
         checkIfIdDoesNotExist(appUser);
-        saveAndUpdateUser(appUser);
+        appUserRepository.save(appUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }
 
     public ResponseEntity<String> updateUserInformation(AppUser appUser) {
         checkIfUpdatedInformationIsLegit(appUser);
-        saveAndUpdateUser(appUser);
+        appUserRepository.save(appUser);
         return ResponseEntity.status(HttpStatus.OK).body("User information updated.");
     }
 
@@ -154,7 +150,7 @@ public class AppUserService {
             throw new CustomExceptions.MissingAttributeException("New password can not be the old password.");
         }
         savedAppUser.setPassword(passwordEncoder.encode(newPassword));
-        saveAndUpdateUser(savedAppUser);
+        appUserRepository.save(savedAppUser);
         return ResponseEntity.status(HttpStatus.OK).body("Password has been changed.");
     }
 

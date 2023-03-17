@@ -35,11 +35,7 @@ public class EventService {
 
     // basic CRUD operations
 
-    public void saveAndUpdateEvent(Event event) {
-        eventRepository.save(event);
-    }
-
-    public Event getEvent(UUID id) {
+    public Event getEventById(UUID id) {
         Optional<Event> optionalEvent = eventRepository.findById(id);
         if (optionalEvent.isPresent()) {
             return optionalEvent.get();
@@ -62,7 +58,7 @@ public class EventService {
         if (startingDateAndTime.isBefore(ZonedDateTime.now())) {
             throw new IllegalArgumentException("Starting date and time can not be before in the past.");
         }
-        Venue savedVenue = venueService.getVenue(venue.getId());
+        Venue savedVenue = venueService.getVenueById(venue.getId());
         Performance savedPerformance = performanceService.getPerformanceById(performance.getId());
         if (!venue.equals(savedVenue)) {
             throw new IllegalArgumentException("Venue's data does not match with the one in database.");
@@ -95,7 +91,7 @@ public class EventService {
     }
 
     private void checkIfEventIsFullyRefundedAndCancelled(Event event) {
-        Event savedEvent = getEvent(event.getId());
+        Event savedEvent = getEventById(event.getId());
         if (savedEvent.getAvailableTickets() != savedEvent.getTicketsSoldThroughOurApp() || !savedEvent.isCancelled()) {
             throw new CustomExceptions.EventMustBeRefundedAndCancelledBeforeDeletingException();
         }
@@ -110,7 +106,7 @@ public class EventService {
         if (event.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
-        saveAndUpdateEvent(event);
+        eventRepository.save(event);
         return ResponseEntity.status(HttpStatus.CREATED).body("Event successfully created.");
     }
 
@@ -119,9 +115,9 @@ public class EventService {
         checkIfCurrentUserEqualsEventOrganizer(event);
         checkIfEventExists(id);
         checkIfRequiredDataExists(event);
-        Event savedEvent = getEvent(id);
+        Event savedEvent = getEventById(id);
         setupUpdatedEventAvailableTickets(savedEvent, event);
-        saveAndUpdateEvent(event);
+        eventRepository.save(event);
         return ResponseEntity.status(HttpStatus.OK).body("Event successfully updated.");
     }
 
