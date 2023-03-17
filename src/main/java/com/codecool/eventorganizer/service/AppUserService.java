@@ -80,7 +80,7 @@ public class AppUserService {
         }
     }
 
-    private void checkIfUpdatedInformationIsLegit(AppUser appUser) {
+    private void checkIfUpdatedInformationIsValid(AppUser appUser) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         AppUser savedAppUser = getUserByEmail(email);
         if (!savedAppUser.getEmail().equals(appUser.getEmail())) {
@@ -135,7 +135,7 @@ public class AppUserService {
     }
 
     public ResponseEntity<String> updateUserInformation(AppUser appUser) {
-        checkIfUpdatedInformationIsLegit(appUser);
+        checkIfUpdatedInformationIsValid(appUser);
         appUserRepository.save(appUser);
         return ResponseEntity.status(HttpStatus.OK).body("User information updated.");
     }
