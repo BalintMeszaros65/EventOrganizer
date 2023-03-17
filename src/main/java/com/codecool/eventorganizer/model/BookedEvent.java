@@ -1,5 +1,6 @@
 package com.codecool.eventorganizer.model;
 
+import com.codecool.eventorganizer.exception.CustomExceptions;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -72,10 +73,6 @@ public class BookedEvent {
         return isRefunded;
     }
 
-    public void setRefunded() {
-        isRefunded = true;
-    }
-
     public void setAmountPayed(BigDecimal amountPayed) {
         this.amountPayed = amountPayed;
     }
@@ -86,5 +83,12 @@ public class BookedEvent {
 
     public void setAppUser(AppUser appUser) {
         this.appUser = appUser;
+    }
+
+    public void refund() {
+        if (!canBeRefunded()) {
+            throw new CustomExceptions.EventCanNotBeRefundedException("Booked event can not be refunded.");
+        }
+        isRefunded = true;
     }
 }
