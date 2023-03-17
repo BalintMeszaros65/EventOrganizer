@@ -67,8 +67,8 @@ public abstract class CustomExceptions {
         }
     }
 
-    public static class EventMustBeRefundedAndCanceledBeforeDeletingException extends IllegalStateException {
-        public EventMustBeRefundedAndCanceledBeforeDeletingException() {
+    public static class EventMustBeRefundedAndCancelledBeforeDeletingException extends IllegalStateException {
+        public EventMustBeRefundedAndCancelledBeforeDeletingException() {
             super("Event must be fully refunded and cancelled before deleting it.");
         }
     }

@@ -94,10 +94,10 @@ public class EventService {
         }
     }
 
-    private void checkIfEventIsFullyRefundedAndCanceled(Event event) {
+    private void checkIfEventIsFullyRefundedAndCancelled(Event event) {
         Event savedEvent = getEvent(event.getId());
         if (savedEvent.getAvailableTickets() != savedEvent.getTicketsSoldThroughOurApp() || !savedEvent.isCancelled()) {
-            throw new CustomExceptions.EventMustBeRefundedAndCanceledBeforeDeletingException();
+            throw new CustomExceptions.EventMustBeRefundedAndCancelledBeforeDeletingException();
         }
     }
 
@@ -129,7 +129,7 @@ public class EventService {
     public ResponseEntity<String> deleteEvent(Event event) {
         UUID id = event.getId();
         checkIfEventExists(id);
-        checkIfEventIsFullyRefundedAndCanceled(event);
+        checkIfEventIsFullyRefundedAndCancelled(event);
         eventRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Event successfully deleted.");
     }
