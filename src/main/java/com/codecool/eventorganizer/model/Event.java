@@ -103,22 +103,24 @@ public class Event {
         availableTickets = ticketsSoldThroughOurApp - ticketsAlreadySold;
     }
 
-    public BigDecimal currentPriceOfTicket() {
-        BigDecimal currentPrice;
-        if (availableTickets > ticketsSoldThroughOurApp * 0.9) {
-            // super early bird price
-            currentPrice = basePrice.multiply(BigDecimal.valueOf(0.8));
-        } else if (availableTickets > ticketsSoldThroughOurApp * 0.8) {
-            // early bird price
-            currentPrice = basePrice.multiply(BigDecimal.valueOf(0.9));
-        } else {
-            // regular price
-            currentPrice = basePrice;
+    public BigDecimal currentPriceOfTickets(int ticketCount) {
+        BigDecimal currentPrice = BigDecimal.ZERO;
+        for (int i = 0; i < ticketCount; i++) {
+            if (availableTickets - i > ticketsSoldThroughOurApp * 0.9) {
+                // super early bird price
+                currentPrice = currentPrice.add(basePrice.multiply(BigDecimal.valueOf(0.8)));
+            } else if (availableTickets - i > ticketsSoldThroughOurApp * 0.8) {
+                // early bird price
+                currentPrice = currentPrice.add(basePrice.multiply(BigDecimal.valueOf(0.9)));
+            } else {
+                // regular price
+                currentPrice = currentPrice.add(basePrice);
+            }
         }
         return currentPrice;
     }
 
-    public void bookTicket(int ticketCount) {
+    public void bookTickets(int ticketCount) {
         if (canBeBooked(ticketCount)) {
             availableTickets -= ticketCount;
         } else {
