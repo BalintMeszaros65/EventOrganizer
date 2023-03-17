@@ -54,4 +54,10 @@ public abstract class CustomExceptions {
             super("When creating entity id should not exist.");
         }
     }
+
+    public static class CurrentUserIsNotTheEventOrganizerException extends IllegalStateException {
+        public CurrentUserIsNotTheEventOrganizerException() {
+            super("Only the event organizer can update/cancel an event.");
+        }
+    }
 }
