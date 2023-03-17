@@ -51,7 +51,7 @@ public class BookedEventService {
     private void checkIfRequiredDataExists(BookedEvent bookedEvent) {
         Event event = bookedEvent.getEvent();
         Genre genre = bookedEvent.getGenre();
-        int ticketsBooked = bookedEvent.getTicketsCount();
+        int ticketsBooked = bookedEvent.getTicketCount();
         BigDecimal amountPayed = bookedEvent.getAmountPayed();
         if (event == null || amountPayed == null || BigDecimal.ZERO.equals(amountPayed) || ticketsBooked <= 0
              || bookedEvent.getDateOfBooking() == null || genre == null ||

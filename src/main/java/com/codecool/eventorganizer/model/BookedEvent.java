@@ -19,7 +19,7 @@ public class BookedEvent {
     @NotNull
     private BigDecimal amountPayed;
     @NotNull
-    private int ticketsCount;
+    private int ticketCount;
     @NotNull
     private ZonedDateTime dateOfBooking;
     @NotNull
@@ -53,8 +53,8 @@ public class BookedEvent {
         return amountPayed;
     }
 
-    public int getTicketsCount() {
-        return ticketsCount;
+    public int getTicketCount() {
+        return ticketCount;
     }
 
     public ZonedDateTime getDateOfBooking() {
