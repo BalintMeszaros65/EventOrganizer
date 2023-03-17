@@ -131,8 +131,7 @@ public class EventService {
     }
 
     public void bookTickets(Event event, int ticketCount) {
-        Event savedEvent = getEventById(event.getId());
-        savedEvent.bookTickets(ticketCount);
-        eventRepository.save(savedEvent);
+        event.bookTickets(ticketCount);
+        eventRepository.save(event);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Service
 public class BookingAndRefundingService {
@@ -31,7 +32,8 @@ public class BookingAndRefundingService {
 
     // logic
 
-    public void bookEvent(Event event, int ticketCount) {
+    public void bookEvent(UUID eventId, int ticketCount) {
+        Event event = eventService.getEventById(eventId);
         BigDecimal amountToBePayed = event.currentPriceOfTickets(ticketCount);
         // TODO payment later?
         eventService.bookTickets(event, ticketCount);
