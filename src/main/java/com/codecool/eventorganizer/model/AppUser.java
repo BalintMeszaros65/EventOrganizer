@@ -71,7 +71,7 @@ public class AppUser {
             return BigDecimal.ZERO;
         } else {
             int numberOfTickets = bookedEvents.stream()
-                .map(BookedEvent::getTicketsCount)
+                .map(BookedEvent::getTicketCount)
                 .reduce(0, Integer::sum);
             BigDecimal amountPaid = bookedEvents.stream()
                 .map(BookedEvent::getAmountPayed)

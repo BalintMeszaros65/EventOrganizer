@@ -169,7 +169,7 @@ public class AppUserService {
         return ResponseEntity.status(HttpStatus.OK).body("User has been deleted.");
     }
 
-    public void addBookedEventToUser(BookedEvent bookedEvent) {
+    public void addBookedEventToCurrentUser(BookedEvent bookedEvent) {
         AppUser currentUser = getCurrentUser();
         currentUser.storeBookedEvent(bookedEvent);
         appUserRepository.save(currentUser);
