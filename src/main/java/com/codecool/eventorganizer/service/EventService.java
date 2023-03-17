@@ -91,6 +91,7 @@ public class EventService {
     public ResponseEntity<String> createEvent(Event event) {
         checkIfRequiredDataExists(event);
         event.initializeTicketsToBeSold(event.getTicketsSoldThroughOurApp(), 0);
+        event.setOrganizer(getCurrentUser());
         if (event.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
