@@ -86,9 +86,7 @@ public class BookedEventService {
 
     public BookedEvent saveBookedEvent(BookedEvent bookedEvent) {
         checkIfRequiredDataExists(bookedEvent);
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        AppUser appUser = appUserService.getUserByEmail(email);
-        bookedEvent.setAppUser(appUser);
+        bookedEvent.setAppUser(getCurrentUser());
         if (bookedEvent.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
