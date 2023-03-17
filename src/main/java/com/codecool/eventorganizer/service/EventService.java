@@ -1,6 +1,7 @@
 package com.codecool.eventorganizer.service;
 
 import com.codecool.eventorganizer.exception.CustomExceptions;
+import com.codecool.eventorganizer.model.AppUser;
 import com.codecool.eventorganizer.model.Event;
 import com.codecool.eventorganizer.model.Performance;
 import com.codecool.eventorganizer.model.Venue;
@@ -8,6 +9,7 @@ import com.codecool.eventorganizer.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,12 +22,14 @@ public class EventService {
     private final EventRepository eventRepository;
     private final VenueService venueService;
     private final PerformanceService performanceService;
+    private final AppUserService appUserService;
 
     @Autowired
-    public EventService(EventRepository eventRepository, VenueService venueService, PerformanceService performanceService) {
+    public EventService(EventRepository eventRepository, VenueService venueService, PerformanceService performanceService, AppUserService appUserService) {
         this.eventRepository = eventRepository;
         this.venueService = venueService;
         this.performanceService = performanceService;
+        this.appUserService = appUserService;
     }
 
     // basic CRUD operations
@@ -72,6 +76,17 @@ public class EventService {
         updatedEvent.initializeTicketsToBeSold(updatedEvent.getTicketsSoldThroughOurApp(), ticketsAlreadySold);
     }
 
+    private AppUser getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return appUserService.getUserByEmail(email);
+    }
+
+    private void checkIfCurrentUserEqualsEventOrganizer(Event event) {
+        if (!getCurrentUser().equals(event.getOrganizer())) {
+            throw new CustomExceptions.CurrentUserIsNotTheEventOrganizerException();
+        }
+    }
+
     // logic
     public ResponseEntity<String> createEvent(Event event) {
         checkIfRequiredDataExists(event);
@@ -93,6 +108,7 @@ public class EventService {
         return ResponseEntity.status(HttpStatus.OK).body("Event successfully updated.");
     }
 
+    // Admin role only!
     public ResponseEntity<String> deleteEvent(Event event) {
         UUID id = event.getId();
         checkIfEventExists(id);
