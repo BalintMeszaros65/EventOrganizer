@@ -33,6 +33,19 @@ public class BookedEvent {
     @NotNull
     private boolean isRefunded;
 
+    public BookedEvent(Event event, BigDecimal amountPayed, int ticketCount) {
+        this.event = event;
+        this.amountPayed = amountPayed;
+        this.ticketCount = ticketCount;
+        this.dateOfBooking = ZonedDateTime.now();
+        this.genre = event.getPerformance().getGenre();
+        this.isRefunded = false;
+    }
+
+    public BookedEvent() {
+
+    }
+
     public Genre getGenre() {
         return genre;
     }
