@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,6 +43,10 @@ public class EventService {
         } else {
             throw new NoSuchElementException("Event not found by given id.");
         }
+    }
+
+    public List<Event> getAllEventByPerformance(Performance performance) {
+        return eventRepository.findAllByPerformance(performance);
     }
 
     // helper methods
