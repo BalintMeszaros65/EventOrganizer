@@ -85,7 +85,7 @@ public class Event {
         isCancelled = true;
     }
 
-    public void initializeTicketsToBeSold(int ticketsSoldThroughOurApp, int ticketsAlreadySold) {
+    public void initializeTicketsToBeSold(int ticketsAlreadySold) {
         int venueCapacity = venue.getCapacity();
         if (venueCapacity < ticketsSoldThroughOurApp) {
             throw new CustomExceptions.TicketCountCanNotExceedVenueCapacityException(

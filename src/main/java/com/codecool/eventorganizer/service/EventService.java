@@ -74,9 +74,10 @@ public class EventService {
         }
     }
 
-    private void setupUpdatedEventAvailableTickets(Event savedEvent, Event updatedEvent) {
+    private void setupUpdatedEventAvailableTickets(Event updatedEvent) {
+        Event savedEvent = getEventById(updatedEvent.getId());
         int ticketsAlreadySold = savedEvent.getTicketsSoldThroughOurApp() - savedEvent.getAvailableTickets();
-        updatedEvent.initializeTicketsToBeSold(updatedEvent.getTicketsSoldThroughOurApp(), ticketsAlreadySold);
+        updatedEvent.initializeTicketsToBeSold(ticketsAlreadySold);
     }
 
     private AppUser getCurrentUser() {
@@ -101,7 +102,7 @@ public class EventService {
 
     public ResponseEntity<String> createEvent(Event event) {
         checkIfRequiredDataExists(event);
-        event.initializeTicketsToBeSold(event.getTicketsSoldThroughOurApp(), 0);
+        event.initializeTicketsToBeSold(0);
         event.setOrganizer(getCurrentUser());
         if (event.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
@@ -115,8 +116,7 @@ public class EventService {
         checkIfCurrentUserEqualsEventOrganizer(event);
         checkIfEventExists(id);
         checkIfRequiredDataExists(event);
-        Event savedEvent = getEventById(id);
-        setupUpdatedEventAvailableTickets(savedEvent, event);
+        setupUpdatedEventAvailableTickets(event);
         eventRepository.save(event);
         return ResponseEntity.status(HttpStatus.OK).body("Event successfully updated.");
     }
