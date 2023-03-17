@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,6 +34,7 @@ public class EventService {
     }
 
     // basic CRUD operations
+
     public void saveAndUpdateEvent(Event event) {
         eventRepository.save(event);
     }
@@ -47,13 +49,18 @@ public class EventService {
     }
 
     // helper methods
+
     private void checkIfRequiredDataExists(Event event) {
         Venue venue = event.getVenue();
         Performance performance = event.getPerformance();
+        ZonedDateTime startingDateAndTime = event.getEventStartingDateAndTime();
         if (venue == null || performance == null || BigDecimal.ZERO.equals(event.getBasePrice())
-            || event.getTicketsSoldThroughOurApp() <= 0 || event.getEventStartingDateAndTime() == null
+            || event.getTicketsSoldThroughOurApp() <= 0 || startingDateAndTime == null
             || event.getEventLengthInHours() <= 0.0 || !event.isCancelled()) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in event.");
+        }
+        if (startingDateAndTime.isBefore(ZonedDateTime.now())) {
+            throw new IllegalArgumentException("Starting date and time can not be before in the past.");
         }
         Venue savedVenue = venueService.getVenue(venue.getId());
         Performance savedPerformance = performanceService.getPerformanceById(performance.getId());
@@ -88,6 +95,7 @@ public class EventService {
     }
 
     // logic
+
     public ResponseEntity<String> createEvent(Event event) {
         checkIfRequiredDataExists(event);
         event.initializeTicketsToBeSold(event.getTicketsSoldThroughOurApp(), 0);
@@ -102,8 +110,8 @@ public class EventService {
     public ResponseEntity<String> updateEvent(Event event) {
         UUID id = event.getId();
         checkIfCurrentUserEqualsEventOrganizer(event);
-        checkIfRequiredDataExists(event);
         checkIfEventExists(id);
+        checkIfRequiredDataExists(event);
         Event savedEvent = getEvent(id);
         setupUpdatedEventAvailableTickets(savedEvent, event);
         saveAndUpdateEvent(event);
