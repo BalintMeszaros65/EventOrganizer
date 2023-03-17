@@ -72,4 +72,10 @@ public abstract class CustomExceptions {
             super("Event must be fully refunded and cancelled before deleting it.");
         }
     }
+
+    public static class CanNotDeletePerformanceThatHasEventOrganizedAlreadyException extends IllegalStateException {
+        public CanNotDeletePerformanceThatHasEventOrganizedAlreadyException() {
+            super("Performance can not be deleted if it has event(s) already.");
+        }
+    }
 }
