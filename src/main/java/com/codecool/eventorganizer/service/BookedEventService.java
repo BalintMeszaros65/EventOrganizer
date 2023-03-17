@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class BookedEventService {
@@ -29,6 +32,15 @@ public class BookedEventService {
     }
 
     // basic CRUD operations
+
+    public BookedEvent getBookedEventById(UUID id) {
+        Optional<BookedEvent> optionalBookedEvent = bookedEventRepository.findById(id);
+        if (optionalBookedEvent.isPresent()) {
+            return optionalBookedEvent.get();
+        } else {
+            throw new NoSuchElementException("Booked event not found by given id.");
+        }
+    }
 
     public List<BookedEvent> getBookedEventsByEvent(Event event) {
         return bookedEventRepository.findAllByEvent(event);
