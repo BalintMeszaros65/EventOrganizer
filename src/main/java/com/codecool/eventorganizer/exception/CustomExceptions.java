@@ -66,4 +66,10 @@ public abstract class CustomExceptions {
             super("Current user does not match the user who booked the event.");
         }
     }
+
+    public static class EventMustBeRefundedAndCanceledBeforeDeletingException extends IllegalStateException {
+        public EventMustBeRefundedAndCanceledBeforeDeletingException() {
+            super("Event must be fully refunded and cancelled before deleting it.");
+        }
+    }
 }
