@@ -22,6 +22,7 @@ public class VenueService {
     }
 
     // basic CRUD operations
+
     public void saveAndUpdateVenue(Venue venue) {
         venueRepository.save(venue);
     }
@@ -36,6 +37,7 @@ public class VenueService {
     }
 
     // helper methods
+
     private void checkIfVenueExists(UUID id) {
         if (!venueRepository.existsById(id)) {
             throw new NoSuchElementException("Venue not found by given id.");
@@ -58,6 +60,7 @@ public class VenueService {
     }
 
     // logic
+
     public ResponseEntity<String> createVenue(Venue venue) {
         checkIfRequiredDataExists(venue);
         if (venue.getId() != null) {

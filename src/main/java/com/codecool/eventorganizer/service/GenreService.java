@@ -21,6 +21,7 @@ public class GenreService {
     }
 
     // basic CRUD operations
+
     public void saveAndUpdateGenre(Genre genre) {
         genreRepository.save(genre);
     }
@@ -43,7 +44,12 @@ public class GenreService {
                 .collect(Collectors.toList());
     }
 
+    public List<Genre> getAllGenreByType(String type) {
+        return genreRepository.findAllByType(type);
+    }
+
     // helper methods
+
     private static void checkIfRequiredDataExists(Genre genre) {
         if (genre.getName() == null || genre.getType() == null || "".equals(genre.getName())
                 || "".equals(genre.getType())) {
@@ -58,6 +64,7 @@ public class GenreService {
     }
 
     // logic
+
     public ResponseEntity<String> createGenre(Genre genre) {
         checkIfRequiredDataExists(genre);
         if (genre.getId() != null) {
@@ -79,9 +86,5 @@ public class GenreService {
         checkIfGenreExists(id);
         genreRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Genre successfully deleted.");
-    }
-
-    public List<Genre> getAllGenreByType(String type) {
-        return genreRepository.findAllByType(type);
     }
 }

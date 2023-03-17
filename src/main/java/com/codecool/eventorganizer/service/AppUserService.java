@@ -31,6 +31,7 @@ public class AppUserService {
     }
 
     // basic CRUD operations
+
     public void saveAndUpdateUser(AppUser appUser) {
         appUserRepository.save(appUser);
     }
@@ -54,6 +55,7 @@ public class AppUserService {
     }
 
     //helper methods
+
     private void checkIfEmailIsAlreadyRegistered(AppUser appUser) {
         if (appUserRepository.existsByEmail(appUser.getEmail())) {
             throw new CustomExceptions.EmailAlreadyUsedException("Email is already registered.\n");
@@ -99,6 +101,7 @@ public class AppUserService {
     }
 
     // logic
+
     public ResponseEntity<String> registerUser(AppUser appUser) {
         checkIfRequiredDataExists(appUser);
         checkIfEmailIsAlreadyRegistered(appUser);

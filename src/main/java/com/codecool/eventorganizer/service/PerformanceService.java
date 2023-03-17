@@ -22,6 +22,7 @@ public class PerformanceService {
     }
 
     // basic CRUD operations
+
     public void saveAndUpdatePerformance(Performance performance) {
         performanceRepository.save(performance);
     }
@@ -36,6 +37,7 @@ public class PerformanceService {
     }
 
     // helper methods
+
     private void checkIfPerformanceExists(UUID id) {
         if (!performanceRepository.existsById(id)) {
             throw new NoSuchElementException("Performance not found by given id.");
@@ -50,6 +52,7 @@ public class PerformanceService {
     }
 
     // logic
+
     public ResponseEntity<String> createPerformance(Performance performance) {
         checkIfRequiredDataExists(performance);
         if (performance.getId() != null) {
