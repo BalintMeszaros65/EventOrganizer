@@ -23,10 +23,6 @@ public class VenueService {
 
     // basic CRUD operations
 
-    public void saveAndUpdateVenue(Venue venue) {
-        venueRepository.save(venue);
-    }
-
     public Venue getVenueById(UUID id) {
         Optional<Venue> optionalVenue = venueRepository.findById(id);
         if (optionalVenue.isPresent()) {
