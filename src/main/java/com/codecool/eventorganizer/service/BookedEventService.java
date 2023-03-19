@@ -6,7 +6,6 @@ import com.codecool.eventorganizer.model.BookedEvent;
 import com.codecool.eventorganizer.model.Event;
 import com.codecool.eventorganizer.repository.BookedEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,14 +19,12 @@ public class BookedEventService {
     private final BookedEventRepository bookedEventRepository;
     private final EventService eventService;
     private final AppUserService appUserService;
-    private final GenreService genreService;
 
     @Autowired
-    public BookedEventService(BookedEventRepository bookedEventRepository, EventService eventService, AppUserService appUserService, GenreService genreService) {
+    public BookedEventService(BookedEventRepository bookedEventRepository, EventService eventService, AppUserService appUserService) {
         this.bookedEventRepository = bookedEventRepository;
         this.eventService = eventService;
         this.appUserService = appUserService;
-        this.genreService = genreService;
     }
 
     // basic CRUD operations
@@ -51,8 +48,8 @@ public class BookedEventService {
         Event event = bookedEvent.getEvent();
         int ticketsBooked = bookedEvent.getTicketCount();
         BigDecimal amountPayed = bookedEvent.getAmountPayed();
-        if (event == null || amountPayed == null || BigDecimal.ZERO.equals(amountPayed) || ticketsBooked <= 0
-             || bookedEvent.getDateOfBooking() == null || bookedEvent.isRefunded()) {
+        if (event == null || bookedEvent.getAppUser() == null || amountPayed == null || BigDecimal.ZERO.equals(amountPayed)
+                || ticketsBooked <= 0 || bookedEvent.getDateOfBooking() == null || bookedEvent.isRefunded()) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in booked event.");
         }
         if (!event.canBeBooked(ticketsBooked)) {
@@ -78,7 +75,6 @@ public class BookedEventService {
 
     public BookedEvent saveBookedEvent(BookedEvent bookedEvent) {
         checkIfRequiredDataExists(bookedEvent);
-        bookedEvent.setAppUser(getCurrentUser());
         bookedEvent.setGenre(bookedEvent.getEvent().getPerformance().getGenre());
         if (bookedEvent.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();

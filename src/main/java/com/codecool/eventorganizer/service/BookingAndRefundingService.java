@@ -40,7 +40,9 @@ public class BookingAndRefundingService {
         // tries to book tickets for event, throws error if that is not possible
         eventService.bookTickets(event, ticketCount);
         // if booking tickets was successful, creates a booked event, saves it and returns it with generated id
-        BookedEvent savedBookedEvent = bookedEventService.saveBookedEvent(new BookedEvent(event, amountToBePayed, ticketCount));
+        BookedEvent savedBookedEvent = bookedEventService.saveBookedEvent(
+                new BookedEvent(event, amountToBePayed, ticketCount, getCurrentUser())
+        );
         // saves booked event in current user's booked events list
         appUserService.addBookedEventToCurrentUser(savedBookedEvent);
         return ResponseEntity.status(HttpStatus.CREATED).body("Event booked successfully.");

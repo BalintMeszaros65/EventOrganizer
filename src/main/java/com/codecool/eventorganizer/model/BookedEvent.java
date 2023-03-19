@@ -33,10 +33,11 @@ public class BookedEvent {
     @NotNull
     private boolean isRefunded;
 
-    public BookedEvent(Event event, BigDecimal amountPayed, int ticketCount) {
+    public BookedEvent(Event event, BigDecimal amountPayed, int ticketCount, AppUser appUser) {
         this.event = event;
         this.amountPayed = amountPayed;
         this.ticketCount = ticketCount;
+        this.appUser = appUser;
         this.dateOfBooking = ZonedDateTime.now();
         this.genre = event.getPerformance().getGenre();
         this.isRefunded = false;
