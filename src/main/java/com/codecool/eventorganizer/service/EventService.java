@@ -56,8 +56,8 @@ public class EventService {
         Performance performance = event.getPerformance();
         ZonedDateTime startingDateAndTime = event.getEventStartingDateAndTime();
         if (venue == null || performance == null || BigDecimal.ZERO.equals(event.getBasePrice())
-            || event.getTicketsSoldThroughOurApp() <= 0 || startingDateAndTime == null
-            || event.getEventLengthInHours() <= 0.0 || !event.isCancelled()) {
+                || event.getTicketsSoldThroughOurApp() <= 0 || startingDateAndTime == null
+                || event.getEventLengthInHours() <= 0.0 || !event.isCancelled()) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in event.");
         }
         if (startingDateAndTime.isBefore(ZonedDateTime.now())) {
@@ -124,6 +124,11 @@ public class EventService {
         setupUpdatedEventAvailableTickets(event);
         eventRepository.save(event);
         return ResponseEntity.status(HttpStatus.OK).body("Event successfully updated.");
+    }
+
+    public void refundTickets(Event event, int ticketCount) {
+        event.refundTicket(ticketCount);
+        eventRepository.save(event);
     }
 
     // Admin role only!
