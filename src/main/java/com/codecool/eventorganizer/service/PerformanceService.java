@@ -1,6 +1,7 @@
 package com.codecool.eventorganizer.service;
 
 import com.codecool.eventorganizer.exception.CustomExceptions;
+import com.codecool.eventorganizer.model.Genre;
 import com.codecool.eventorganizer.model.Performance;
 import com.codecool.eventorganizer.repository.PerformanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ import java.util.UUID;
 @Service
 public class PerformanceService {
     private final PerformanceRepository performanceRepository;
+    private final GenreService genreService;
 
     @Autowired
-    public PerformanceService(PerformanceRepository performanceRepository) {
+    public PerformanceService(PerformanceRepository performanceRepository, GenreService genreService) {
         this.performanceRepository = performanceRepository;
+        this.genreService = genreService;
     }
 
     // basic CRUD operations
@@ -40,10 +43,15 @@ public class PerformanceService {
         }
     }
 
-    private static void checkIfRequiredDataExists(Performance performance) {
+    private void checkIfRequiredDataExists(Performance performance) {
         String name = performance.getName();
-        if (performance.getGenre() == null || name == null || "".equals(name)) {
+        Genre genre = performance.getGenre();
+        if (genre == null || name == null || "".equals(name)) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in performance.");
+        }
+        Genre savedGenre = genreService.getGenreById(genre.getId());
+        if (!genre.equals(savedGenre)) {
+            throw new IllegalArgumentException("Genre's data does not match with the one in database.");
         }
     }
 
