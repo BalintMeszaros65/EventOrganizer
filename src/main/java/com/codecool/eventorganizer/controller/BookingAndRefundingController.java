@@ -24,6 +24,11 @@ public class BookingAndRefundingController {
         return bookingAndRefundingService.bookEvent(eventId, ticketCount);
     }
 
+    @PutMapping("/api/refund-booked-event/{booked_event_id}")
+    public ResponseEntity<String> refundBookedEvent(@PathVariable("booked_event_id") UUID bookedEventId) {
+        return bookingAndRefundingService.refundBookedEvent(bookedEventId);
+    }
+
     @PutMapping("/api/event/{event_id}/cancel")
     public ResponseEntity<String> cancelEvent(@PathVariable("event_id") UUID eventId) {
         return bookingAndRefundingService.cancelEvent(eventId);
