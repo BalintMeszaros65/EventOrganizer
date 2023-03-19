@@ -92,4 +92,9 @@ public class BookedEventService {
         }
         return bookedEventRepository.save(bookedEvent);
     }
+
+    public void refund(BookedEvent bookedEvent) {
+        bookedEvent.refund();
+        bookedEventRepository.save(bookedEvent);
+    }
 }
