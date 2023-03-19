@@ -83,10 +83,6 @@ public class BookedEvent {
         return isRefunded;
     }
 
-    public void setAppUser(AppUser appUser) {
-        this.appUser = appUser;
-    }
-
     public void setGenre(Genre genre) {
         this.genre = genre;
     }
