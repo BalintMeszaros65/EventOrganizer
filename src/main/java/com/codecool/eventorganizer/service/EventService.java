@@ -96,9 +96,8 @@ public class EventService {
         }
     }
 
-    private void checkIfEventIsFullyRefundedAndCancelled(UUID id) {
-        Event event = getEventById(id);
-        if (event.getAvailableTickets() != event.getTicketsSoldThroughOurApp() || !event.isCancelled()) {
+    private void checkIfEventIsCancelled(UUID id) {
+        if (!getEventById(id).isCancelled()) {
             throw new CustomExceptions.EventMustBeRefundedAndCancelledBeforeDeletingException();
         }
     }
@@ -133,7 +132,7 @@ public class EventService {
 
     // Admin role only!
     public ResponseEntity<String> deleteEvent(UUID id) {
-        checkIfEventIsFullyRefundedAndCancelled(id);
+        checkIfEventIsCancelled(id);
         eventRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Event successfully deleted.");
     }
@@ -144,6 +143,7 @@ public class EventService {
     }
 
     public void cancelEvent(Event event) {
+        checkIfCurrentUserEqualsEventOrganizer(event);
         event.cancel();
         eventRepository.save(event);
     }
