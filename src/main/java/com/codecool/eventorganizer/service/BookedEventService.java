@@ -65,8 +65,7 @@ public class BookedEventService {
     }
 
     private AppUser getCurrentUser() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return appUserService.getUserByEmail(email);
+        return appUserService.getCurrentUser();
     }
 
     private void checkIfCurrentUserEqualsBookedEventUser(BookedEvent bookedEvent) {
