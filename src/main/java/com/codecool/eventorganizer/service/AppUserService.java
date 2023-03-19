@@ -118,6 +118,7 @@ public class AppUserService {
     }
 
     public ResponseEntity<String> registerOrganizer(AppUser appUser, String secretKey) {
+        // TODO change placeholder to generated link and generated secret key and use those with Spring Email
         if (!"organizer".equals(secretKey)) {
             throw new IllegalArgumentException("Secret key for registering an organizer account is not matching.");
         }
@@ -131,6 +132,7 @@ public class AppUserService {
     }
 
     public ResponseEntity<String> registerAdmin(AppUser appUser, String secretKey) {
+        // TODO change placeholder to generated link and generated secret key and use those with Spring Email
         if (!"admin".equals(secretKey)) {
             throw new IllegalArgumentException("Secret key for registering an admin account is not matching.");
         }
