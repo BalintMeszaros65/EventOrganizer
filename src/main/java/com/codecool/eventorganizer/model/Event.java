@@ -82,6 +82,9 @@ public class Event {
     }
 
     public void cancel() {
+        if (isCancelled) {
+            throw new CustomExceptions.CanNotCancelAnAlreadyCancelledEventException();
+        }
         isCancelled = true;
     }
 

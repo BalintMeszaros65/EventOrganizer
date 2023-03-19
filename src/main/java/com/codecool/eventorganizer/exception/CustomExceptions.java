@@ -78,4 +78,10 @@ public abstract class CustomExceptions {
             super("Performance can not be deleted if it has event(s) already.");
         }
     }
+
+    public static class CanNotCancelAnAlreadyCancelledEventException extends IllegalStateException {
+        public CanNotCancelAnAlreadyCancelledEventException() {
+            super("Can not cancel an event, that has already been cancelled.");
+        }
+    }
 }
