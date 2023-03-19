@@ -73,7 +73,7 @@ public class VenueService {
         return ResponseEntity.status(HttpStatus.OK).body("Venue successfully updated.");
     }
 
-    // Admin role only!
+    // TODO implement logic to handle booked events (already done and upcoming)
     public ResponseEntity<String> deleteVenue(UUID id) {
         checkIfVenueExists(id);
         venueRepository.deleteById(id);
