@@ -86,6 +86,10 @@ public class BookedEvent {
         this.appUser = appUser;
     }
 
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
     public void refund() {
         if (!canBeRefunded()) {
             throw new CustomExceptions.EventCanNotBeRefundedException("Booked event can not be refunded.");

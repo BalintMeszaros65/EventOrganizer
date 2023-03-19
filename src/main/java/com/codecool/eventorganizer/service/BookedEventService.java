@@ -4,7 +4,6 @@ import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.AppUser;
 import com.codecool.eventorganizer.model.BookedEvent;
 import com.codecool.eventorganizer.model.Event;
-import com.codecool.eventorganizer.model.Genre;
 import com.codecool.eventorganizer.repository.BookedEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,12 +49,10 @@ public class BookedEventService {
 
     private void checkIfRequiredDataExists(BookedEvent bookedEvent) {
         Event event = bookedEvent.getEvent();
-        Genre genre = bookedEvent.getGenre();
         int ticketsBooked = bookedEvent.getTicketCount();
         BigDecimal amountPayed = bookedEvent.getAmountPayed();
         if (event == null || amountPayed == null || BigDecimal.ZERO.equals(amountPayed) || ticketsBooked <= 0
-             || bookedEvent.getDateOfBooking() == null || genre == null ||
-                bookedEvent.isRefunded()) {
+             || bookedEvent.getDateOfBooking() == null || bookedEvent.isRefunded()) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in booked event.");
         }
         if (!event.canBeBooked(ticketsBooked)) {
@@ -64,10 +61,6 @@ public class BookedEventService {
         Event savedEvent = eventService.getEventById(event.getId());
         if (!event.equals(savedEvent)) {
             throw new IllegalArgumentException("Event's data does not match with the one in database.");
-        }
-        Genre savedGenre = genreService.getGenreById(genre.getId());
-        if (!genre.equals(savedGenre)) {
-            throw new IllegalArgumentException("Genre's data does not match with the one in database.");
         }
     }
 
@@ -87,6 +80,7 @@ public class BookedEventService {
     public BookedEvent saveBookedEvent(BookedEvent bookedEvent) {
         checkIfRequiredDataExists(bookedEvent);
         bookedEvent.setAppUser(getCurrentUser());
+        bookedEvent.setGenre(bookedEvent.getEvent().getPerformance().getGenre());
         if (bookedEvent.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
