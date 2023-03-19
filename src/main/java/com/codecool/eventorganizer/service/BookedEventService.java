@@ -97,4 +97,9 @@ public class BookedEventService {
         bookedEvent.refund();
         bookedEventRepository.save(bookedEvent);
     }
+
+    public void refundAllByEventOrganizer(List<BookedEvent> bookedEventsToBeCancelled) {
+        bookedEventsToBeCancelled.forEach(BookedEvent::refundByEventOrganizer);
+        bookedEventRepository.saveAll(bookedEventsToBeCancelled);
+    }
 }
