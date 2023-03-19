@@ -142,4 +142,9 @@ public class EventService {
         event.bookTickets(ticketCount);
         eventRepository.save(event);
     }
+
+    public void cancelEvent(Event event) {
+        event.cancel();
+        eventRepository.save(event);
+    }
 }
