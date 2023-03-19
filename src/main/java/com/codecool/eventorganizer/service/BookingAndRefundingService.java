@@ -26,13 +26,6 @@ public class BookingAndRefundingService {
         this.eventService = eventService;
     }
 
-    // helper methods
-
-    private AppUser getCurrentUser() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return appUserService.getUserByEmail(email);
-    }
-
     // logic
 
     public ResponseEntity<String> bookEvent(UUID eventId, int ticketCount) {
