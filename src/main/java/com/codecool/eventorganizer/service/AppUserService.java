@@ -53,10 +53,9 @@ public class AppUserService {
 
     //helper methods
 
-    private AppUser getCurrentUser() {
+    public AppUser getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        AppUser savedAppUser = getUserByEmail(email);
-        return savedAppUser;
+        return getUserByEmail(email);
     }
 
     private void checkIfEmailIsAlreadyRegistered(AppUser appUser) {
