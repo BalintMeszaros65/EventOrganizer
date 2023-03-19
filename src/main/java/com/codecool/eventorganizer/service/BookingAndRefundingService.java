@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -57,7 +58,14 @@ public class BookingAndRefundingService {
     }
 
     public ResponseEntity<String> cancelEvent(UUID eventId) {
-        // TODO implement
+        Event event = eventService.getEventById(eventId);
+        List<BookedEvent> bookedEventsToBeCancelled = bookedEventService.getBookedEventsByEvent(event);
+        // cancels event
+        eventService.cancelEvent(event);
+        // if event was not already cancelled, refunds everyone who has not been refunded already,
+        // ignoring booking deadline
+        // TODO ask if bookedEvent needs to be updated by cancelled event or not (Hibernate)
+        bookedEventService.refundAllByEventOrganizer(bookedEventsToBeCancelled);
         return ResponseEntity.status(HttpStatus.OK).body("Event cancelled successfully.");
     }
 }
