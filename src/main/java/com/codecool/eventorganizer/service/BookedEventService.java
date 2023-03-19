@@ -94,6 +94,7 @@ public class BookedEventService {
     }
 
     public void refund(BookedEvent bookedEvent) {
+        checkIfCurrentUserEqualsBookedEventUser(bookedEvent);
         bookedEvent.refund();
         bookedEventRepository.save(bookedEvent);
     }
