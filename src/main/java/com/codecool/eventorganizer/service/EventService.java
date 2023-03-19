@@ -116,9 +116,8 @@ public class EventService {
     }
 
     public ResponseEntity<String> updateEvent(Event event) {
-        UUID id = event.getId();
         checkIfCurrentUserEqualsEventOrganizer(event);
-        checkIfEventExists(id);
+        checkIfEventExists(event.getId());
         checkIfRequiredDataExists(event);
         setupUpdatedEventAvailableTickets(event);
         eventRepository.save(event);
