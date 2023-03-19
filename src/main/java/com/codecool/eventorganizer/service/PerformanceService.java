@@ -73,7 +73,6 @@ public class PerformanceService {
         return ResponseEntity.status(HttpStatus.OK).body("Performance successfully updated.");
     }
 
-    // Admin role only!
     // TODO implement logic to handle booked events (already done and upcoming)
     public ResponseEntity<String> deletePerformance(UUID id) {
         checkIfPerformanceExists(id);

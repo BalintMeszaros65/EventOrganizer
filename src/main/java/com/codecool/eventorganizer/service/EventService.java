@@ -127,7 +127,6 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    // Admin role only!
     public ResponseEntity<String> deleteEvent(UUID id) {
         checkIfEventIsCancelled(id);
         eventRepository.deleteById(id);
