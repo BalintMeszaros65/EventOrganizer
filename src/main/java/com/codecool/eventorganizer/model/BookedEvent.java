@@ -50,10 +50,6 @@ public class BookedEvent {
         return genre;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
-    }
-
     public UUID getId() {
         return id;
     }
@@ -86,14 +82,6 @@ public class BookedEvent {
         return isRefunded;
     }
 
-    public void setAmountPayed(BigDecimal amountPayed) {
-        this.amountPayed = amountPayed;
-    }
-
-    public void setDateOfBooking(ZonedDateTime dateOfBooking) {
-        this.dateOfBooking = dateOfBooking;
-    }
-
     public void setAppUser(AppUser appUser) {
         this.appUser = appUser;
     }
@@ -102,6 +90,14 @@ public class BookedEvent {
         if (!canBeRefunded()) {
             throw new CustomExceptions.EventCanNotBeRefundedException("Booked event can not be refunded.");
         }
+        // TODO payment later?
         isRefunded = true;
+    }
+
+    public void refundByEventOrganizer() {
+        if (!isRefunded) {
+            // TODO payment later?
+            isRefunded = true;
+        }
     }
 }
