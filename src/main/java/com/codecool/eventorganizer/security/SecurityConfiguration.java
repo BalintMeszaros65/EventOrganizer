@@ -43,7 +43,6 @@ public class SecurityConfiguration {
             .authorizeHttpRequests()
             .requestMatchers("/api/user/register", "/api/organizer/register", "/api/admin/register",
                     "/api/user/login", "/h2-console").permitAll()
-            // TODO add endpoints with permissions
             .anyRequest().authenticated()
             .and()
             .sessionManagement()
