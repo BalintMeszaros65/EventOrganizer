@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 @Order(2)
 @Configuration
 @EnableWebSecurity
@@ -31,7 +33,7 @@ public class SecurityConfiguration {
             "/api/user/register",
             "/api/organizer/register",
             "/api/admin/register",
-            "/api/user/login"
+            "/api/user/login",
     };
 
     @Autowired
@@ -49,8 +51,11 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
+            .headers().frameOptions().sameOrigin()
+            .and()
             .authorizeHttpRequests()
             .requestMatchers(AUTHENTICATION_WHITELIST).permitAll()
+            .requestMatchers(toH2Console()).permitAll()
             .anyRequest().authenticated()
             .and()
             .sessionManagement()
