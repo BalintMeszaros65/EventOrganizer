@@ -56,8 +56,11 @@ public class EventService {
         ZonedDateTime startingDateAndTime = event.getEventStartingDateAndTime();
         if (venue == null || performance == null || BigDecimal.ZERO.equals(event.getBasePrice())
                 || event.getTicketsSoldThroughOurApp() <= 0 || startingDateAndTime == null
-                || event.getEventLengthInHours() <= 0.0 || !event.isCancelled()) {
+                || event.getEventLengthInHours() <= 0.0) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in event.");
+        }
+        if (event.isCancelled()) {
+            throw new IllegalArgumentException("Cancelled event can not be created/updated.");
         }
         if (startingDateAndTime.isBefore(ZonedDateTime.now())) {
             throw new IllegalArgumentException("Starting date and time can not be in the past.");
