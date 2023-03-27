@@ -18,6 +18,15 @@ public class Genre {
     @NotNull
     private String type;
 
+    public Genre(String name, String type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    public Genre() {
+
+    }
+
     public UUID getId() {
         return id;
     }

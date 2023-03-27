@@ -18,6 +18,16 @@ public class Performance {
     @ManyToOne
     private Genre genre;
 
+    public Performance(String name, URL homePage, Genre genre) {
+        this.name = name;
+        this.homePage = homePage;
+        this.genre = genre;
+    }
+
+    public Performance() {
+
+    }
+
     public UUID getId() {
         return id;
     }
