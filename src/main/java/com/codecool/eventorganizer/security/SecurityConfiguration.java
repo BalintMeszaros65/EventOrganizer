@@ -24,6 +24,15 @@ public class SecurityConfiguration {
     private final CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter;
     private final CustomUserDetailsService customUserDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private static final String[] AUTHENTICATION_WHITELIST = {
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/h2-console/**",
+            "/api/user/register",
+            "/api/organizer/register",
+            "/api/admin/register",
+            "/api/user/login"
+    };
 
     @Autowired
     public SecurityConfiguration(JwtFilter jwtFilter,
@@ -41,8 +50,7 @@ public class SecurityConfiguration {
         http
             .csrf().disable()
             .authorizeHttpRequests()
-            .requestMatchers("/api/user/register", "/api/organizer/register", "/api/admin/register",
-                    "/api/user/login", "/h2-console").permitAll()
+            .requestMatchers(AUTHENTICATION_WHITELIST).permitAll()
             .anyRequest().authenticated()
             .and()
             .sessionManagement()
