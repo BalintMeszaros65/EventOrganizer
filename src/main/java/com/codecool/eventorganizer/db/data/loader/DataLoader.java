@@ -1,31 +1,76 @@
 package com.codecool.eventorganizer.db.data.loader;
 
-import com.codecool.eventorganizer.service.*;
+import com.codecool.eventorganizer.model.Genre;
+import com.codecool.eventorganizer.model.Performance;
+import com.codecool.eventorganizer.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
-public class DataLoader implements ApplicationRunner {
-    private final AppUserService appUserService;
-    private final BookedEventService bookedEventService;
-    private final EventService eventService;
-    private final GenreService genreService;
-    private final PerformanceService performanceService;
-    private final VenueService venueService;
+import java.net.URL;
+
+@Component
+public class DataLoader implements CommandLineRunner {
+    private final AppUserRepository appUserRepository;
+    private final BookedEventRepository bookedEventRepository;
+    private final EventRepository eventRepository;
+    private final GenreRepository genreRepository;
+    private final PerformanceRepository performanceRepository;
+    private final VenueRepository venueRepository;
 
     @Autowired
-    public DataLoader(AppUserService appUserService, BookedEventService bookedEventService, EventService eventService,
-                      GenreService genreService, PerformanceService performanceService, VenueService venueService) {
-        this.appUserService = appUserService;
-        this.bookedEventService = bookedEventService;
-        this.eventService = eventService;
-        this.genreService = genreService;
-        this.performanceService = performanceService;
-        this.venueService = venueService;
+    public DataLoader(AppUserRepository appUserRepository, BookedEventRepository bookedEventRepository,
+                      EventRepository eventRepository, GenreRepository genreRepository,
+                      PerformanceRepository performanceRepository, VenueRepository venueRepository) {
+        this.appUserRepository = appUserRepository;
+        this.bookedEventRepository = bookedEventRepository;
+        this.eventRepository = eventRepository;
+        this.genreRepository = genreRepository;
+        this.performanceRepository = performanceRepository;
+        this.venueRepository = venueRepository;
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-        // TODO add dummy data
+    public void run(String[] args) throws Exception {
+
+        // music dummy data
+        // genres
+
+        Genre rock = new Genre("rock", "music");
+        rock = genreRepository.save(rock);
+        Genre punk = new Genre("punk", "music");
+        punk = genreRepository.save(punk);
+        Genre punkHardcore = new Genre("punk-hardcore", "music");
+        punkHardcore = genreRepository.save(punkHardcore);
+        Genre metal = new Genre("metal", "music");
+        metal = genreRepository.save(metal);
+        Genre drumAndBass = new Genre("drum and bass", "music");
+        drumAndBass = genreRepository.save(drumAndBass);
+        Genre goa = new Genre("goa", "music");
+        goa = genreRepository.save(goa);
+        Genre electricHardcore = new Genre("electric-hardcore", "music");
+        electricHardcore = genreRepository.save(electricHardcore);
+
+        // artists
+        // punk hc
+
+        Performance fever333 = new Performance("FEVER 333", new URL("https://www.fever333.com"), punkHardcore);
+        fever333 = performanceRepository.save(fever333);
+        Performance beartooth = new Performance("Beartooth", new URL("https://beartoothband.com"), punkHardcore);
+        beartooth = performanceRepository.save(beartooth);
+        Performance stickToYourGuns = new Performance("Stick to Your Guns",
+                new URL("https://www.facebook.com/STYGoc"), punkHardcore);
+        stickToYourGuns = performanceRepository.save(stickToYourGuns);
+        Performance teveszme = new Performance("Téveszme", new URL("https://www.facebook.com/teveszme"), punkHardcore);
+        teveszme = performanceRepository.save(teveszme);
+        Performance hanoi = new Performance("HANØI", new URL("https://www.facebook.com/hanoihardcore"), punkHardcore);
+        hanoi = performanceRepository.save(hanoi);
+        Performance nemecsek = new Performance("nemecsek", new URL("https://www.facebook.com/nemecsekeger"), punkHardcore);
+        nemecsek = performanceRepository.save(nemecsek);
+
+
+        // DnB
+
+
     }
 }
