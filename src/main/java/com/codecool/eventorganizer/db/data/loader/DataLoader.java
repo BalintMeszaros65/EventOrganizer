@@ -1,28 +1,27 @@
 package com.codecool.eventorganizer.db.data.loader;
 
-import com.codecool.eventorganizer.repository.*;
+import com.codecool.eventorganizer.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
 public class DataLoader implements ApplicationRunner {
-    private final AppUserRepository appUserRepository;
-    private final BookedEventRepository bookedEventRepository;
-    private final EventRepository eventRepository;
-    private final GenreRepository genreRepository;
-    private final PerformanceRepository performanceRepository;
-    private final VenueRepository venueRepository;
+    private final AppUserService appUserService;
+    private final BookedEventService bookedEventService;
+    private final EventService eventService;
+    private final GenreService genreService;
+    private final PerformanceService performanceService;
+    private final VenueService venueService;
 
     @Autowired
-    public DataLoader(AppUserRepository appUserRepository, BookedEventRepository bookedEventRepository,
-                      EventRepository eventRepository, GenreRepository genreRepository,
-                      PerformanceRepository performanceRepository, VenueRepository venueRepository) {
-        this.appUserRepository = appUserRepository;
-        this.bookedEventRepository = bookedEventRepository;
-        this.eventRepository = eventRepository;
-        this.genreRepository = genreRepository;
-        this.performanceRepository = performanceRepository;
-        this.venueRepository = venueRepository;
+    public DataLoader(AppUserService appUserService, BookedEventService bookedEventService, EventService eventService,
+                      GenreService genreService, PerformanceService performanceService, VenueService venueService) {
+        this.appUserService = appUserService;
+        this.bookedEventService = bookedEventService;
+        this.eventService = eventService;
+        this.genreService = genreService;
+        this.performanceService = performanceService;
+        this.venueService = venueService;
     }
 
     @Override
