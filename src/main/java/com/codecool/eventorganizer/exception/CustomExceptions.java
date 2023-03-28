@@ -55,15 +55,9 @@ public abstract class CustomExceptions {
         }
     }
 
-    public static class CurrentUserIsNotTheEventOrganizerException extends IllegalStateException {
-        public CurrentUserIsNotTheEventOrganizerException() {
-            super("Current suer does not match the suer who created the event.");
-        }
-    }
-
-    public static class CurrentUserIsNotTheOneWhoBookedTheEventException extends IllegalStateException {
-        public CurrentUserIsNotTheOneWhoBookedTheEventException() {
-            super("Current user does not match the user who booked the event.");
+    public static class CurrentUserIsNotMatching extends IllegalStateException {
+        public CurrentUserIsNotMatching(String message) {
+            super(message);
         }
     }
 

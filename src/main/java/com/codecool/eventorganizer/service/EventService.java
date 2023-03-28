@@ -93,7 +93,9 @@ public class EventService {
 
     private void checkIfCurrentUserEqualsEventOrganizer(Event event) {
         if (!getCurrentUser().equals(event.getOrganizer())) {
-            throw new CustomExceptions.CurrentUserIsNotTheEventOrganizerException();
+            throw new CustomExceptions.CurrentUserIsNotMatching(
+                    "Current user does not match the user who created the event."
+            );
         }
     }
 

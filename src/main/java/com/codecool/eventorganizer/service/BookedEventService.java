@@ -67,7 +67,9 @@ public class BookedEventService {
 
     private void checkIfCurrentUserEqualsBookedEventUser(BookedEvent bookedEvent) {
         if (!getCurrentUser().equals(bookedEvent.getAppUser())) {
-            throw new CustomExceptions.CurrentUserIsNotTheOneWhoBookedTheEventException();
+            throw new CustomExceptions.CurrentUserIsNotMatching(
+                    "Current user does not match the user who booked the event."
+            );
         }
     }
 
