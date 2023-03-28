@@ -1,5 +1,6 @@
 package com.codecool.eventorganizer.controller;
 
+import com.codecool.eventorganizer.dto.EventDto;
 import com.codecool.eventorganizer.model.Event;
 import com.codecool.eventorganizer.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,16 +8,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 public class EventController {
-
     private final EventService eventService;
 
     @Autowired
     public EventController(EventService eventService) {
         this.eventService = eventService;
+    }
+
+    @Secured("ROLE_USER")
+    @GetMapping("/api/event/user/get-events")
+    public List<EventDto> getUpcomingEventsForUser() {
+        return eventService.getUpcomingEventsForUser();
     }
 
     @Secured("ROLE_ORGANIZER")

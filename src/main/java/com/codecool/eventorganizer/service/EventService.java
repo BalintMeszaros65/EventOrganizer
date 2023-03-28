@@ -1,10 +1,8 @@
 package com.codecool.eventorganizer.service;
 
+import com.codecool.eventorganizer.dto.EventDto;
 import com.codecool.eventorganizer.exception.CustomExceptions;
-import com.codecool.eventorganizer.model.AppUser;
-import com.codecool.eventorganizer.model.Event;
-import com.codecool.eventorganizer.model.Performance;
-import com.codecool.eventorganizer.model.Venue;
+import com.codecool.eventorganizer.model.*;
 import com.codecool.eventorganizer.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +32,10 @@ public class EventService {
     }
 
     // basic CRUD operations
+
+    public List<Event> getUpcomingEvents() {
+        return eventRepository.findAllAfterZonedDateTime(ZonedDateTime.now());
+    }
 
     public Event getEventById(UUID id) {
         Optional<Event> optionalEvent = eventRepository.findById(id);
@@ -145,5 +147,14 @@ public class EventService {
         checkIfCurrentUserEqualsEventOrganizer(event);
         event.cancel();
         eventRepository.save(event);
+    }
+
+    public List<EventDto> getUpcomingEventsForUser() {
+        List<Event> upcomingEvents = getUpcomingEvents();
+        AppUser currentUser = getCurrentUser();
+        List<BookedEvent> bookedEvents = currentUser.getBookedEvents();
+        return upcomingEvents.stream()
+                .map(event -> new EventDto(event, bookedEvents))
+                .toList();
     }
 }
