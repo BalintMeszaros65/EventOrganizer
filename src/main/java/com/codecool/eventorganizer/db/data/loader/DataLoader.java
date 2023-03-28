@@ -5,6 +5,7 @@ import com.codecool.eventorganizer.model.Performance;
 import com.codecool.eventorganizer.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
@@ -71,6 +72,17 @@ public class DataLoader implements CommandLineRunner {
 
         // DnB
 
-
+        Performance spor = new Performance("Spor", new URL("https://www.facebook.com/sporlifted"), drumAndBass);
+        spor = performanceRepository.save(spor);
+        Performance evolIntent = new Performance("Evol Intent", new URL("https://www.facebook.com/realevolintent"), drumAndBass);
+        evolIntent = performanceRepository.save(evolIntent);
+        Performance badCompanyUk = new Performance("Bad Company UK", new URL("https://www.badcompany.uk.com/home"), drumAndBass);
+        badCompanyUk = performanceRepository.save(badCompanyUk);
+        Performance mindscape = new Performance("Mindscape", new URL("https://www.facebook.com/m1ndscape"), drumAndBass);
+        mindscape = performanceRepository.save(mindscape);
+        Performance data3 = new Performance("Data 3", new URL("https://www.facebook.com/data3official"), drumAndBass);
+        data3 = performanceRepository.save(data3);
+        Performance mobTactics = new Performance("Mob Tactics", new URL("https://www.facebook.com/MobTacticsMusic"), drumAndBass);
+        mobTactics = performanceRepository.save(mobTactics);
     }
 }
