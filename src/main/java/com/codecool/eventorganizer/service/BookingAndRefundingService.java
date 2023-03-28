@@ -59,13 +59,11 @@ public class BookingAndRefundingService {
 
     public ResponseEntity<String> cancelEvent(UUID eventId) {
         Event event = eventService.getEventById(eventId);
-        List<BookedEvent> bookedEventsToBeCancelled = bookedEventService.getBookedEventsByEvent(event);
-        // cancels event
+        // tries to cancel event
         eventService.cancelEvent(event);
-        // if event was not already cancelled, refunds everyone who has not been refunded already,
-        // ignoring booking deadline
+        // if event was not already cancelled, refunds everyone who has not been refunded already, ignoring booking deadline
         // TODO ask if bookedEvent needs to be updated by cancelled event or not (Hibernate)
-        bookedEventService.refundAllByEventOrganizer(bookedEventsToBeCancelled);
+        bookedEventService.refundAllByEventOrganizer(event);
         return ResponseEntity.status(HttpStatus.OK).body("Event cancelled successfully.");
     }
 }

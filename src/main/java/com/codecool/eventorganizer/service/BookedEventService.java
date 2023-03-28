@@ -88,7 +88,8 @@ public class BookedEventService {
         bookedEventRepository.save(bookedEvent);
     }
 
-    public void refundAllByEventOrganizer(List<BookedEvent> bookedEventsToBeCancelled) {
+    public void refundAllByEventOrganizer(Event event) {
+        List<BookedEvent> bookedEventsToBeCancelled = getBookedEventsByEvent(event);
         bookedEventsToBeCancelled.forEach(BookedEvent::refundByEventOrganizer);
         bookedEventRepository.saveAll(bookedEventsToBeCancelled);
     }
