@@ -99,12 +99,6 @@ public class EventService {
         }
     }
 
-    private void checkIfEventIsCancelled(UUID id) {
-        if (!getEventById(id).isCancelled()) {
-            throw new CustomExceptions.EventMustBeRefundedAndCancelledBeforeDeletingException();
-        }
-    }
-
     // logic
 
     public ResponseEntity<String> createEvent(Event event) {
@@ -133,7 +127,9 @@ public class EventService {
     }
 
     public ResponseEntity<String> deleteEvent(UUID id) {
-        checkIfEventIsCancelled(id);
+        if (!getEventById(id).isCancelled()) {
+            throw new CustomExceptions.EventMustBeRefundedAndCancelledBeforeDeletingException();
+        }
         eventRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Event successfully deleted.");
     }
