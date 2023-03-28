@@ -10,8 +10,10 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class EventDto {
+    private final UUID id;
     private final Venue venue;
     private final Performance performance;
     private final BigDecimal basePrice;
@@ -20,6 +22,7 @@ public class EventDto {
     private final List<BookedEvent> overlappedBookedEvents;
 
     public EventDto(Event event, List<BookedEvent> bookedEventList) {
+        this.id = event.getId();
         this.venue = event.getVenue();
         this.performance = event.getPerformance();
         this.basePrice = event.getBasePrice();
