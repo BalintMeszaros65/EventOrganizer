@@ -27,6 +27,12 @@ public class EventController {
     }
 
     @Secured("ROLE_ORGANIZER")
+    @GetMapping("/api/event/organizer/get-events")
+    public List<Event> getAllEventsByOrganizer() {
+        return eventService.getAllEventsByOrganizer();
+    }
+
+    @Secured("ROLE_ORGANIZER")
     @PostMapping("/api/event/create")
     public ResponseEntity<String> createEvent(@RequestBody Event event) {
         return eventService.createEvent(event);

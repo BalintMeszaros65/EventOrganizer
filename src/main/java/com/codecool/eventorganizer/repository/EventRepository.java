@@ -1,5 +1,6 @@
 package com.codecool.eventorganizer.repository;
 
+import com.codecool.eventorganizer.model.AppUser;
 import com.codecool.eventorganizer.model.Event;
 import com.codecool.eventorganizer.model.Performance;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,5 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
     WHERE event.isCancelled = false AND event.eventStartingDateAndTime > :zonedDateTime
     """)
     List<Event> findAllNotCancelledAfterZonedDateTime(ZonedDateTime zonedDateTime);
+    List<Event> findAllByOrganizer(AppUser organizer);
 }
