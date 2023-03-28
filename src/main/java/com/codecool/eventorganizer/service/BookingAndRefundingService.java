@@ -63,8 +63,6 @@ public class BookingAndRefundingService {
         // tries to cancel event
         eventService.cancelEvent(event);
         // if event was not already cancelled, refunds everyone who has not been refunded already, ignoring booking deadline
-        // TODO ask if retrieving needs to be updated by cancelled event or not (Hibernate searching by id?),
-        //  if yes then cancelEvent should return the updated event
         bookedEventService.refundAllByEventOrganizer(event);
         return ResponseEntity.status(HttpStatus.OK).body("Event cancelled successfully.");
     }
