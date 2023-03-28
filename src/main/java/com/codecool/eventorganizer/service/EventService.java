@@ -34,10 +34,7 @@ public class EventService {
     // basic CRUD operations
 
     public List<Event> getUpcomingEvents() {
-        return eventRepository.findAllAfterZonedDateTime(ZonedDateTime.now())
-                .stream()
-                .filter(event -> !event.isCancelled())
-                .toList();
+        return eventRepository.findAllNotCancelledAfterZonedDateTime(ZonedDateTime.now());
     }
 
     public Event getEventById(UUID id) {

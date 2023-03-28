@@ -13,10 +13,9 @@ import java.util.UUID;
 @Repository
 public interface EventRepository extends JpaRepository<Event, UUID> {
     List<Event> findAllByPerformance(Performance performance);
-
     @Query("""
     SELECT event FROM Event event
-    WHERE event.eventStartingDateAndTime > :zonedDateTime
+    WHERE event.isCancelled = false AND event.eventStartingDateAndTime > :zonedDateTime
     """)
-    List<Event> findAllAfterZonedDateTime(ZonedDateTime zonedDateTime);
+    List<Event> findAllNotCancelledAfterZonedDateTime(ZonedDateTime zonedDateTime);
 }
