@@ -89,7 +89,7 @@ public class BookedEvent {
 
     public void refund() {
         if (!canBeRefunded()) {
-            throw new CustomExceptions.EventCanNotBeRefundedException("Booked event can not be refunded.");
+            throw new CustomExceptions.IllegalEventStateException("Booked event can not be refunded.");
         }
         // TODO payment later?
         isRefunded = true;

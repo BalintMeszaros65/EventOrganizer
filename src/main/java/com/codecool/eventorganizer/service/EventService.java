@@ -128,7 +128,9 @@ public class EventService {
 
     public ResponseEntity<String> deleteEvent(UUID id) {
         if (!getEventById(id).isCancelled()) {
-            throw new CustomExceptions.EventMustBeRefundedAndCancelledBeforeDeletingException();
+            throw new CustomExceptions.IllegalEventStateException(
+                    "Event must be fully refunded and cancelled before deleting it."
+            );
         }
         eventRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Event successfully deleted.");

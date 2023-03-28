@@ -92,7 +92,7 @@ public class AppUserService {
             throw new CustomExceptions.EmailCanNotBeChangedException("You can not change your registered email.");
         }
         if (!currentUser.getPassword().equals(appUser.getPassword())) {
-            throw new CustomExceptions.PasswordChangeIsDifferentEndpointException(
+            throw new CustomExceptions.PasswordCanNotBeChangedException(
                     "Changing password is not allowed at this endpoint."
             );
         }

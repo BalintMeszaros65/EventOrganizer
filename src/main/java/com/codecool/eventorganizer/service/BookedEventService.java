@@ -53,7 +53,7 @@ public class BookedEventService {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in booked event.");
         }
         if (!event.canBeBooked(ticketsBooked)) {
-            throw new CustomExceptions.EventCanNotBeBookedException("Event can not be booked.");
+            throw new CustomExceptions.IllegalEventStateException("Event can not be booked.");
         }
         Event savedEvent = eventService.getEventById(event.getId());
         if (!event.equals(savedEvent)) {

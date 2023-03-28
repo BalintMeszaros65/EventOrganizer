@@ -1,14 +1,8 @@
 package com.codecool.eventorganizer.exception;
 
 public abstract class CustomExceptions {
-    public static class EventCanNotBeRefundedException extends IllegalStateException {
-        public EventCanNotBeRefundedException(String message) {
-            super(message);
-        }
-    }
-
-    public static class EventCanNotBeBookedException extends IllegalStateException {
-        public EventCanNotBeBookedException(String message) {
+    public static class IllegalEventStateException extends IllegalStateException {
+        public IllegalEventStateException(String message) {
             super(message);
         }
     }
@@ -31,20 +25,14 @@ public abstract class CustomExceptions {
         }
     }
 
-    public static class PasswordChangeIsDifferentEndpointException extends IllegalArgumentException {
-        public PasswordChangeIsDifferentEndpointException(String message) {
+    public static class PasswordCanNotBeChangedException extends IllegalArgumentException {
+        public PasswordCanNotBeChangedException(String message) {
             super(message);
         }
     }
 
-    public static class NotEnoughTicketsLeftException extends ArithmeticException {
-        public NotEnoughTicketsLeftException(String message) {
-            super(message);
-        }
-    }
-
-    public static class TicketCountCanNotExceedVenueCapacityException extends IllegalArgumentException {
-        public TicketCountCanNotExceedVenueCapacityException(String message) {
+    public static class TicketCountException extends ArithmeticException {
+        public TicketCountException(String message) {
             super(message);
         }
     }
@@ -58,18 +46,6 @@ public abstract class CustomExceptions {
     public static class CurrentUserIsNotMatching extends IllegalStateException {
         public CurrentUserIsNotMatching(String message) {
             super(message);
-        }
-    }
-
-    public static class EventMustBeRefundedAndCancelledBeforeDeletingException extends IllegalStateException {
-        public EventMustBeRefundedAndCancelledBeforeDeletingException() {
-            super("Event must be fully refunded and cancelled before deleting it.");
-        }
-    }
-
-    public static class CanNotCancelAnAlreadyCancelledEventException extends IllegalStateException {
-        public CanNotCancelAnAlreadyCancelledEventException() {
-            super("Can not cancel an event, that has already been cancelled.");
         }
     }
 }

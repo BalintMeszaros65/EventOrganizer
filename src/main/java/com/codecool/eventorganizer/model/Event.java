@@ -83,7 +83,9 @@ public class Event {
 
     public void cancel() {
         if (isCancelled) {
-            throw new CustomExceptions.CanNotCancelAnAlreadyCancelledEventException();
+            throw new CustomExceptions.IllegalEventStateException(
+                    "Can not cancel an event, that has already been cancelled."
+            );
         }
         isCancelled = true;
     }
@@ -91,13 +93,13 @@ public class Event {
     public void initializeTicketsToBeSold(int ticketsAlreadySold) {
         int venueCapacity = venue.getCapacity();
         if (venueCapacity < ticketsSoldThroughOurApp) {
-            throw new CustomExceptions.TicketCountCanNotExceedVenueCapacityException(
+            throw new CustomExceptions.TicketCountException(
                     String.format("Can not sell more tickets than venue's max capacity (%s)", venueCapacity)
             );
 
         }
         if (ticketsSoldThroughOurApp < ticketsAlreadySold) {
-            throw new CustomExceptions.NotEnoughTicketsLeftException(
+            throw new CustomExceptions.TicketCountException(
                     String.format("Can not sell less tickets than already sold tickets count (%s)."
                             , ticketsAlreadySold)
             );
@@ -130,7 +132,7 @@ public class Event {
             availableTickets -= ticketCount;
         } else {
             ZonedDateTime endOfBooking = eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed);
-            throw new CustomExceptions.EventCanNotBeBookedException(
+            throw new CustomExceptions.IllegalEventStateException(
                 endOfBooking.isBefore(ZonedDateTime.now()) ?
                 String.format("Not enough tickets left (%s)", availableTickets)
                 : String.format("Booking for event ended at %s", endOfBooking)
@@ -145,7 +147,7 @@ public class Event {
         if (canBeRefunded()) {
             availableTickets += ticketCount;
         } else {
-            throw new CustomExceptions.EventCanNotBeRefundedException(
+            throw new CustomExceptions.IllegalEventStateException(
                 venue.isThereRefund() ?
                 String.format("Refunding for event ended at %s", eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed))
                 : "Refunding is not allowed by the venue."
