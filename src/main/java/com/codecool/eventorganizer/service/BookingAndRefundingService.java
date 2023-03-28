@@ -35,6 +35,7 @@ public class BookingAndRefundingService {
 
     public ResponseEntity<String> bookEvent(UUID eventId, int ticketCount) {
         Event event = eventService.getEventById(eventId);
+        // TODO check if user has event(s) booked for the same date/time when the event takes places?
         BigDecimal amountToBePayed = event.currentPriceOfTickets(ticketCount);
         // TODO payment later?
         // tries to book tickets for event, throws error if that is not possible
@@ -62,7 +63,8 @@ public class BookingAndRefundingService {
         // tries to cancel event
         eventService.cancelEvent(event);
         // if event was not already cancelled, refunds everyone who has not been refunded already, ignoring booking deadline
-        // TODO ask if bookedEvent needs to be updated by cancelled event or not (Hibernate)
+        // TODO ask if retrieving needs to be updated by cancelled event or not (Hibernate searching by id?),
+        //  if yes then cancelEvent should return the updated event
         bookedEventService.refundAllByEventOrganizer(event);
         return ResponseEntity.status(HttpStatus.OK).body("Event cancelled successfully.");
     }
