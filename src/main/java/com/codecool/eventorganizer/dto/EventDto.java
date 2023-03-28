@@ -34,17 +34,19 @@ public class EventDto {
     private List<BookedEvent> getOverlappedBookedEvents(Event event, List<BookedEvent> bookedEventList) {
         ZonedDateTime eventStartingDateAndTime = event.getEventStartingDateAndTime();
         ZonedDateTime eventEndingDateAndTime = eventStartingDateAndTime.plusMinutes(Math.round(eventLengthInHours * 60.0));
-        Interval eventInterval = Interval.of(eventEndingDateAndTime.toInstant(), eventEndingDateAndTime.toInstant());
+        Interval eventInterval = Interval.of(eventStartingDateAndTime.toInstant(), eventEndingDateAndTime.toInstant());
         List<BookedEvent> overlappedBookedEvents = new ArrayList<>();
         for (BookedEvent bookedEvent : bookedEventList) {
-            Event eventOfBookedEvent = bookedEvent.getEvent();
-            ZonedDateTime bookedEventStartingDateAndTime = eventOfBookedEvent.getEventStartingDateAndTime();
-            ZonedDateTime bookedEventEndingDateAndTime = bookedEventStartingDateAndTime
-                    .plusMinutes(Math.round(eventOfBookedEvent.getEventLengthInHours() * 60.0));
-            Interval bookedEventInterval = Interval.of(bookedEventStartingDateAndTime.toInstant(),
-                    bookedEventEndingDateAndTime.toInstant());
-            if (eventInterval.overlaps(bookedEventInterval)) {
-                overlappedBookedEvents.add(bookedEvent);
+            if (!bookedEvent.isRefunded()) {
+                Event eventOfBookedEvent = bookedEvent.getEvent();
+                ZonedDateTime bookedEventStartingDateAndTime = eventOfBookedEvent.getEventStartingDateAndTime();
+                ZonedDateTime bookedEventEndingDateAndTime = bookedEventStartingDateAndTime
+                        .plusMinutes(Math.round(eventOfBookedEvent.getEventLengthInHours() * 60.0));
+                Interval bookedEventInterval = Interval.of(bookedEventStartingDateAndTime.toInstant(),
+                        bookedEventEndingDateAndTime.toInstant());
+                if (eventInterval.overlaps(bookedEventInterval)) {
+                    overlappedBookedEvents.add(bookedEvent);
+                }
             }
         }
         return overlappedBookedEvents;
