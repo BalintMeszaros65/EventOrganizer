@@ -18,7 +18,7 @@ public class EventDto {
     private final Performance performance;
     private final BigDecimal basePrice;
     private final ZonedDateTime eventStartingDateAndTime;
-    private final double eventLengthInHours;
+    private final int eventLengthInMinutes;
     private final List<BookedEvent> overlappedBookedEvents;
 
     public EventDto(Event event, List<BookedEvent> bookedEventList) {
@@ -27,13 +27,13 @@ public class EventDto {
         this.performance = event.getPerformance();
         this.basePrice = event.getBasePrice();
         this.eventStartingDateAndTime = event.getEventStartingDateAndTime();
-        this.eventLengthInHours = event.getEventLengthInHours();
+        this.eventLengthInMinutes = event.getEventLengthInMinutes();
         this.overlappedBookedEvents = getOverlappedBookedEvents(event, bookedEventList);
     }
 
     private List<BookedEvent> getOverlappedBookedEvents(Event event, List<BookedEvent> bookedEventList) {
         ZonedDateTime eventStartingDateAndTime = event.getEventStartingDateAndTime();
-        ZonedDateTime eventEndingDateAndTime = eventStartingDateAndTime.plusMinutes(Math.round(eventLengthInHours * 60.0));
+        ZonedDateTime eventEndingDateAndTime = eventStartingDateAndTime.plusMinutes(eventLengthInMinutes);
         Interval eventInterval = Interval.of(eventStartingDateAndTime.toInstant(), eventEndingDateAndTime.toInstant());
         List<BookedEvent> overlappedBookedEvents = new ArrayList<>();
         for (BookedEvent bookedEvent : bookedEventList) {
@@ -41,7 +41,7 @@ public class EventDto {
                 Event eventOfBookedEvent = bookedEvent.getEvent();
                 ZonedDateTime bookedEventStartingDateAndTime = eventOfBookedEvent.getEventStartingDateAndTime();
                 ZonedDateTime bookedEventEndingDateAndTime = bookedEventStartingDateAndTime
-                        .plusMinutes(Math.round(eventOfBookedEvent.getEventLengthInHours() * 60.0));
+                        .plusMinutes(eventOfBookedEvent.getEventLengthInMinutes());
                 Interval bookedEventInterval = Interval.of(bookedEventStartingDateAndTime.toInstant(),
                         bookedEventEndingDateAndTime.toInstant());
                 if (eventInterval.overlaps(bookedEventInterval)) {

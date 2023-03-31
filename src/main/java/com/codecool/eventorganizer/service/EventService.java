@@ -62,7 +62,7 @@ public class EventService {
         ZonedDateTime startingDateAndTime = event.getEventStartingDateAndTime();
         if (venue == null || performance == null || BigDecimal.ZERO.equals(event.getBasePrice())
                 || event.getTicketsSoldThroughOurApp() <= 0 || startingDateAndTime == null
-                || event.getEventLengthInHours() <= 0.0) {
+                || event.getEventLengthInMinutes() <= 0) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in event.");
         }
         if (event.isCancelled()) {

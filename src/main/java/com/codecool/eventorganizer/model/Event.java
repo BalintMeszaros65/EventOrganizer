@@ -31,7 +31,7 @@ public class Event {
     @NotNull
     private ZonedDateTime eventStartingDateAndTime;
     @NotNull
-    private double eventLengthInHours;
+    private int eventLengthInMinutes;
     @NotNull
     private int daysBeforeBookingIsClosed;
     @NotNull
@@ -61,8 +61,8 @@ public class Event {
         return availableTickets;
     }
 
-    public double getEventLengthInHours() {
-        return eventLengthInHours;
+    public int getEventLengthInMinutes() {
+        return eventLengthInMinutes;
     }
 
     public ZonedDateTime getEventStartingDateAndTime() {
