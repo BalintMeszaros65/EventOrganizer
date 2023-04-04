@@ -30,6 +30,10 @@ public class AppUser {
     @OneToMany
     List<BookedEvent> bookedEvents;
 
+    public AppUser() {
+
+    }
+
     public UUID getId() {
         return id;
     }
