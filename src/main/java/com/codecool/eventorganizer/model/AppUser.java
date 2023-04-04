@@ -25,7 +25,7 @@ public class AppUser {
     private String lastName;
     // TODO billing address and others for payment later?
     @NotNull
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     List<String> roles;
     @OneToMany
     List<BookedEvent> bookedEvents;
