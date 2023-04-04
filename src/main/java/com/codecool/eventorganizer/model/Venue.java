@@ -30,6 +30,23 @@ public class Venue {
     private String house;
     private String googleMapsReference;
 
+    public Venue(String name, URL homePage, boolean isThereRefund, int capacity, String country, String city,
+                 String zipCode, String street, String house, String googleMapsReference) {
+        this.name = name;
+        this.homePage = homePage;
+        this.isThereRefund = isThereRefund;
+        this.capacity = capacity;
+        this.country = country;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.street = street;
+        this.house = house;
+        this.googleMapsReference = googleMapsReference;
+    }
+
+    public Venue() {
+    }
+
     public UUID getId() {
         return id;
     }
