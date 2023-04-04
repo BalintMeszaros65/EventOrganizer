@@ -2,10 +2,10 @@ package com.codecool.eventorganizer.db.data.loader;
 
 import com.codecool.eventorganizer.model.Genre;
 import com.codecool.eventorganizer.model.Performance;
+import com.codecool.eventorganizer.model.Venue;
 import com.codecool.eventorganizer.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
@@ -49,8 +49,8 @@ public class DataLoader implements CommandLineRunner {
         drumAndBass = genreRepository.save(drumAndBass);
         Genre goa = new Genre("goa", "music");
         goa = genreRepository.save(goa);
-        Genre electricHardcore = new Genre("electric-hardcore", "music");
-        electricHardcore = genreRepository.save(electricHardcore);
+        Genre electronicHardcore = new Genre("electronic-hardcore", "music");
+        electronicHardcore = genreRepository.save(electronicHardcore);
 
         // artists
         // punk hc
@@ -84,5 +84,24 @@ public class DataLoader implements CommandLineRunner {
         data3 = performanceRepository.save(data3);
         Performance mobTactics = new Performance("Mob Tactics", new URL("https://www.facebook.com/MobTacticsMusic"), drumAndBass);
         mobTactics = performanceRepository.save(mobTactics);
+
+        // venues
+
+        Venue durerKertKisTerem = new Venue("Dürer Kert Kisterem", new URL("https://www.durerkert.com"),
+                true, 200, "Hungary", "Budapest", "1117", "Öböl utca",
+                "1", "https://www.google.com/maps/place/D%C3%BCrer+Kert/@47.4598982,19.0572838,17z/data=!3m1!4b1!4m6!3m5!1s0x4741dc8091c9dc2f:0xecebc630e0349849!8m2!3d47.4598982!4d19.0572838!16s%2Fm%2F0k09tn_");
+        durerKertKisTerem = venueRepository.save(durerKertKisTerem);
+        Venue a38 = new Venue("A38", new URL("https://www.a38.hu"), false, 600,
+                "Hungary", "Budapest", "1117", "Petőfi híd", "-",
+                "https://www.google.com/maps?ll=47.476639,19.062793&z=16&t=m&hl=hu&gl=HU&mapclient=embed&cid=9961889067075519822");
+        a38 = venueRepository.save(a38);
+        Venue budapestPark = new Venue("Budapest Park", new URL("https://www.budapestpark.hu"),
+                false, 11000, "Hungary", "Budapest", "1095", "Soroksári út",
+                "60", "https://www.google.hu/maps/place/Budapest+Park/@47.4676381,19.0745992,17z/data=!3m1!4b1!4m6!3m5!1s0x4741dd1baca87ab9:0x446dd6a1bee0c423!8m2!3d47.4676345!4d19.0767879!16s%2Fg%2F1hhxkxmns?coh=164777&entry=tt");
+        budapestPark = venueRepository.save(budapestPark);
+        Venue barbaNegraRedStage = new Venue("Barba Negra Red Stage", new URL("https://www.barbanegra.hu"),
+                true, 6000, "Hungary", "Budapest", "1211", "Szállító utca",
+                "3", "https://www.google.com/maps?ll=47.441562,19.077528&z=16&t=m&hl=hu&gl=HU&mapclient=embed&cid=3462955035018983980");
+        barbaNegraRedStage = venueRepository.save(barbaNegraRedStage);
     }
 }
