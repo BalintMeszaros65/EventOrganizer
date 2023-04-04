@@ -2,6 +2,7 @@ package com.codecool.eventorganizer.controller;
 
 import com.codecool.eventorganizer.model.AppUser;
 import com.codecool.eventorganizer.service.AppUserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -35,18 +36,24 @@ public class AppUserController {
     }
 
     @Secured({"ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"})
+    @SecurityRequirement(name = "Bearer Authentication")
+    @SecurityRequirement(name = "Basic Authentication")
     @PutMapping("/api/user/update-information")
     public ResponseEntity<String> updateUser(@RequestBody AppUser appUser) {
         return appUserService.updateUserInformation(appUser);
     }
 
     @Secured({"ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"})
+    @SecurityRequirement(name = "Bearer Authentication")
+    @SecurityRequirement(name = "Basic Authentication")
     @PutMapping("/api/user/change-password")
     public ResponseEntity<String> changePasswordOfUser(@RequestParam String newPassword) {
         return appUserService.changePassword(newPassword);
     }
 
     @Secured({"ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"})
+    @SecurityRequirement(name = "Bearer Authentication")
+    @SecurityRequirement(name = "Basic Authentication")
     @DeleteMapping("/api/user/delete")
     public ResponseEntity<String> deleteUser() {
         return appUserService.deleteUser();

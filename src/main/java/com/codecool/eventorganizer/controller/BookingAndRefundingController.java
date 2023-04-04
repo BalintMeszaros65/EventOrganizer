@@ -1,6 +1,7 @@
 package com.codecool.eventorganizer.controller;
 
 import com.codecool.eventorganizer.service.BookingAndRefundingService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
+@SecurityRequirement(name = "Bearer Authentication")
+@SecurityRequirement(name = "Basic Authentication")
 public class BookingAndRefundingController {
     private final BookingAndRefundingService bookingAndRefundingService;
 
