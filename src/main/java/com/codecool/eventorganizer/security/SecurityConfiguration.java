@@ -27,9 +27,9 @@ public class SecurityConfiguration {
     private final CustomUserDetailsService customUserDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private static final String[] AUTHENTICATION_WHITELIST = {
+            "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/swagger-resources/**",
-            "/h2-console/**",
+            "/swagger-ui.html",
             "/api/user/register",
             "/api/organizer/register",
             "/api/admin/register",
