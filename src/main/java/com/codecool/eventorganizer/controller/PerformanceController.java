@@ -3,6 +3,7 @@ package com.codecool.eventorganizer.controller;
 import com.codecool.eventorganizer.model.Performance;
 import com.codecool.eventorganizer.service.PerformanceService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -13,6 +14,10 @@ import java.util.UUID;
 @RestController
 @SecurityRequirement(name = "Bearer Authentication")
 @SecurityRequirement(name = "Basic Authentication")
+@Tag(
+        name = "Performance",
+        description = "Operations about performance"
+)
 public class PerformanceController {
     private final PerformanceService performanceService;
 
