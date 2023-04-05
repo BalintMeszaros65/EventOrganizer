@@ -36,13 +36,13 @@ public class AppUserController {
             responseCode = "201",
             description = "created entity",
             content = @Content(
-                schema = @Schema(implementation = String.class)
+                schema = @Schema(example = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZW1haWxAZ21haWwuY29tIiwiaWF0IjoxNjgwNzA0MTQxLCJleHAiOjE2ODA3NDAxNDF9.GfkiY5M_-1F--oJWJGUxBa80E7L_EY3S_ZXH1LhuAZM")
             )),
         @ApiResponse(
             responseCode = "400",
             description = "something went wrong",
             content = @Content(
-                schema = @Schema(implementation = String.class)
+                schema = @Schema(example = "Missing one or more attribute(s) in AppUser")
             )
         )
     })
