@@ -97,6 +97,9 @@ public class AppUserService {
 
     private void checkIfUpdatedInformationIsValid(AppUser appUser) {
         AppUser currentUser = getCurrentUser();
+        if (!currentUser.getId().equals(appUser.getId())) {
+            throw new IllegalArgumentException("Current user's id does not match with the given one.");
+        }
         if (!currentUser.getEmail().equals(appUser.getEmail())) {
             throw new CustomExceptions.EmailCanNotBeChangedException("You can not change your registered email.");
         }
