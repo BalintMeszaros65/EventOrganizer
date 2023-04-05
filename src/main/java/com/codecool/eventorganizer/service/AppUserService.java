@@ -11,10 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AppUserService {
@@ -86,6 +89,12 @@ public class AppUserService {
         }
     }
 
+    private void checkIfBookedEventsDoesNotExist(AppUser appUser) {
+        if (appUser.getBookedEvents() != null) {
+            throw new IllegalArgumentException("Booked Events must be empty when creating user.");
+        }
+    }
+
     private void checkIfUpdatedInformationIsValid(AppUser appUser) {
         AppUser currentUser = getCurrentUser();
         if (!currentUser.getEmail().equals(appUser.getEmail())) {
@@ -109,6 +118,7 @@ public class AppUserService {
     public ResponseEntity<String> registerUser(AppUser appUser) {
         checkIfRequiredDataExists(appUser);
         checkIfEmailIsAlreadyRegistered(appUser);
+        checkIfBookedEventsDoesNotExist(appUser);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_USER"));
         checkIfIdDoesNotExist(appUser);
@@ -123,6 +133,7 @@ public class AppUserService {
         }
         checkIfRequiredDataExists(appUser);
         checkIfEmailIsAlreadyRegistered(appUser);
+        checkIfBookedEventsDoesNotExist(appUser);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_ORGANIZER"));
         checkIfIdDoesNotExist(appUser);
@@ -137,6 +148,7 @@ public class AppUserService {
         }
         checkIfRequiredDataExists(appUser);
         checkIfEmailIsAlreadyRegistered(appUser);
+        checkIfBookedEventsDoesNotExist(appUser);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
         checkIfIdDoesNotExist(appUser);
