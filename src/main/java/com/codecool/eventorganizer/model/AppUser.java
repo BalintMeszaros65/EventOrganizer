@@ -1,5 +1,6 @@
 package com.codecool.eventorganizer.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -17,12 +18,16 @@ public class AppUser {
     private UUID id;
     @NotNull
     @Column(unique = true)
+    @Schema(example = "testemail@gmail.com")
     private String email;
     @NotNull
+    @Schema(example = "testpassword")
     private String password;
     @NotNull
+    @Schema(example = "John")
     private String firstName;
     @NotNull
+    @Schema(example = "Smith")
     private String lastName;
     @NotNull
     @ElementCollection(fetch = FetchType.EAGER)
