@@ -2,7 +2,9 @@ package com.codecool.eventorganizer;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +25,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		info = @Info(
 				title = "Event Organizer API",
 				version = "1.0",
-				description = "Event Organizer Information"
+				// TODO change the placeholders
+				description = "Event Organizer placeholder description",
+				termsOfService = "placeholder terms",
+				contact = @Contact(
+						name = "Bálint Mészáros",
+						email = "balint.meszaros65@gmail.com"
+				),
+				license = @License(
+						name = "placeholder licence",
+						url = "placeholder url"
+				)
 		)
 )
 public class EventOrganizerApplication {
