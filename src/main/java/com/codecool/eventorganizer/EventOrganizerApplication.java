@@ -38,6 +38,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		)
 	)
 )
+// TODO implement lombok to get rid of boilerplate code
 public class EventOrganizerApplication {
 
 	public static void main(String[] args) {
