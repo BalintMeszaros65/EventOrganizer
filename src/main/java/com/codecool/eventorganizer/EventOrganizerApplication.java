@@ -38,7 +38,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		)
 	)
 )
-// TODO implement lombok to get rid of boilerplate code
+// TODO implement Lombok to get rid of boilerplate code
+// TODO continue Swagger documentation
+// TODO DTOs
+// TODO unit tests
+// TODO intergration tests
+// TODO Spring Email?
+// TODO Spring Websocket?
+// TODO payment mocking?
+// TODO Docker?
+// TODO deploy?
+// TODO frontend?
+// TODO android app?
 public class EventOrganizerApplication {
 
 	public static void main(String[] args) {

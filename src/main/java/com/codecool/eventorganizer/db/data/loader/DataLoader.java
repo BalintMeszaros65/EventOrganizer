@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 
 @Component
+// TODO continue dummy data
 public class DataLoader implements CommandLineRunner {
     private final AppUserRepository appUserRepository;
     private final BookedEventRepository bookedEventRepository;
