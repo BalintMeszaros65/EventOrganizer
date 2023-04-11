@@ -25,7 +25,7 @@ public class AppUser {
     @Schema(example = "testemail@gmail.com")
     private String email;
     @NotNull
-    @Schema(example = "testpassword")
+    @Schema(example = "testpw")
     private String password;
     @NotNull
     @Schema(example = "John")
