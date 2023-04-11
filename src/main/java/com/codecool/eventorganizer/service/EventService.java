@@ -156,7 +156,7 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    public List<EventDto> getUpcomingEventsForUser() {
+    public List<EventDto> getUpcomingEventsForCustomer() {
         List<Event> upcomingEvents = getUpcomingEvents();
         Customer currentUser = getCurrentCustomer();
         List<BookedEvent> bookedEvents = currentUser.getBookedEvents();

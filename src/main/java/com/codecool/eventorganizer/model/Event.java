@@ -68,7 +68,7 @@ public class Event {
         }
         if (ticketsSoldThroughOurApp < ticketsAlreadySold) {
             throw new CustomExceptions.TicketCountException(
-                    String.format("Can not sell less tickets than already sold tickets count (%s)."
+                    String.format("Can not sell less tickets than already sold tickets (%s)."
                             , ticketsAlreadySold)
             );
         }

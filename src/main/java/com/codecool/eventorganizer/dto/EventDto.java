@@ -21,6 +21,8 @@ public class EventDto {
     private final int eventLengthInMinutes;
     private final List<BookedEvent> overlappedBookedEvents;
 
+    // creates a DTO from Event and stores all Booked Events overlapping it (if there is any),
+    // so the customer can be informed about it
     public EventDto(Event event, List<BookedEvent> bookedEventList) {
         this.id = event.getId();
         this.venue = event.getVenue();

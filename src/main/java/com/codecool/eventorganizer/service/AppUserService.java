@@ -191,7 +191,7 @@ public class AppUserService {
         return ResponseEntity.status(HttpStatus.OK).body("User has been deleted.");
     }
 
-    public void addBookedEventToCurrentUser(BookedEvent bookedEvent) {
+    public void addBookedEventToCurrentCustomer(BookedEvent bookedEvent) {
         Customer customer = getCurrentCustomer();
         customer.storeBookedEvent(bookedEvent);
         customerRepository.save(customer);

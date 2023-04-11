@@ -31,7 +31,7 @@ public class EventController {
     @Secured("ROLE_USER")
     @GetMapping("/api/event/user/get-events")
     public List<EventDto> getUpcomingEventsForUser() {
-        return eventService.getUpcomingEventsForUser();
+        return eventService.getUpcomingEventsForCustomer();
     }
 
     @Secured("ROLE_ORGANIZER")
