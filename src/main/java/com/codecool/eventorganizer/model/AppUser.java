@@ -9,8 +9,6 @@ import java.util.UUID;
 
 @Entity
 public class AppUser {
-    // TODO make a child (Customer) with bookedEvents so the organizer and admin doesn't have to store it with null
-    // TODO billing address and others for payment later in Customer?
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

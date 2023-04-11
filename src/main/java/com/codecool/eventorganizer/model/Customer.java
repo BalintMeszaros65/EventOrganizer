@@ -10,6 +10,7 @@ import java.util.List;
 
 @Entity
 public class Customer extends AppUser {
+    // TODO billing address later?
     @OneToMany
     List<BookedEvent> bookedEvents;
 
