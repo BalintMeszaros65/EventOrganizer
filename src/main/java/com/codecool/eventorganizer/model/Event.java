@@ -3,12 +3,20 @@ package com.codecool.eventorganizer.model;
 import com.codecool.eventorganizer.exception.CustomExceptions;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -37,48 +45,8 @@ public class Event {
     @NotNull
     private boolean isCancelled;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public Venue getVenue() {
-        return venue;
-    }
-
-    public Performance getPerformance() {
-        return performance;
-    }
-
-    public BigDecimal getBasePrice() {
-        return basePrice;
-    }
-
-    public int getTicketsSoldThroughOurApp() {
-        return ticketsSoldThroughOurApp;
-    }
-
-    public int getAvailableTickets() {
-        return availableTickets;
-    }
-
-    public int getEventLengthInMinutes() {
-        return eventLengthInMinutes;
-    }
-
-    public ZonedDateTime getEventStartingDateAndTime() {
-        return eventStartingDateAndTime;
-    }
-
-    public AppUser getOrganizer() {
-        return organizer;
-    }
-
-    public void setOrganizer(AppUser organizer) {
-        this.organizer = organizer;
-    }
-
-    public boolean isCancelled() {
-        return isCancelled;
+    public Genre getGenre() {
+        return performance.getGenre();
     }
 
     public void cancel() {

@@ -1,12 +1,23 @@
 package com.codecool.eventorganizer.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.net.URL;
 import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Venue {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,57 +40,4 @@ public class Venue {
     @NotNull
     private String house;
     private String googleMapsReference;
-
-    public Venue(String name, URL homePage, boolean isThereRefund, int capacity, String country, String city,
-                 String zipCode, String street, String house, String googleMapsReference) {
-        this.name = name;
-        this.homePage = homePage;
-        this.isThereRefund = isThereRefund;
-        this.capacity = capacity;
-        this.country = country;
-        this.city = city;
-        this.zipCode = zipCode;
-        this.street = street;
-        this.house = house;
-        this.googleMapsReference = googleMapsReference;
-    }
-
-    public Venue() {
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public boolean isThereRefund() {
-        return isThereRefund;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public String getHouse() {
-        return house;
-    }
 }

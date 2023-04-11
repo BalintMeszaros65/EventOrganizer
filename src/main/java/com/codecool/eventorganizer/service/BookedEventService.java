@@ -77,7 +77,6 @@ public class BookedEventService {
 
     public BookedEvent saveBookedEvent(BookedEvent bookedEvent) {
         checkIfRequiredDataExists(bookedEvent);
-        bookedEvent.setGenre(bookedEvent.getEvent().getPerformance().getGenre());
         if (bookedEvent.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }

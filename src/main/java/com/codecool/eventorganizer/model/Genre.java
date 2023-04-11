@@ -5,10 +5,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -17,25 +25,4 @@ public class Genre {
     private String name;
     @NotNull
     private String type;
-
-    public Genre(String name, String type) {
-        this.name = name;
-        this.type = type;
-    }
-
-    public Genre() {
-
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return type;
-    }
 }

@@ -3,11 +3,19 @@ package com.codecool.eventorganizer.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -28,52 +36,4 @@ public class AppUser {
     @NotNull
     @ElementCollection(fetch = FetchType.EAGER)
     List<String> roles;
-
-    public AppUser() {
-
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 }

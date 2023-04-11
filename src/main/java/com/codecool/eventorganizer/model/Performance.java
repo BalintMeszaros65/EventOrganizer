@@ -2,11 +2,19 @@ package com.codecool.eventorganizer.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.net.URL;
 import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Performance {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -17,30 +25,4 @@ public class Performance {
     @NotNull
     @ManyToOne
     private Genre genre;
-
-    public Performance(String name, URL homePage, Genre genre) {
-        this.name = name;
-        this.homePage = homePage;
-        this.genre = genre;
-    }
-
-    public Performance() {
-
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
-    }
 }

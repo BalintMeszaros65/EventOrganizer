@@ -2,6 +2,10 @@ package com.codecool.eventorganizer.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -9,14 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Customer extends AppUser {
     // TODO billing address later?
     @OneToMany
     List<BookedEvent> bookedEvents;
-
-    public List<BookedEvent> getBookedEvents() {
-        return bookedEvents;
-    }
 
     public BigDecimal calculateAveragePricePaidForOneTicket() {
         if (bookedEvents == null) {

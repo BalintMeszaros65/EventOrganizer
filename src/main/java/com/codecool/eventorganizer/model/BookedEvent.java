@@ -3,12 +3,20 @@ package com.codecool.eventorganizer.model;
 import com.codecool.eventorganizer.exception.CustomExceptions;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class BookedEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -25,11 +33,6 @@ public class BookedEvent {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private AppUser appUser;
-    // storing genre in case event or performance gets deleted,
-    // so that the suggestions algorithm will be able to still use it
-    @ManyToOne
-    @NotNull
-    private Genre genre;
     @NotNull
     private boolean isRefunded;
 
@@ -39,52 +42,15 @@ public class BookedEvent {
         this.ticketCount = ticketCount;
         this.appUser = appUser;
         this.dateOfBooking = ZonedDateTime.now();
-        this.genre = event.getPerformance().getGenre();
         this.isRefunded = false;
     }
 
-    public BookedEvent() {
-
-    }
-
     public Genre getGenre() {
-        return genre;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public BigDecimal getAmountPayed() {
-        return amountPayed;
-    }
-
-    public int getTicketCount() {
-        return ticketCount;
-    }
-
-    public ZonedDateTime getDateOfBooking() {
-        return dateOfBooking;
-    }
-
-    public AppUser getAppUser() {
-        return appUser;
+        return event.getGenre();
     }
 
     public boolean canBeRefunded() {
         return event.canBeRefunded() && !isRefunded;
-    }
-
-    public boolean isRefunded() {
-        return isRefunded;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
     }
 
     public void refund() {
