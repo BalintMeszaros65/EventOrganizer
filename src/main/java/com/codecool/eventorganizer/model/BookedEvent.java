@@ -32,15 +32,15 @@ public class BookedEvent {
     private ZonedDateTime dateOfBooking;
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    private AppUser appUser;
+    private Customer customer;
     @NotNull
     private boolean isRefunded;
 
-    public BookedEvent(Event event, BigDecimal amountPayed, int ticketCount, AppUser appUser) {
+    public BookedEvent(Event event, BigDecimal amountPayed, int ticketCount, Customer customer) {
         this.event = event;
         this.amountPayed = amountPayed;
         this.ticketCount = ticketCount;
-        this.appUser = appUser;
+        this.customer = customer;
         this.dateOfBooking = ZonedDateTime.now();
         this.isRefunded = false;
     }
