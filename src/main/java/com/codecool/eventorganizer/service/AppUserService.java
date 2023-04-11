@@ -3,7 +3,9 @@ package com.codecool.eventorganizer.service;
 import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.AppUser;
 import com.codecool.eventorganizer.model.BookedEvent;
+import com.codecool.eventorganizer.model.Customer;
 import com.codecool.eventorganizer.repository.AppUserRepository;
+import com.codecool.eventorganizer.repository.CustomerRepository;
 import com.codecool.eventorganizer.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,13 +24,16 @@ import java.util.UUID;
 @Service
 public class AppUserService {
     private final AppUserRepository appUserRepository;
+    private final CustomerRepository customerRepository;
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public AppUserService(AppUserRepository appUserRepository, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public AppUserService(AppUserRepository appUserRepository, CustomerRepository customerRepository,
+                          UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.appUserRepository = appUserRepository;
+        this.customerRepository = customerRepository;
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
@@ -54,11 +59,25 @@ public class AppUserService {
         }
     }
 
+    public Customer getCustomerByEmail(String email) {
+        Optional<Customer> optionalCustomer = customerRepository.findByEmail(email);
+        if (optionalCustomer.isPresent()) {
+            return optionalCustomer.get();
+        } else {
+            throw new NoSuchElementException("Customer not found by given id.");
+        }
+    }
+
     //helper methods
 
     public AppUser getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return getUserByEmail(email);
+    }
+
+    public Customer getCurrentCustomer() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return getCustomerByEmail(email);
     }
 
     private void checkIfEmailIsAlreadyRegistered(AppUser appUser) {
@@ -89,12 +108,6 @@ public class AppUserService {
         }
     }
 
-    private void checkIfBookedEventsDoesNotExist(AppUser appUser) {
-        if (appUser.getBookedEvents() != null) {
-            throw new IllegalArgumentException("Booked Events must be empty when creating user.");
-        }
-    }
-
     private void checkIfUpdatedInformationIsValid(AppUser appUser) {
         AppUser currentUser = getCurrentUser();
         if (!currentUser.getId().equals(appUser.getId())) {
@@ -108,9 +121,6 @@ public class AppUserService {
                     "Changing password is not allowed at this endpoint."
             );
         }
-        if (!currentUser.getBookedEvents().equals(appUser.getBookedEvents())) {
-            throw new IllegalArgumentException("Changing booked events is not allowed at this endpoint.");
-        }
         if ("".equals(appUser.getLastName()) || "".equals(appUser.getFirstName())) {
             throw new CustomExceptions.MissingAttributeException("Last and first name can not be empty.");
         }
@@ -118,14 +128,14 @@ public class AppUserService {
 
     // logic
 
-    public ResponseEntity<String> registerUser(AppUser appUser) {
+    public ResponseEntity<String> registerCustomer(AppUser appUser) {
         checkIfRequiredDataExists(appUser);
         checkIfEmailIsAlreadyRegistered(appUser);
-        checkIfBookedEventsDoesNotExist(appUser);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_USER"));
         checkIfIdDoesNotExist(appUser);
-        appUserRepository.save(appUser);
+        Customer customer = (Customer) appUser;
+        customerRepository.save(customer);
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }
 
@@ -136,7 +146,6 @@ public class AppUserService {
         }
         checkIfRequiredDataExists(appUser);
         checkIfEmailIsAlreadyRegistered(appUser);
-        checkIfBookedEventsDoesNotExist(appUser);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_ORGANIZER"));
         checkIfIdDoesNotExist(appUser);
@@ -151,7 +160,6 @@ public class AppUserService {
         }
         checkIfRequiredDataExists(appUser);
         checkIfEmailIsAlreadyRegistered(appUser);
-        checkIfBookedEventsDoesNotExist(appUser);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
         checkIfIdDoesNotExist(appUser);
@@ -159,7 +167,6 @@ public class AppUserService {
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }
 
-    // Only for name, role, billing address
     public ResponseEntity<String> updateUserInformation(AppUser appUser) {
         checkIfUpdatedInformationIsValid(appUser);
         appUserRepository.save(appUser);
@@ -186,8 +193,8 @@ public class AppUserService {
     }
 
     public void addBookedEventToCurrentUser(BookedEvent bookedEvent) {
-        AppUser currentUser = getCurrentUser();
-        currentUser.storeBookedEvent(bookedEvent);
-        appUserRepository.save(currentUser);
+        Customer customer = getCurrentCustomer();
+        customer.storeBookedEvent(bookedEvent);
+        customerRepository.save(customer);
     }
 }

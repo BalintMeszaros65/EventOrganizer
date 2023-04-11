@@ -97,6 +97,9 @@ public class EventService {
         return appUserService.getCurrentUser();
     }
 
+    private Customer getCurrentCustomer() {return appUserService.getCurrentCustomer();
+    }
+
     private void checkIfCurrentUserEqualsEventOrganizer(Event event) {
         if (!getCurrentUser().equals(event.getOrganizer())) {
             throw new CustomExceptions.CurrentUserIsNotMatching(
@@ -155,7 +158,7 @@ public class EventService {
 
     public List<EventDto> getUpcomingEventsForUser() {
         List<Event> upcomingEvents = getUpcomingEvents();
-        AppUser currentUser = getCurrentUser();
+        Customer currentUser = getCurrentCustomer();
         List<BookedEvent> bookedEvents = currentUser.getBookedEvents();
         return upcomingEvents.stream()
                 .map(event -> new EventDto(event, bookedEvents))

@@ -51,7 +51,7 @@ public class AppUserController {
                 description = "AppUser Object where id (generated), roles (generated) and booked events must be null."
             )
             @RequestBody AppUser appUser) {
-        return appUserService.registerUser(appUser);
+        return appUserService.registerCustomer(appUser);
     }
 
     @PostMapping("/api/organizer/register/{secret_key}")

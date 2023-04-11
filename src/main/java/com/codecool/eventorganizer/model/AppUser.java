@@ -4,9 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,8 +30,6 @@ public class AppUser {
     @NotNull
     @ElementCollection(fetch = FetchType.EAGER)
     List<String> roles;
-    @OneToMany
-    List<BookedEvent> bookedEvents;
 
     public AppUser() {
 
@@ -64,10 +59,6 @@ public class AppUser {
         return roles;
     }
 
-    public List<BookedEvent> getBookedEvents() {
-        return bookedEvents;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -86,26 +77,5 @@ public class AppUser {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public BigDecimal calculateAveragePricePaidForOneTicket() {
-        if (bookedEvents == null) {
-            return BigDecimal.ZERO;
-        } else {
-            int numberOfTickets = bookedEvents.stream()
-                .map(BookedEvent::getTicketCount)
-                .reduce(0, Integer::sum);
-            BigDecimal amountPaid = bookedEvents.stream()
-                .map(BookedEvent::getAmountPayed)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-            return amountPaid.divide(BigDecimal.valueOf(numberOfTickets), RoundingMode.HALF_UP);
-        }
-    }
-
-    public void storeBookedEvent(BookedEvent bookedEvent) {
-        if (bookedEvents == null) {
-            bookedEvents = new ArrayList<>();
-        }
-        bookedEvents.add(bookedEvent);
     }
 }
