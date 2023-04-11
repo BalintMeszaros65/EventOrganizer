@@ -134,8 +134,7 @@ public class AppUserService {
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_USER"));
         checkIfIdDoesNotExist(appUser);
-        Customer customer = (Customer) appUser;
-        customerRepository.save(customer);
+        appUserRepository.save(appUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }
 

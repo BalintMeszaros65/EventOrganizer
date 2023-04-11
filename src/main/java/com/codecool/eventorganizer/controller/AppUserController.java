@@ -48,7 +48,7 @@ public class AppUserController {
     })
     public ResponseEntity<String> registerUser(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                description = "AppUser Object where id (generated), roles (generated) and booked events must be null."
+                description = "AppUser Object where id (generated), roles (generated) must be null."
             )
             @RequestBody AppUser appUser) {
         return appUserService.registerCustomer(appUser);
