@@ -74,6 +74,7 @@ public class PerformanceService {
     }
 
     // TODO implement logic to handle booked events (already done and upcoming)
+    // TODO OR implement inactive flag to deactivate non functioning Performances
     public ResponseEntity<String> deletePerformance(UUID id) {
         checkIfPerformanceExists(id);
         performanceRepository.deleteById(id);
