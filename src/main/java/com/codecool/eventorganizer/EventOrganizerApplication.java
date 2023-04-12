@@ -41,7 +41,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // TODO continue Swagger documentation
 // TODO DTOs
 // TODO unit tests
-// TODO intergration tests
+// TODO integration tests
 // TODO Spring Email?
 // TODO Spring Websocket?
 // TODO payment mocking?
