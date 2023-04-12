@@ -60,8 +60,7 @@ public class EventService {
         Venue venue = event.getVenue();
         Performance performance = event.getPerformance();
         ZonedDateTime startingDateAndTime = event.getEventStartingDateAndTime();
-        // TODO check BigDecimal for minus
-        if (venue == null || performance == null || BigDecimal.ZERO.equals(event.getBasePrice())
+        if (venue == null || performance == null || event.getBasePrice().compareTo(BigDecimal.ZERO) < 1
                 || event.getTicketsSoldThroughOurApp() <= 0 || startingDateAndTime == null
                 || event.getEventLengthInMinutes() <= 0) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in event.");

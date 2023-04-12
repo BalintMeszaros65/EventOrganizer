@@ -48,7 +48,7 @@ public class BookedEventService {
     private void checkIfRequiredDataExists(BookedEvent bookedEvent) {
         Event event = bookedEvent.getEvent();
         BigDecimal amountPayed = bookedEvent.getAmountPayed();
-        if (event == null || bookedEvent.getCustomer() == null || amountPayed == null || BigDecimal.ZERO.equals(amountPayed)
+        if (event == null || bookedEvent.getCustomer() == null || amountPayed == null || amountPayed.compareTo(BigDecimal.ZERO) < 1
                 || bookedEvent.getTicketCount() <= 0 || bookedEvent.getDateOfBooking() == null) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in booked event.");
         }
