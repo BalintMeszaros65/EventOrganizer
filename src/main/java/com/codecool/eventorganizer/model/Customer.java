@@ -45,7 +45,7 @@ public class Customer extends AppUser {
     }
 
 
-    // TODO ask if this works as intended
+    // TODO ask if this works as intended or do I need to use getters and write it manually?
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
