@@ -60,6 +60,7 @@ public class EventService {
         Venue venue = event.getVenue();
         Performance performance = event.getPerformance();
         ZonedDateTime startingDateAndTime = event.getEventStartingDateAndTime();
+        // TODO check BigDecimal for minus
         if (venue == null || performance == null || BigDecimal.ZERO.equals(event.getBasePrice())
                 || event.getTicketsSoldThroughOurApp() <= 0 || startingDateAndTime == null
                 || event.getEventLengthInMinutes() <= 0) {
