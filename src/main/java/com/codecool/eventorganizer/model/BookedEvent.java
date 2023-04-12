@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -66,5 +67,21 @@ public class BookedEvent {
             // TODO payment later?
             isRefunded = true;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BookedEvent bookedEvent)) return false;
+        return ticketCount == bookedEvent.ticketCount && isRefunded == bookedEvent.isRefunded
+                && Objects.equals(id, bookedEvent.id)
+                && Objects.equals(event, bookedEvent.event) && Objects.equals(amountPayed, bookedEvent.amountPayed)
+                && Objects.equals(dateOfBooking, bookedEvent.dateOfBooking)
+                && Objects.equals(customer, bookedEvent.customer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, event, amountPayed, ticketCount, dateOfBooking, customer, isRefunded);
     }
 }

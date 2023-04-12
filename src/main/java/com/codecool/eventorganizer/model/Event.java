@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -131,5 +132,24 @@ public class Event {
     public boolean canBeRefunded() {
         return venue.isThereRefund() && !isCancelled &&
             eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(ZonedDateTime.now());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Event event)) return false;
+        return ticketsSoldThroughOurApp == event.ticketsSoldThroughOurApp && availableTickets == event.availableTickets
+                && eventLengthInMinutes == event.eventLengthInMinutes
+                && daysBeforeBookingIsClosed == event.daysBeforeBookingIsClosed && isCancelled == event.isCancelled
+                && Objects.equals(id, event.id) && Objects.equals(venue, event.venue)
+                && Objects.equals(performance, event.performance) && Objects.equals(organizer, event.organizer)
+                && Objects.equals(basePrice, event.basePrice)
+                && Objects.equals(eventStartingDateAndTime, event.eventStartingDateAndTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, venue, performance, organizer, basePrice, ticketsSoldThroughOurApp, availableTickets,
+                eventStartingDateAndTime, eventLengthInMinutes, daysBeforeBookingIsClosed, isCancelled);
     }
 }

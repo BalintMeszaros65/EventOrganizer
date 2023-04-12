@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
@@ -41,5 +42,20 @@ public class Customer extends AppUser {
             bookedEvents = new ArrayList<>();
         }
         bookedEvents.add(bookedEvent);
+    }
+
+
+    // TODO ask if this works as intended
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer customer)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(bookedEvents, customer.bookedEvents);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), bookedEvents);
     }
 }

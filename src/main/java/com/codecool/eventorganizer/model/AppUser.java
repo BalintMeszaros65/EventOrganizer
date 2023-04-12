@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -36,4 +37,18 @@ public class AppUser {
     @NotNull
     @ElementCollection(fetch = FetchType.EAGER)
     List<String> roles;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AppUser appUser)) return false;
+        return Objects.equals(id, appUser.id) && Objects.equals(email, appUser.email)
+                && Objects.equals(password, appUser.password) && Objects.equals(firstName, appUser.firstName)
+                && Objects.equals(lastName, appUser.lastName) && Objects.equals(roles, appUser.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password, firstName, lastName, roles);
+    }
 }

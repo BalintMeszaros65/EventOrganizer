@@ -1,9 +1,6 @@
 package com.codecool.eventorganizer.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -29,15 +27,21 @@ public class Venue {
     private boolean isThereRefund;
     @NotNull
     private int capacity;
+    @OneToOne
     @NotNull
-    private String country;
-    @NotNull
-    private String city;
-    @NotNull
-    private String zipCode;
-    @NotNull
-    private String street;
-    @NotNull
-    private String house;
-    private String googleMapsReference;
+    private Address address;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Venue venue)) return false;
+        return isThereRefund == venue.isThereRefund && capacity == venue.capacity && Objects.equals(id, venue.id)
+                && Objects.equals(name, venue.name) && Objects.equals(homePage, venue.homePage)
+                && Objects.equals(address, venue.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, homePage, isThereRefund, capacity, address);
+    }
 }
