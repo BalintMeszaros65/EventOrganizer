@@ -75,6 +75,7 @@ public class VenueService {
 
     // TODO implement logic to handle booked events (already done and upcoming)
     // TODO OR implement inactive flag to deactivate non functioning Venues
+    // TODO ask if there is a way of deleting enitity while keeping it historically in other entities
     public ResponseEntity<String> deleteVenue(UUID id) {
         checkIfVenueExists(id);
         venueRepository.deleteById(id);
