@@ -1,6 +1,7 @@
 package com.codecool.eventorganizer.service;
 
 import com.codecool.eventorganizer.exception.CustomExceptions;
+import com.codecool.eventorganizer.model.Address;
 import com.codecool.eventorganizer.model.Venue;
 import com.codecool.eventorganizer.repository.VenueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ import java.util.UUID;
 @Service
 public class VenueService {
     private final VenueRepository venueRepository;
+    private final AddressService addressService;
 
     @Autowired
-    public VenueService(VenueRepository venueRepository) {
+    public VenueService(VenueRepository venueRepository, AddressService addressService) {
         this.venueRepository = venueRepository;
+        this.addressService = addressService;
     }
 
     // basic CRUD operations
@@ -40,18 +43,16 @@ public class VenueService {
         }
     }
 
-    private static void checkIfRequiredDataExists(Venue venue) {
+    private void checkIfRequiredDataExists(Venue venue) {
         int capacity = venue.getCapacity();
         String name = venue.getName();
-        String country = venue.getCountry();
-        String city = venue.getCity();
-        String zipCode = venue.getZipCode();
-        String street  = venue.getStreet();
-        String house = venue.getHouse();
-        if (capacity <= 0 || name == null || country == null || city == null || zipCode == null || street == null
-            || house == null || "".equals(name) || "".equals(country) || "".equals(city) || "".equals(zipCode)
-                || "".equals(street) || "".equals(house)) {
+        Address address = venue.getAddress();
+        if (capacity <= 0 || name == null || "".equals(name) || address == null) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in venue.");
+        }
+        Address savedAddress = addressService.getAddressById(address.getId());
+        if (!address.equals(savedAddress)) {
+            throw new IllegalArgumentException("Address' data does not match with the one in database.");
         }
     }
 
