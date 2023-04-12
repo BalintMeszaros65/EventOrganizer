@@ -1,9 +1,6 @@
 package com.codecool.eventorganizer.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +19,9 @@ public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @ManyToOne
+    @NotNull
+    private Country country;
     @NotNull
     private String name;
 
@@ -29,11 +29,11 @@ public class City {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof City city)) return false;
-        return Objects.equals(id, city.id) && Objects.equals(name, city.name);
+        return Objects.equals(id, city.id) && Objects.equals(country, city.country) && Objects.equals(name, city.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, country, name);
     }
 }
