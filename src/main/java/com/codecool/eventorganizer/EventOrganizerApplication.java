@@ -25,7 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 	info = @Info(
 		title = "Event Organizer API",
 		version = "1.0",
-		// TODO change the placeholders
+		// TODO change the placeholders in Swagger documentation
 		description = "Event Organizer placeholder description",
 		termsOfService = "placeholder terms",
 		contact = @Contact(
@@ -38,7 +38,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		)
 	)
 )
-// TODO implement Lombok to get rid of boilerplate code
 // TODO continue Swagger documentation
 // TODO DTOs
 // TODO unit tests
