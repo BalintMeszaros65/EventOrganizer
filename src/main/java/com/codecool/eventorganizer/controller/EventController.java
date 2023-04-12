@@ -29,13 +29,13 @@ public class EventController {
     }
 
     @Secured("ROLE_USER")
-    @GetMapping("/api/event/user/get-events")
-    public List<EventDto> getUpcomingEventsForUser() {
+    @GetMapping("/api/event/get-events/customer")
+    public List<EventDto> getUpcomingEventsForCustomer() {
         return eventService.getUpcomingEventsForCustomer();
     }
 
     @Secured("ROLE_ORGANIZER")
-    @GetMapping("/api/event/organizer/get-events")
+    @GetMapping("/api/event/get-events/organizer")
     public List<Event> getAllEventsByOrganizer() {
         return eventService.getAllEventsByOrganizer();
     }
