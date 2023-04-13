@@ -46,6 +46,7 @@ public class Customer extends AppUser {
 
 
     // TODO ask if this works as intended or do I need to use getters and write it manually?
+    // generated
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,6 +54,20 @@ public class Customer extends AppUser {
         if (!super.equals(o)) return false;
         return Objects.equals(bookedEvents, customer.bookedEvents);
     }
+    // manual
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof Customer customer)) return false;
+//        if (!super.equals(o)) return false;
+//        return Objects.equals(bookedEvents, customer.bookedEvents) && Objects.equals(this.getId(), customer.getId())
+//                && Objects.equals(this.getEmail(), customer.getEmail())
+//                && Objects.equals(this.getPassword(), customer.getPassword())
+//                && Objects.equals(this.getFirstName(), customer.getFirstName())
+//                && Objects.equals(this.getLastName(), customer.getLastName())
+//                && Objects.equals(this.getRoles(), customer.getRoles());
+//
+//    }
 
     @Override
     public int hashCode() {
