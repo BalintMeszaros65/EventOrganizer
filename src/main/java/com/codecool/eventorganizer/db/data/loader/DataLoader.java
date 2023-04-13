@@ -91,15 +91,19 @@ public class DataLoader implements CommandLineRunner {
         // countries
         Country hungary = new Country(null, "Hungary");
         hungary = countryRepository.save(hungary);
+        Country austria = new Country(null, "Austria");
+        austria = countryRepository.save(austria);
 
         // cities
         City budapest = new City(null, hungary, "Budapest");
         budapest = cityRepository.save(budapest);
+        City vienna = new City(null, austria, "Vienna");
+        vienna = cityRepository.save(vienna);
 
         // addresses
-        Address durerKertKisTeremAddress = new Address(null, budapest, "1117", "Öböl utca",
+        Address durerKertAddress = new Address(null, budapest, "1117", "Öböl utca",
                 "1", "https://www.google.com/maps/place/D%C3%BCrer+Kert/@47.4598982,19.0572838,17z/data=!3m1!4b1!4m6!3m5!1s0x4741dc8091c9dc2f:0xecebc630e0349849!8m2!3d47.4598982!4d19.0572838!16s%2Fm%2F0k09tn_");
-        durerKertKisTeremAddress = addressRepository.save(durerKertKisTeremAddress);
+        durerKertAddress = addressRepository.save(durerKertAddress);
         Address a38Address = new Address(null, budapest, "1117", "Petőfi híd", "-",
                 "https://www.google.com/maps?ll=47.476639,19.062793&z=16&t=m&hl=hu&gl=HU&mapclient=embed&cid=9961889067075519822");
         a38Address = addressRepository.save(a38Address);
@@ -109,10 +113,13 @@ public class DataLoader implements CommandLineRunner {
         Address barbaNegraRedStageAddress = new Address(null, budapest, "1211", "Szállító utca", "3",
                 "https://www.google.com/maps?ll=47.441562,19.077528&z=16&t=m&hl=hu&gl=HU&mapclient=embed&cid=3462955035018983980");
         barbaNegraRedStageAddress = addressRepository.save(barbaNegraRedStageAddress);
+        Address gasometersAddress = new Address(null, vienna, "1110", "Guglgasse", "6",
+                "https://www.google.com/maps/place/Gasometers+of+Vienna/@48.1850303,16.4179554,17z/data=!3m1!4b1!4m6!3m5!1s0x476d07552200e63f:0x1fa4253100678110!8m2!3d48.1850303!4d16.4201441!16zL20vMDYzMzk1");
+        gasometersAddress = addressRepository.save(gasometersAddress);
 
         // venues
         Venue durerKertKisTerem = new Venue(null, "Dürer Kert Kisterem", new URL("https://www.durerkert.com"),
-                true, 200, durerKertKisTeremAddress);
+                true, 200, durerKertAddress);
         durerKertKisTerem = venueRepository.save(durerKertKisTerem);
         Venue a38 = new Venue(null, "A38", new URL("https://www.a38.hu"), false, 600,
                 a38Address);
@@ -123,5 +130,8 @@ public class DataLoader implements CommandLineRunner {
         Venue barbaNegraRedStage = new Venue(null, "Barba Negra Red Stage", new URL("https://www.barbanegra.hu"),
                 true, 6000, barbaNegraRedStageAddress);
         barbaNegraRedStage = venueRepository.save(barbaNegraRedStage);
+        Venue gasometers = new Venue(null, "Gasometers of Vienna", new URL("https://www.wien.info/en/vienna-s-gasometers-133306"),
+                false, 4200, gasometersAddress);
+        gasometers = venueRepository.save(gasometers);
     }
 }
