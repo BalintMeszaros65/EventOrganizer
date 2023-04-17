@@ -29,7 +29,7 @@ public class Venue {
     private int capacity;
     @OneToOne
     @NotNull
-    private VenueAddress address;
+    private VenueAddress venueAddress;
 
     @Override
     public boolean equals(Object o) {
@@ -37,11 +37,11 @@ public class Venue {
         if (!(o instanceof Venue venue)) return false;
         return isThereRefund == venue.isThereRefund && capacity == venue.capacity && Objects.equals(id, venue.id)
                 && Objects.equals(name, venue.name) && Objects.equals(homePage, venue.homePage)
-                && Objects.equals(address, venue.address);
+                && Objects.equals(venueAddress, venue.venueAddress);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, homePage, isThereRefund, capacity, address);
+        return Objects.hash(id, name, homePage, isThereRefund, capacity, venueAddress);
     }
 }

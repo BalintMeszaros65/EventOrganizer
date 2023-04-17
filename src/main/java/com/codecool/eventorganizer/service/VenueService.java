@@ -1,8 +1,8 @@
 package com.codecool.eventorganizer.service;
 
 import com.codecool.eventorganizer.exception.CustomExceptions;
-import com.codecool.eventorganizer.model.Address;
 import com.codecool.eventorganizer.model.Venue;
+import com.codecool.eventorganizer.model.VenueAddress;
 import com.codecool.eventorganizer.repository.VenueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,13 +46,13 @@ public class VenueService {
     private void checkIfRequiredDataExists(Venue venue) {
         int capacity = venue.getCapacity();
         String name = venue.getName();
-        Address address = venue.getAddress();
-        if (capacity <= 0 || name == null || "".equals(name) || address == null) {
+        VenueAddress venueAddress = venue.getVenueAddress();
+        if (capacity <= 0 || name == null || "".equals(name) || venueAddress == null) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in venue.");
         }
-        Address savedAddress = addressService.getAddressById(address.getId());
-        if (!address.equals(savedAddress)) {
-            throw new IllegalArgumentException("Address' data does not match with the one in database.");
+        VenueAddress savedVenueAddress = addressService.getVenueAddressById(venueAddress.getId())  ;
+        if (!venueAddress.equals(savedVenueAddress)) {
+            throw new IllegalArgumentException("VenueAddress' data does not match with the one in database.");
         }
     }
 
