@@ -140,7 +140,7 @@ public class DataLoader implements CommandLineRunner {
         Venue gasometers = new Venue(null, "Gasometers of Vienna", new URL("https://www.wien.info/en/vienna-s-gasometers-133306"),
                 false, 4200, gasometersAddress);
         gasometers = venueRepository.save(gasometers);
-        Venue fuga = new Venue(null, "Fuga", new URL("fuga.forumabsurdum.sk"), false,
+        Venue fuga = new Venue(null, "Fuga", new URL("https://www.facebook.com/fuga.ba"), false,
                 250, fugaAddress);
         fuga = venueRepository.save(fuga);
     }
