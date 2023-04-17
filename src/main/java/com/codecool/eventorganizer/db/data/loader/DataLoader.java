@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.net.URL;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Component
@@ -148,10 +150,6 @@ public class DataLoader implements CommandLineRunner {
                 250, fugaAddress);
         fuga = venueRepository.save(fuga);
 
-        // events
-
-        // booked events
-
         // users
 
         Customer customer1 = new Customer(null, "customer1@gmail.com", "customer1",
@@ -169,5 +167,25 @@ public class DataLoader implements CommandLineRunner {
         AppUser admin = new AppUser(null, "admin@gmail.com", "admin",
                 "admin", "admin", List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
         admin = appUserRepository.save(admin);
+
+        // events
+
+        Event fever333AtDurerKertKisteremPast = new Event(null, durerKertKisTerem, fever333, organizer1,
+                BigDecimal.valueOf(6000), 150, 10, ZonedDateTime.now().minusDays(5),
+                90, 2, false);
+        fever333AtDurerKertKisteremPast = eventRepository.save(fever333AtDurerKertKisteremPast);
+        Event fever333AtDurerKertKisteremFuture = new Event(null, durerKertKisTerem, fever333, organizer1,
+                BigDecimal.valueOf(7000), 150, 130, ZonedDateTime.now().plusDays(15),
+                80, 2, false);
+        fever333AtDurerKertKisteremFuture = eventRepository.save(fever333AtDurerKertKisteremFuture);
+        Event fever333AtA38FutureCancelled = new Event(null, a38, fever333, organizer2,
+                BigDecimal.valueOf(8000), 450, 450, ZonedDateTime.now().minusDays(3),
+                100, 2, true);
+        fever333AtA38FutureCancelled = eventRepository.save(fever333AtA38FutureCancelled);
+        Event fever333AtBudapestParkFuture = new Event(null, a38, fever333, organizer2,
+                BigDecimal.valueOf(8000), 9000, 5487, ZonedDateTime.now().minusDays(3),
+                100, 2, false);
+
+        // booked events
     }
 }
