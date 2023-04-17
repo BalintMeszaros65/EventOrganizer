@@ -12,6 +12,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -22,6 +23,12 @@ public class Customer extends AppUser {
     // TODO billing address later?
     @OneToMany
     List<BookedEvent> bookedEvents;
+
+    public Customer(UUID id, String email, String password, String firstName, String lastName, List<String> roles,
+                    List<BookedEvent> bookedEvents) {
+        super(id, email, password, firstName, lastName, roles);
+        this.bookedEvents = bookedEvents;
+    }
 
     public BigDecimal calculateAveragePricePaidForOneTicket() {
         if (bookedEvents == null) {

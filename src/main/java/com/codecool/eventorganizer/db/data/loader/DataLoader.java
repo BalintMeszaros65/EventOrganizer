@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
+import java.util.List;
 
 @Component
 // TODO continue dummy data
@@ -20,12 +21,14 @@ public class DataLoader implements CommandLineRunner {
     private final CountryRepository countryRepository;
     private final CityRepository cityRepository;
     private final VenueAddressRepository venueAddressRepository;
+    private final CustomerRepository customerRepository;
 
     @Autowired
     public DataLoader(AppUserRepository appUserRepository, BookedEventRepository bookedEventRepository,
                       EventRepository eventRepository, GenreRepository genreRepository,
                       PerformanceRepository performanceRepository, VenueRepository venueRepository,
-                      CountryRepository countryRepository, CityRepository cityRepository, VenueAddressRepository venueAddressRepository) {
+                      CountryRepository countryRepository, CityRepository cityRepository, VenueAddressRepository venueAddressRepository,
+                      CustomerRepository customerRepository) {
         this.appUserRepository = appUserRepository;
         this.bookedEventRepository = bookedEventRepository;
         this.eventRepository = eventRepository;
@@ -35,6 +38,7 @@ public class DataLoader implements CommandLineRunner {
         this.countryRepository = countryRepository;
         this.cityRepository = cityRepository;
         this.venueAddressRepository = venueAddressRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -143,5 +147,27 @@ public class DataLoader implements CommandLineRunner {
         Venue fuga = new Venue(null, "Fuga", new URL("https://www.facebook.com/fuga.ba"), false,
                 250, fugaAddress);
         fuga = venueRepository.save(fuga);
+
+        // events
+
+        // booked events
+
+        // users
+
+        Customer customer1 = new Customer(null, "customer1@gmail.com", "customer1",
+                "customer", "1", List.of("ROLE_USER"), null);
+        customer1 = customerRepository.save(customer1);
+        Customer customer2 = new Customer(null, "customer2@gmail.com", "customer2",
+                "customer", "2", List.of("ROLE_USER"), null);
+        customer2 = customerRepository.save(customer2);
+        AppUser organizer1 = new AppUser(null, "organizer1@gmail.com", "organizer1",
+                "organizer", "1", List.of("ROLE_ORGANIZER"));
+        organizer1 = appUserRepository.save(organizer1);
+        AppUser organizer2 = new AppUser(null, "organizer2@gmail.com", "organizer2",
+                "organizer", "2", List.of("ROLE_ORGANIZER"));
+        organizer2 = appUserRepository.save(organizer2);
+        AppUser admin = new AppUser(null, "admin@gmail.com", "admin",
+                "admin", "admin", List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
+        admin = appUserRepository.save(admin);
     }
 }
