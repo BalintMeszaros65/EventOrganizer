@@ -2,6 +2,8 @@ package com.codecool.eventorganizer.controller;
 
 import com.codecool.eventorganizer.model.Country;
 import com.codecool.eventorganizer.service.CountryService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -11,6 +13,12 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@SecurityRequirement(name = "Bearer Authentication")
+@SecurityRequirement(name = "Basic Authentication")
+@Tag(
+        name = "Country",
+        description = "Operations about country"
+)
 public class CountryController {
     private final CountryService countryService;
 
