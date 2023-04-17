@@ -93,12 +93,16 @@ public class DataLoader implements CommandLineRunner {
         hungary = countryRepository.save(hungary);
         Country austria = new Country(null, "Austria");
         austria = countryRepository.save(austria);
+        Country slovakia = new Country(null, "Slovakia");
+        slovakia = countryRepository.save(slovakia);
 
         // cities
         City budapest = new City(null, hungary, "Budapest");
         budapest = cityRepository.save(budapest);
         City vienna = new City(null, austria, "Vienna");
         vienna = cityRepository.save(vienna);
+        City bratislava = new City(null, slovakia, "Bratislava");
+        bratislava = cityRepository.save(bratislava);
 
         // addresses
         Address durerKertAddress = new Address(null, budapest, "1117", "Öböl utca",
@@ -116,6 +120,9 @@ public class DataLoader implements CommandLineRunner {
         Address gasometersAddress = new Address(null, vienna, "1110", "Guglgasse", "6",
                 "https://www.google.com/maps/place/Gasometers+of+Vienna/@48.1850303,16.4179554,17z/data=!3m1!4b1!4m6!3m5!1s0x476d07552200e63f:0x1fa4253100678110!8m2!3d48.1850303!4d16.4201441!16zL20vMDYzMzk1");
         gasometersAddress = addressRepository.save(gasometersAddress);
+        Address fugaAddress = new Address(null, bratislava, "811 01", "Námestie SNP", "24",
+                "https://www.google.com/maps/place/Fuga/@48.1444756,17.1099126,17z/data=!3m1!4b1!4m6!3m5!1s0x476c8938e3b95c61:0xaba44ffa461d6d3e!8m2!3d48.1444756!4d17.1121013!16s%2Fg%2F11xc8c3np");
+        fugaAddress = addressRepository.save(fugaAddress);
 
         // venues
         Venue durerKertKisTerem = new Venue(null, "Dürer Kert Kisterem", new URL("https://www.durerkert.com"),
@@ -133,5 +140,8 @@ public class DataLoader implements CommandLineRunner {
         Venue gasometers = new Venue(null, "Gasometers of Vienna", new URL("https://www.wien.info/en/vienna-s-gasometers-133306"),
                 false, 4200, gasometersAddress);
         gasometers = venueRepository.save(gasometers);
+        Venue fuga = new Venue(null, "Fuga", new URL("fuga.forumabsurdum.sk"), false,
+                250, fugaAddress);
+        fuga = venueRepository.save(fuga);
     }
 }
