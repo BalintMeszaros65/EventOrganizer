@@ -19,13 +19,13 @@ public class DataLoader implements CommandLineRunner {
     private final VenueRepository venueRepository;
     private final CountryRepository countryRepository;
     private final CityRepository cityRepository;
-    private final AddressRepository addressRepository;
+    private final VenueAddressRepository venueAddressRepository;
 
     @Autowired
     public DataLoader(AppUserRepository appUserRepository, BookedEventRepository bookedEventRepository,
                       EventRepository eventRepository, GenreRepository genreRepository,
                       PerformanceRepository performanceRepository, VenueRepository venueRepository,
-                      CountryRepository countryRepository, CityRepository cityRepository, AddressRepository addressRepository) {
+                      CountryRepository countryRepository, CityRepository cityRepository, VenueAddressRepository venueAddressRepository) {
         this.appUserRepository = appUserRepository;
         this.bookedEventRepository = bookedEventRepository;
         this.eventRepository = eventRepository;
@@ -34,7 +34,7 @@ public class DataLoader implements CommandLineRunner {
         this.venueRepository = venueRepository;
         this.countryRepository = countryRepository;
         this.cityRepository = cityRepository;
-        this.addressRepository = addressRepository;
+        this.venueAddressRepository = venueAddressRepository;
     }
 
     @Override
@@ -105,24 +105,24 @@ public class DataLoader implements CommandLineRunner {
         bratislava = cityRepository.save(bratislava);
 
         // addresses
-        Address durerKertAddress = new Address(null, budapest, "1117", "Öböl utca",
+        VenueAddress durerKertAddress = new VenueAddress(null, budapest, "1117", "Öböl utca",
                 "1", "https://www.google.com/maps/place/D%C3%BCrer+Kert/@47.4598982,19.0572838,17z/data=!3m1!4b1!4m6!3m5!1s0x4741dc8091c9dc2f:0xecebc630e0349849!8m2!3d47.4598982!4d19.0572838!16s%2Fm%2F0k09tn_");
-        durerKertAddress = addressRepository.save(durerKertAddress);
-        Address a38Address = new Address(null, budapest, "1117", "Petőfi híd", "-",
+        durerKertAddress = venueAddressRepository.save(durerKertAddress);
+        VenueAddress a38Address = new VenueAddress(null, budapest, "1117", "Petőfi híd", "-",
                 "https://www.google.com/maps?ll=47.476639,19.062793&z=16&t=m&hl=hu&gl=HU&mapclient=embed&cid=9961889067075519822");
-        a38Address = addressRepository.save(a38Address);
-        Address budapestParkAddress = new Address(null, budapest, "1095", "Soroksári út", "60",
+        a38Address = venueAddressRepository.save(a38Address);
+        VenueAddress budapestParkAddress = new VenueAddress(null, budapest, "1095", "Soroksári út", "60",
                 "https://www.google.hu/maps/place/Budapest+Park/@47.4676381,19.0745992,17z/data=!3m1!4b1!4m6!3m5!1s0x4741dd1baca87ab9:0x446dd6a1bee0c423!8m2!3d47.4676345!4d19.0767879!16s%2Fg%2F1hhxkxmns?coh=164777&entry=tt");
-        budapestParkAddress = addressRepository.save(budapestParkAddress);
-        Address barbaNegraRedStageAddress = new Address(null, budapest, "1211", "Szállító utca", "3",
+        budapestParkAddress = venueAddressRepository.save(budapestParkAddress);
+        VenueAddress barbaNegraRedStageAddress = new VenueAddress(null, budapest, "1211", "Szállító utca", "3",
                 "https://www.google.com/maps?ll=47.441562,19.077528&z=16&t=m&hl=hu&gl=HU&mapclient=embed&cid=3462955035018983980");
-        barbaNegraRedStageAddress = addressRepository.save(barbaNegraRedStageAddress);
-        Address gasometersAddress = new Address(null, vienna, "1110", "Guglgasse", "6",
+        barbaNegraRedStageAddress = venueAddressRepository.save(barbaNegraRedStageAddress);
+        VenueAddress gasometersAddress = new VenueAddress(null, vienna, "1110", "Guglgasse", "6",
                 "https://www.google.com/maps/place/Gasometers+of+Vienna/@48.1850303,16.4179554,17z/data=!3m1!4b1!4m6!3m5!1s0x476d07552200e63f:0x1fa4253100678110!8m2!3d48.1850303!4d16.4201441!16zL20vMDYzMzk1");
-        gasometersAddress = addressRepository.save(gasometersAddress);
-        Address fugaAddress = new Address(null, bratislava, "811 01", "Námestie SNP", "24",
+        gasometersAddress = venueAddressRepository.save(gasometersAddress);
+        VenueAddress fugaAddress = new VenueAddress(null, bratislava, "811 01", "Námestie SNP", "24",
                 "https://www.google.com/maps/place/Fuga/@48.1444756,17.1099126,17z/data=!3m1!4b1!4m6!3m5!1s0x476c8938e3b95c61:0xaba44ffa461d6d3e!8m2!3d48.1444756!4d17.1121013!16s%2Fg%2F11xc8c3np");
-        fugaAddress = addressRepository.save(fugaAddress);
+        fugaAddress = venueAddressRepository.save(fugaAddress);
 
         // venues
         Venue durerKertKisTerem = new Venue(null, "Dürer Kert Kisterem", new URL("https://www.durerkert.com"),

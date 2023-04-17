@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Address {
+public abstract class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -28,7 +28,6 @@ public class Address {
     private String street;
     @NotNull
     private String house;
-    private String googleMapsReference;
 
     @Override
     public boolean equals(Object o) {
@@ -36,12 +35,11 @@ public class Address {
         if (!(o instanceof Address address)) return false;
         return Objects.equals(id, address.id) && Objects.equals(city, address.city)
                 && Objects.equals(zipCode, address.zipCode)
-                && Objects.equals(street, address.street) && Objects.equals(house, address.house)
-                && Objects.equals(googleMapsReference, address.googleMapsReference);
+                && Objects.equals(street, address.street) && Objects.equals(house, address.house);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, city, zipCode, street, house, googleMapsReference);
+        return Objects.hash(id, city, zipCode, street, house);
     }
 }

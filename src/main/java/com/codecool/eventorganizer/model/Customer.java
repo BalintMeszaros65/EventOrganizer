@@ -45,7 +45,7 @@ public class Customer extends AppUser {
     }
 
 
-    // TODO ask if this works as intended or do I need to use getters and write it manually?
+    // TODO ask if this works as intended (super.equals()) or do I need to use getters and write it manually?
     // generated
     @Override
     public boolean equals(Object o) {

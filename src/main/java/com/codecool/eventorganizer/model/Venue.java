@@ -29,7 +29,7 @@ public class Venue {
     private int capacity;
     @OneToOne
     @NotNull
-    private Address address;
+    private VenueAddress address;
 
     @Override
     public boolean equals(Object o) {

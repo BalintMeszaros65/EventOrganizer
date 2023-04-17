@@ -3,7 +3,8 @@ package com.codecool.eventorganizer.service;
 import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.Address;
 import com.codecool.eventorganizer.model.City;
-import com.codecool.eventorganizer.repository.AddressRepository;
+import com.codecool.eventorganizer.model.VenueAddress;
+import com.codecool.eventorganizer.repository.VenueAddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,23 +17,23 @@ import java.util.UUID;
 @Service
 public class AddressService {
 
-    private final AddressRepository addressRepository;
+    private final VenueAddressRepository venueAddressRepository;
     private final CityService cityService;
 
     @Autowired
-    public AddressService(AddressRepository addressRepository, CityService cityService) {
-        this.addressRepository = addressRepository;
+    public AddressService(VenueAddressRepository venueAddressRepository, CityService cityService) {
+        this.venueAddressRepository = venueAddressRepository;
         this.cityService = cityService;
     }
 
     // basic CRUD operations
 
-    public Address getAddressById(UUID id) {
-        Optional<Address> optionalAddress = addressRepository.findById(id);
+    public VenueAddress getVenueAddressById(UUID id) {
+        Optional<VenueAddress> optionalAddress = venueAddressRepository.findById(id);
         if (optionalAddress.isPresent()) {
             return optionalAddress.get();
         } else {
-            throw new NoSuchElementException("Address not found by given id.");
+            throw new NoSuchElementException("VenueAddress not found by given id.");
         }
     }
 
@@ -53,33 +54,27 @@ public class AddressService {
         }
     }
 
-    private void checkIfAddressExists(UUID id) {
-        if (!addressRepository.existsById(id)) {
+    private void checkIfVenueAddressExists(UUID id) {
+        if (!venueAddressRepository.existsById(id)) {
             throw new NoSuchElementException("Address not found by given id.");
         }
     }
 
     // logic
 
-    public ResponseEntity<String> createAddress(Address address) {
-        checkIfRequiredDataExists(address);
-        if (address.getId() != null) {
+    public ResponseEntity<String> createVenueAddress(VenueAddress venueAddress) {
+        checkIfRequiredDataExists(venueAddress);
+        if (venueAddress.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
-        addressRepository.save(address);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Address successfully created.");
+        venueAddressRepository.save(venueAddress);
+        return ResponseEntity.status(HttpStatus.CREATED).body("VenueAddress successfully created.");
     }
 
-    public ResponseEntity<String> updateAddress(Address address) {
-        checkIfRequiredDataExists(address);
-        checkIfAddressExists(address.getId());
-        addressRepository.save(address);
-        return ResponseEntity.status(HttpStatus.OK).body("Address successfully updated.");
-    }
-
-    public ResponseEntity<String> deleteAddress(UUID id) {
-        checkIfAddressExists(id);
-        addressRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Address successfully deleted.");
+    public ResponseEntity<String> updateVenueAddress(VenueAddress venueAddress) {
+        checkIfRequiredDataExists(venueAddress);
+        checkIfVenueAddressExists(venueAddress.getId());
+        venueAddressRepository.save(venueAddress);
+        return ResponseEntity.status(HttpStatus.OK).body("VenueAddress successfully updated.");
     }
 }
