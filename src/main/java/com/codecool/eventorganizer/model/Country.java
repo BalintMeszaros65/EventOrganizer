@@ -1,9 +1,6 @@
 package com.codecool.eventorganizer.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +20,7 @@ public class Country {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @NotNull
+    @Column(unique = true)
     private String name;
 
     @Override
