@@ -42,13 +42,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // TODO DTOs
 // TODO unit tests
 // TODO integration tests
-// TODO Spring Email?
+// TODO Spring Email? timed tasks
 // TODO Spring Websocket?
 // TODO payment mocking?
 // TODO Docker?
 // TODO deploy?
 // TODO frontend?
 // TODO android app?
+// TODO React Native
+// TODO hibernate validation to controller layer
 public class EventOrganizerApplication {
 
 	public static void main(String[] args) {

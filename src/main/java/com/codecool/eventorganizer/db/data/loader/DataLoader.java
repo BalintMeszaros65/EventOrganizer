@@ -44,6 +44,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     @Override
+    // TODO generate random data
     public void run(String[] args) throws Exception {
 
         // music dummy data

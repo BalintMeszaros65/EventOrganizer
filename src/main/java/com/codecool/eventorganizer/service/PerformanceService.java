@@ -73,9 +73,7 @@ public class PerformanceService {
         return ResponseEntity.status(HttpStatus.OK).body("Performance successfully updated.");
     }
 
-    // TODO implement logic to handle booked events (already done and upcoming)
-    // TODO OR implement inactive flag to deactivate non functioning Performances
-    // TODO ask if there is a way of deleting enitity while keeping it historically in other entities
+    // TODO implement inactive flag to deactivate non functioning Performances
     public ResponseEntity<String> deletePerformance(UUID id) {
         checkIfPerformanceExists(id);
         performanceRepository.deleteById(id);

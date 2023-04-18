@@ -13,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class VenueAddress extends Address {
+
     private String googleMapsReference;
 
     public VenueAddress(UUID id, City city, String zipCode, String street, String house, String googleMapsReference) {
