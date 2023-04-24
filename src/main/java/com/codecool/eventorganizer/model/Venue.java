@@ -36,13 +36,13 @@ public class Venue {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Venue venue)) return false;
-        return isThereRefund == venue.isThereRefund && capacity == venue.capacity && Objects.equals(id, venue.id)
-                && Objects.equals(name, venue.name) && Objects.equals(homePage, venue.homePage)
-                && Objects.equals(venueAddress, venue.venueAddress);
+        return isThereRefund == venue.isThereRefund && capacity == venue.capacity && inactive == venue.inactive
+                && Objects.equals(id, venue.id) && Objects.equals(name, venue.name)
+                && Objects.equals(homePage, venue.homePage) && Objects.equals(venueAddress, venue.venueAddress);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, homePage, isThereRefund, capacity, venueAddress);
+        return Objects.hash(id, name, homePage, isThereRefund, capacity, venueAddress, inactive);
     }
 }
