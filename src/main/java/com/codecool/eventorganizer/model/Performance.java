@@ -1,6 +1,8 @@
 package com.codecool.eventorganizer.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,9 +22,11 @@ public class Performance {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @NotNull
+    @NotBlank
     private String name;
+    @org.hibernate.validator.constraints.URL
     private URL homePage;
+    @Valid
     @NotNull
     @ManyToOne
     private Genre genre;
