@@ -59,6 +59,12 @@ public class EventService {
     private void checkIfRequiredDataExists(Event event) {
         Venue venue = event.getVenue();
         Performance performance = event.getPerformance();
+        if (venue.isInactive()) {
+            throw new IllegalArgumentException("Event can not be created/updated with inactive venue.");
+        }
+        if (performance.isInactive()) {
+            throw new IllegalArgumentException("Event can not be created/updated with inactive performance.");
+        }
         ZonedDateTime startingDateAndTime = event.getEventStartingDateAndTime();
         if (venue == null || performance == null || event.getBasePrice().compareTo(BigDecimal.ZERO) < 1
                 || event.getTicketsSoldThroughOurApp() <= 0 || startingDateAndTime == null
