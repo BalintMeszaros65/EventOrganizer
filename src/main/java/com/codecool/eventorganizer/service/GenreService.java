@@ -46,13 +46,6 @@ public class GenreService {
 
     // helper methods
 
-    private static void checkIfRequiredDataExists(Genre genre) {
-        if (genre.getName() == null || genre.getType() == null || "".equals(genre.getName())
-                || "".equals(genre.getType())) {
-            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in genre.");
-        }
-    }
-
     private void checkIfGenreExists(UUID id) {
         if (!genreRepository.existsById(id)) {
             throw new NoSuchElementException("Genre not found by given id.");
@@ -62,7 +55,6 @@ public class GenreService {
     // logic
 
     public ResponseEntity<String> createGenre(Genre genre) {
-        checkIfRequiredDataExists(genre);
         if (genre.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
@@ -71,7 +63,6 @@ public class GenreService {
     }
 
     public ResponseEntity<String> updateGenre(Genre genre) {
-        checkIfRequiredDataExists(genre);
         checkIfGenreExists(genre.getId());
         genreRepository.save(genre);
         return ResponseEntity.status(HttpStatus.OK).body("Genre successfully updated.");
