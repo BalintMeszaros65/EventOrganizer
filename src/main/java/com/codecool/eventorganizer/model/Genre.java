@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,11 +20,13 @@ import java.util.UUID;
 @Setter
 public class Genre {
     @Id
+    // TODO ask if the annotation is not working due to UUID not being a CharSequence
+    // @org.hibernate.validator.constraints.UUID
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @NotNull
+    @NotBlank(message = "Name attribute must not be null, empty or blank.")
     private String name;
-    @NotNull
+    @NotBlank(message = "Type attribute must not be null, empty or blank.")
     private String type;
 
     @Override
