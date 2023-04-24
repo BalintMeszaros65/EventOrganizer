@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 // TODO continue dummy data
@@ -110,19 +111,19 @@ public class DataLoader implements CommandLineRunner {
         mobTactics = performanceRepository.save(mobTactics);
 
         // countries
-        Country hungary = new Country(null, "Hungary");
-        hungary = countryRepository.save(hungary);
-        Country austria = new Country(null, "Austria");
-        austria = countryRepository.save(austria);
-        Country slovakia = new Country(null, "Slovakia");
-        slovakia = countryRepository.save(slovakia);
+        String[] locales = Locale.getISOCountries();
+
+        for (String countryCode : locales) {
+            Locale locale = new Locale("", countryCode);
+            countryRepository.save(new Country(null, locale.getDisplayCountry(Locale.ENGLISH)));
+        }
 
         // cities
-        City budapest = new City(null, hungary, "Budapest");
+        City budapest = new City(null, countryRepository.findByName("Hungary").get(), "Budapest");
         budapest = cityRepository.save(budapest);
-        City vienna = new City(null, austria, "Vienna");
+        City vienna = new City(null, countryRepository.findByName("Austria").get(), "Vienna");
         vienna = cityRepository.save(vienna);
-        City bratislava = new City(null, slovakia, "Bratislava");
+        City bratislava = new City(null, countryRepository.findByName("Slovakia").get(), "Bratislava");
         bratislava = cityRepository.save(bratislava);
 
         // addresses
