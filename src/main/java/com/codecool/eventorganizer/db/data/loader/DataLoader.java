@@ -148,22 +148,22 @@ public class DataLoader implements CommandLineRunner {
 
         // venues
         Venue durerKertKisTerem = new Venue(null, "Dürer Kert Kisterem", new URL("https://www.durerkert.com"),
-                true, 200, durerKertAddress);
+                true, 200, durerKertAddress, false);
         durerKertKisTerem = venueRepository.save(durerKertKisTerem);
         Venue a38 = new Venue(null, "A38", new URL("https://www.a38.hu"), false, 600,
-                a38Address);
+                a38Address, false);
         a38 = venueRepository.save(a38);
         Venue budapestPark = new Venue(null, "Budapest Park", new URL("https://www.budapestpark.hu"),
-                false, 11000, budapestParkAddress);
+                false, 11000, budapestParkAddress, false);
         budapestPark = venueRepository.save(budapestPark);
         Venue barbaNegraRedStage = new Venue(null, "Barba Negra Red Stage", new URL("https://www.barbanegra.hu"),
-                true, 6000, barbaNegraRedStageAddress);
+                true, 6000, barbaNegraRedStageAddress, false);
         barbaNegraRedStage = venueRepository.save(barbaNegraRedStage);
         Venue gasometers = new Venue(null, "Gasometers of Vienna", new URL("https://www.wien.info/en/vienna-s-gasometers-133306"),
-                false, 4200, gasometersAddress);
+                false, 4200, gasometersAddress, false);
         gasometers = venueRepository.save(gasometers);
         Venue fuga = new Venue(null, "Fuga", new URL("https://www.facebook.com/fuga.ba"), false,
-                250, fugaAddress);
+                250, fugaAddress, false);
         fuga = venueRepository.save(fuga);
 
         // users

@@ -39,8 +39,8 @@ public class VenueController {
     }
 
     @Secured("ROLE_ADMIN")
-    @DeleteMapping("/api/venue/delete/{id}")
-    public ResponseEntity<String> deleteVenue(@PathVariable UUID id) {
-        return venueService.deleteVenue(id);
+    @DeleteMapping("/api/venue/switch-active-status/{id}")
+    public ResponseEntity<String> switchActiveStateOfVenue(@PathVariable UUID id) {
+        return venueService.switchActiveStateOfVenue(id);
     }
 }

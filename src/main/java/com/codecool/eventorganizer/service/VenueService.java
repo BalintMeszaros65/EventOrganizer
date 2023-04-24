@@ -44,6 +44,9 @@ public class VenueService {
     }
 
     private void checkIfRequiredDataExists(Venue venue) {
+        if (venue.isInactive()) {
+            throw new IllegalArgumentException("Venue can not be inactive when creating/updating.");
+        }
         int capacity = venue.getCapacity();
         String name = venue.getName();
         VenueAddress venueAddress = venue.getVenueAddress();
@@ -74,10 +77,12 @@ public class VenueService {
         return ResponseEntity.status(HttpStatus.OK).body("Venue successfully updated.");
     }
 
-    // TODO implement inactive flag to deactivate non functioning Venues
-    public ResponseEntity<String> deleteVenue(UUID id) {
-        checkIfVenueExists(id);
-        venueRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Venue successfully deleted.");
+    public ResponseEntity<String> switchActiveStateOfVenue(UUID id) {
+        Venue venue = getVenueById(id);
+        boolean venueIsInactive = venue.isInactive();
+        venue.setInactive(!venueIsInactive);
+        venueRepository.save(venue);
+        return ResponseEntity.status(HttpStatus.OK).body(venueIsInactive ? "Venue successfully activated."
+                : "Venue successfully inactivated.");
     }
 }

@@ -30,6 +30,7 @@ public class Venue {
     @OneToOne
     @NotNull
     private VenueAddress venueAddress;
+    private boolean inactive;
 
     @Override
     public boolean equals(Object o) {
