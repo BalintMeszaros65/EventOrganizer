@@ -77,6 +77,7 @@ public class GenreService {
         return ResponseEntity.status(HttpStatus.OK).body("Genre successfully updated.");
     }
 
+    // TODO inactive flag maybe?
     public ResponseEntity<String> deleteGenre(UUID id) {
         checkIfGenreExists(id);
         genreRepository.deleteById(id);
