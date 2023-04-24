@@ -14,7 +14,9 @@ public class GlobalControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({SQLException.class, NoSuchElementException.class, IllegalArgumentException.class,
-        IllegalStateException.class, ArithmeticException.class})
+        IllegalStateException.class, ArithmeticException.class,
+            // TODO ask how to get only the "default message" out of MethodArgumentNotValidException
+            org.springframework.web.bind.MethodArgumentNotValidException.class})
     @ResponseBody
     public String handleBadRequest(Throwable exception) {
         return exception.getMessage();
