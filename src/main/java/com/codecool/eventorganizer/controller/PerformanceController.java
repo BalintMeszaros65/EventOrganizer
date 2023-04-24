@@ -39,8 +39,8 @@ public class PerformanceController {
     }
 
     @Secured("ROLE_ADMIN")
-    @DeleteMapping("/api/performance/delete/{id}")
-    public ResponseEntity<String> deletePerformance(@PathVariable UUID id) {
-        return performanceService.deletePerformance(id);
+    @DeleteMapping("/api/performance/switch-active-state/{id}")
+    public ResponseEntity<String> switchActiveStateOfPerformance(@PathVariable UUID id) {
+        return performanceService.switchActiveStateOfPerformance(id);
     }
 }

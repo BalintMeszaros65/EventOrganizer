@@ -26,17 +26,19 @@ public class Performance {
     @NotNull
     @ManyToOne
     private Genre genre;
+    private boolean inactive;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Performance performance)) return false;
-        return Objects.equals(id, performance.id) && Objects.equals(name, performance.name)
-                && Objects.equals(homePage, performance.homePage) && Objects.equals(genre, performance.genre);
+        return inactive == performance.inactive && Objects.equals(id, performance.id)
+                && Objects.equals(name, performance.name) && Objects.equals(homePage, performance.homePage)
+                && Objects.equals(genre, performance.genre);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, homePage, genre);
+        return Objects.hash(id, name, homePage, genre, inactive);
     }
 }

@@ -44,6 +44,9 @@ public class PerformanceService {
     }
 
     private void checkIfRequiredDataExists(Performance performance) {
+        if (performance.isInactive()) {
+            throw new IllegalArgumentException("Performance can not be inactive when creating/updating.");
+        }
         String name = performance.getName();
         Genre genre = performance.getGenre();
         if (genre == null || name == null || "".equals(name)) {
@@ -73,10 +76,12 @@ public class PerformanceService {
         return ResponseEntity.status(HttpStatus.OK).body("Performance successfully updated.");
     }
 
-    // TODO implement inactive flag to deactivate non functioning Performances
-    public ResponseEntity<String> deletePerformance(UUID id) {
-        checkIfPerformanceExists(id);
-        performanceRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Performance successfully deleted.");
+    public ResponseEntity<String> switchActiveStateOfPerformance(UUID id) {
+        Performance performance = getPerformanceById(id);
+        boolean performanceIsInactive = performance.isInactive();
+        performance.setInactive(!performanceIsInactive);
+        performanceRepository.save(performance);
+        return ResponseEntity.status(HttpStatus.OK).body(performanceIsInactive ? "Performance successfully activated."
+                : "Performance successfully inactivated.");
     }
 }
