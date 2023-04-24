@@ -47,11 +47,7 @@ public class PerformanceService {
         if (performance.isInactive()) {
             throw new IllegalArgumentException("Performance can not be inactive when creating/updating.");
         }
-        String name = performance.getName();
         Genre genre = performance.getGenre();
-        if (genre == null || name == null || "".equals(name)) {
-            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in performance.");
-        }
         Genre savedGenre = genreService.getGenreById(genre.getId());
         if (!genre.equals(savedGenre)) {
             throw new IllegalArgumentException("Genre's data does not match with the one in database.");
