@@ -4,6 +4,7 @@ import com.codecool.eventorganizer.model.*;
 import com.codecool.eventorganizer.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -24,13 +25,14 @@ public class DataLoader implements CommandLineRunner {
     private final CityRepository cityRepository;
     private final VenueAddressRepository venueAddressRepository;
     private final CustomerRepository customerRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public DataLoader(AppUserRepository appUserRepository, BookedEventRepository bookedEventRepository,
                       EventRepository eventRepository, GenreRepository genreRepository,
                       PerformanceRepository performanceRepository, VenueRepository venueRepository,
                       CountryRepository countryRepository, CityRepository cityRepository, VenueAddressRepository venueAddressRepository,
-                      CustomerRepository customerRepository) {
+                      CustomerRepository customerRepository, BCryptPasswordEncoder passwordEncoder) {
         this.appUserRepository = appUserRepository;
         this.bookedEventRepository = bookedEventRepository;
         this.eventRepository = eventRepository;
@@ -41,6 +43,7 @@ public class DataLoader implements CommandLineRunner {
         this.cityRepository = cityRepository;
         this.venueAddressRepository = venueAddressRepository;
         this.customerRepository = customerRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -66,33 +69,44 @@ public class DataLoader implements CommandLineRunner {
 
         // artists
         // punk hc
-        Performance fever333 = new Performance(null, "FEVER 333", new URL("https://www.fever333.com"), punkHardcore);
+        Performance fever333 = new Performance(null, "FEVER 333", new URL("https://www.fever333.com"),
+                punkHardcore, false);
         fever333 = performanceRepository.save(fever333);
-        Performance beartooth = new Performance(null, "Beartooth", new URL("https://beartoothband.com"), punkHardcore);
+        Performance beartooth = new Performance(null, "Beartooth", new URL("https://beartoothband.com"),
+                punkHardcore, false);
         beartooth = performanceRepository.save(beartooth);
         Performance stickToYourGuns = new Performance(null, "Stick to Your Guns",
-                new URL("https://www.facebook.com/STYGoc"), punkHardcore);
+                new URL("https://www.facebook.com/STYGoc"), punkHardcore, false);
         stickToYourGuns = performanceRepository.save(stickToYourGuns);
-        Performance teveszme = new Performance(null, "Téveszme", new URL("https://www.facebook.com/teveszme"), punkHardcore);
+        Performance teveszme = new Performance(null, "Téveszme", new URL("https://www.facebook.com/teveszme"),
+                punkHardcore, false);
         teveszme = performanceRepository.save(teveszme);
-        Performance hanoi = new Performance(null, "HANØI", new URL("https://www.facebook.com/hanoihardcore"), punkHardcore);
+        Performance hanoi = new Performance(null, "HANØI", new URL("https://www.facebook.com/hanoihardcore"),
+                punkHardcore, false);
         hanoi = performanceRepository.save(hanoi);
-        Performance nemecsek = new Performance(null, "nemecsek", new URL("https://www.facebook.com/nemecsekeger"), punkHardcore);
+        Performance nemecsek = new Performance(null, "nemecsek", new URL("https://www.facebook.com/nemecsekeger"),
+                punkHardcore, false);
         nemecsek = performanceRepository.save(nemecsek);
 
 
         // DnB
-        Performance spor = new Performance(null, "Spor", new URL("https://www.facebook.com/sporlifted"), drumAndBass);
+        Performance spor = new Performance(null, "Spor", new URL("https://www.facebook.com/sporlifted"),
+                drumAndBass, false);
         spor = performanceRepository.save(spor);
-        Performance evolIntent = new Performance(null, "Evol Intent", new URL("https://www.facebook.com/realevolintent"), drumAndBass);
+        Performance evolIntent = new Performance(null, "Evol Intent", new URL("https://www.facebook.com/realevolintent"),
+                drumAndBass, false);
         evolIntent = performanceRepository.save(evolIntent);
-        Performance badCompanyUk = new Performance(null, "Bad Company UK", new URL("https://www.badcompany.uk.com/home"), drumAndBass);
+        Performance badCompanyUk = new Performance(null, "Bad Company UK", new URL("https://www.badcompany.uk.com/home"),
+                drumAndBass, false);
         badCompanyUk = performanceRepository.save(badCompanyUk);
-        Performance mindscape = new Performance(null, "Mindscape", new URL("https://www.facebook.com/m1ndscape"), drumAndBass);
+        Performance mindscape = new Performance(null, "Mindscape", new URL("https://www.facebook.com/m1ndscape"),
+                drumAndBass, false);
         mindscape = performanceRepository.save(mindscape);
-        Performance data3 = new Performance(null, "Data 3", new URL("https://www.facebook.com/data3official"), drumAndBass);
+        Performance data3 = new Performance(null, "Data 3", new URL("https://www.facebook.com/data3official"),
+                drumAndBass, false);
         data3 = performanceRepository.save(data3);
-        Performance mobTactics = new Performance(null, "Mob Tactics", new URL("https://www.facebook.com/MobTacticsMusic"), drumAndBass);
+        Performance mobTactics = new Performance(null, "Mob Tactics", new URL("https://www.facebook.com/MobTacticsMusic"),
+                drumAndBass, false);
         mobTactics = performanceRepository.save(mobTactics);
 
         // countries
@@ -153,19 +167,23 @@ public class DataLoader implements CommandLineRunner {
 
         // users
 
-        Customer customer1 = new Customer(null, "customer1@gmail.com", "customer1",
-                "customer", "1", List.of("ROLE_USER"), null);
+        Customer customer1 = new Customer(null, "customer1@gmail.com",
+                passwordEncoder.encode("customer1"), "customer", "1",
+                List.of("ROLE_USER"), null);
         customer1 = customerRepository.save(customer1);
-        Customer customer2 = new Customer(null, "customer2@gmail.com", "customer2",
-                "customer", "2", List.of("ROLE_USER"), null);
+        Customer customer2 = new Customer(null, "customer2@gmail.com",
+                passwordEncoder.encode("customer2"), "customer", "2",
+                List.of("ROLE_USER"), null);
         customer2 = customerRepository.save(customer2);
-        AppUser organizer1 = new AppUser(null, "organizer1@gmail.com", "organizer1",
-                "organizer", "1", List.of("ROLE_ORGANIZER"));
+        AppUser organizer1 = new AppUser(null, "organizer1@gmail.com",
+                passwordEncoder.encode("organizer1"), "organizer", "1",
+                List.of("ROLE_ORGANIZER"));
         organizer1 = appUserRepository.save(organizer1);
-        AppUser organizer2 = new AppUser(null, "organizer2@gmail.com", "organizer2",
-                "organizer", "2", List.of("ROLE_ORGANIZER"));
+        AppUser organizer2 = new AppUser(null, "organizer2@gmail.com",
+                passwordEncoder.encode("organizer2"), "organizer", "2",
+                List.of("ROLE_ORGANIZER"));
         organizer2 = appUserRepository.save(organizer2);
-        AppUser admin = new AppUser(null, "admin@gmail.com", "admin",
+        AppUser admin = new AppUser(null, "admin@gmail.com", passwordEncoder.encode("admin"),
                 "admin", "admin", List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
         admin = appUserRepository.save(admin);
 
