@@ -34,7 +34,6 @@ public class BookingAndRefundingService {
 
     public ResponseEntity<String> bookEvent(UUID eventId, int ticketCount) {
         Event event = eventService.getEventById(eventId);
-        // TODO check if user has event(s) booked for the same date/time when the event takes places?
         BigDecimal amountToBePayed = event.currentPriceOfTickets(ticketCount);
         // TODO payment later?
         // tries to book tickets for event, throws error if that is not possible
