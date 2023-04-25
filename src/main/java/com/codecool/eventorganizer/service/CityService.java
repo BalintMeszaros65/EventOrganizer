@@ -42,7 +42,7 @@ public class CityService {
 
     // helper methods
 
-    private void checkIfRequiredDataExists(City city) {
+    private void checkIfCountryMatchesInDatabase(City city) {
         Country country = city.getCountry();
         Country savedCountry = countryService.getCountryById(country.getId());
         if (!country.equals(savedCountry)) {
@@ -59,7 +59,7 @@ public class CityService {
     // logic
 
     public ResponseEntity<String> createCity(City city) {
-        checkIfRequiredDataExists(city);
+        checkIfCountryMatchesInDatabase(city);
         if (city.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
@@ -68,7 +68,7 @@ public class CityService {
     }
 
     public ResponseEntity<String> updateCity(City city) {
-        checkIfRequiredDataExists(city);
+        checkIfCountryMatchesInDatabase(city);
         checkIfCityExists(city.getId());
         cityRepository.save(city);
         return ResponseEntity.status(HttpStatus.OK).body("City successfully updated.");
