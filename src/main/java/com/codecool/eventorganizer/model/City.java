@@ -1,7 +1,8 @@
 package com.codecool.eventorganizer.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,9 +21,9 @@ public class City {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @ManyToOne
-    @NotNull
+    @Valid
     private Country country;
-    @NotNull
+    @NotBlank
     private String name;
 
     @Override

@@ -43,11 +43,7 @@ public class CityService {
     // helper methods
 
     private void checkIfRequiredDataExists(City city) {
-        String name = city.getName();
         Country country = city.getCountry();
-        if (name == null || "".equals(name) || country == null) {
-            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in city.");
-        }
         Country savedCountry = countryService.getCountryById(country.getId());
         if (!country.equals(savedCountry)) {
             throw new IllegalArgumentException("Country's data does not match with the one in database.");

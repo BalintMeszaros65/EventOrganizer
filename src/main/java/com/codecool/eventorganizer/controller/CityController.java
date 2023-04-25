@@ -5,6 +5,8 @@ import com.codecool.eventorganizer.model.Country;
 import com.codecool.eventorganizer.service.CityService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -31,25 +33,25 @@ public class CityController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/api/city/create")
-    public ResponseEntity<String> createCity(@RequestBody City city) {
+    public ResponseEntity<String> createCity(@Valid @RequestBody City city) {
         return cityService.createCity(city);
     }
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/api/city/update")
-    public ResponseEntity<String> updateCity(@RequestBody City city) {
+    public ResponseEntity<String> updateCity(@Valid @RequestBody City city) {
         return cityService.updateCity(city);
     }
 
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/api/city/delete/{id}")
-    public ResponseEntity<String> deleteCity(@PathVariable UUID id) {
+    public ResponseEntity<String> deleteCity(@NotNull @PathVariable UUID id) {
         return cityService.deleteCity(id);
     }
 
     @Secured({"ROLE_ORGANIZER", "ROLE_ADMIN"})
     @GetMapping("/api/city/get-all-by-country")
-    public List<City> getAllCityByCountry(@RequestBody Country country) {
+    public List<City> getAllCityByCountry(@Valid @RequestBody Country country) {
         return cityService.getAllCityByCountry(country);
     }
 }
