@@ -2,7 +2,8 @@ package com.codecool.eventorganizer.model;
 
 import com.codecool.eventorganizer.exception.CustomExceptions;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,28 +23,33 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    @Valid
     @NotNull
     @ManyToOne
     private Venue venue;
+    @Valid
     @NotNull
     @ManyToOne
     private Performance performance;
+    @Valid
     @NotNull
     @ManyToOne
     private AppUser organizer;
+    @DecimalMin(value = "0.0", inclusive = false)
     @NotNull
     private BigDecimal basePrice;
-    @NotNull
+    @Positive
     private int ticketsSoldThroughOurApp;
-    @NotNull
+    /* no validation required due to setting it to max when creating Event and calculating the remaining tickets
+        when updating Event */
     private int availableTickets;
+    @Future
     @NotNull
     private ZonedDateTime eventStartingDateAndTime;
-    @NotNull
+    @Positive
     private int eventLengthInMinutes;
-    @NotNull
+    @Min(value = 0)
     private int daysBeforeBookingIsClosed;
-    @NotNull
     private boolean isCancelled;
 
     public Genre getGenre() {

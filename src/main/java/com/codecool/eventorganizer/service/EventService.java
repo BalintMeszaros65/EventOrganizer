@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -57,6 +56,9 @@ public class EventService {
     // helper methods
 
     private void checkIfRequiredDataExists(Event event) {
+        if (event.isCancelled()) {
+            throw new IllegalArgumentException("Cancelled event can not be created/updated.");
+        }
         Venue venue = event.getVenue();
         Performance performance = event.getPerformance();
         if (venue.isInactive()) {
@@ -64,18 +66,6 @@ public class EventService {
         }
         if (performance.isInactive()) {
             throw new IllegalArgumentException("Event can not be created/updated with inactive performance.");
-        }
-        ZonedDateTime startingDateAndTime = event.getEventStartingDateAndTime();
-        if (venue == null || performance == null || event.getBasePrice().compareTo(BigDecimal.ZERO) < 1
-                || event.getTicketsSoldThroughOurApp() <= 0 || startingDateAndTime == null
-                || event.getEventLengthInMinutes() <= 0) {
-            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in event.");
-        }
-        if (event.isCancelled()) {
-            throw new IllegalArgumentException("Cancelled event can not be created/updated.");
-        }
-        if (startingDateAndTime.isBefore(ZonedDateTime.now())) {
-            throw new IllegalArgumentException("Starting date and time can not be in the past.");
         }
         Venue savedVenue = venueService.getVenueById(venue.getId());
         Performance savedPerformance = performanceService.getPerformanceById(performance.getId());

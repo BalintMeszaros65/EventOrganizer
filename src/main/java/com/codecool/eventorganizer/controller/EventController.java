@@ -5,6 +5,8 @@ import com.codecool.eventorganizer.model.Event;
 import com.codecool.eventorganizer.service.EventService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -42,19 +44,19 @@ public class EventController {
 
     @Secured("ROLE_ORGANIZER")
     @PostMapping("/api/event/create")
-    public ResponseEntity<String> createEvent(@RequestBody Event event) {
+    public ResponseEntity<String> createEvent(@Valid @RequestBody Event event) {
         return eventService.createEvent(event);
     }
 
     @Secured("ROLE_ORGANIZER")
     @PutMapping("/api/event/update")
-    public ResponseEntity<String> updateEvent(@RequestBody Event event) {
+    public ResponseEntity<String> updateEvent(@Valid @RequestBody Event event) {
         return eventService.updateEvent(event);
     }
 
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/api/event/delete/{id}")
-    public ResponseEntity<String> deleteEvent(@PathVariable UUID id) {
+    public ResponseEntity<String> deleteEvent(@NotNull @PathVariable UUID id) {
         return eventService.deleteEvent(id);
     }
 }
