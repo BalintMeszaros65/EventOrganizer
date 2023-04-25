@@ -1,8 +1,11 @@
 package com.codecool.eventorganizer.model;
 
+import com.codecool.eventorganizer.utility.BasicInfoValidation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,20 +24,20 @@ public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @NotNull
+    @Email(groups = BasicInfoValidation.class)
     @Column(unique = true)
     @Schema(example = "testemail@gmail.com")
     private String email;
-    @NotNull
+    @NotBlank(groups = BasicInfoValidation.class)
     @Schema(example = "testpw")
     private String password;
-    @NotNull
+    @NotBlank(groups = BasicInfoValidation.class)
     @Schema(example = "John")
     private String firstName;
-    @NotNull
+    @NotBlank(groups = BasicInfoValidation.class)
     @Schema(example = "Smith")
     private String lastName;
-    @NotNull
+    @NotEmpty
     @ElementCollection(fetch = FetchType.EAGER)
     List<String> roles;
 

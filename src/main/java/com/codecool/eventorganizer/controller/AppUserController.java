@@ -2,6 +2,7 @@ package com.codecool.eventorganizer.controller;
 
 import com.codecool.eventorganizer.model.AppUser;
 import com.codecool.eventorganizer.service.AppUserService;
+import com.codecool.eventorganizer.utility.BasicInfoValidation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,9 +11,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -40,13 +43,11 @@ public class AppUserController {
             )),
         @ApiResponse(
             responseCode = "400",
-            description = "something went wrong",
-            content = @Content(
-                schema = @Schema(example = "Missing one or more attribute(s) in AppUser")
-            )
+            description = "something went wrong"
         )
     })
     public ResponseEntity<String> registerUser(
+            @Validated(BasicInfoValidation.class)
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                 description = "AppUser Object where id (generated), roles (generated) must be null."
             )
@@ -56,7 +57,9 @@ public class AppUserController {
 
     @PostMapping("/api/organizer/register/{secret_key}")
     @Operation(summary = "registers an organizer")
-    public ResponseEntity<String> registerOrganizer(@RequestBody AppUser appUser,
+    public ResponseEntity<String> registerOrganizer(
+            @Validated(BasicInfoValidation.class)
+            @RequestBody AppUser appUser,
             @Parameter(description = "Secret key for organizer registration", required = true)
             @PathVariable(name = "secret_key") String secretKey) {
         return appUserService.registerOrganizer(appUser, secretKey);
@@ -64,7 +67,9 @@ public class AppUserController {
 
     @PostMapping("/api/admin/register/{secret_key}")
     @Operation(summary = "registers an admin")
-    public ResponseEntity<String> registerAdmin(@RequestBody AppUser appUser,
+    public ResponseEntity<String> registerAdmin(
+            @Validated(BasicInfoValidation.class)
+            @RequestBody AppUser appUser,
             @Parameter(description = "Secret key for admin registration", required = true)
             @PathVariable(name = "secret_key") String secretKey) {
         return appUserService.registerAdmin(appUser, secretKey);
@@ -73,12 +78,13 @@ public class AppUserController {
     @Secured({"ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"})
     @SecurityRequirement(name = "Bearer Authentication")
     @SecurityRequirement(name = "Basic Authentication")
-    @PutMapping("/api/user/update-information")
+    @PutMapping("/api/user/change-name")
     @Operation(summary = "updates the current user's information")
-    public ResponseEntity<String> updateUser(
+    public ResponseEntity<String> changeUserName(
+            @Validated(BasicInfoValidation.class)
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "AppUser Object where id, email, password and booked events must not differ " +
-                            "from the ones stored in database."
+                description =
+                    "AppUser Object where id, email and password must not differ from the ones stored in database."
             )
             @RequestBody AppUser appUser) {
         return appUserService.updateUserInformation(appUser);
@@ -89,7 +95,8 @@ public class AppUserController {
     @SecurityRequirement(name = "Basic Authentication")
     @PutMapping("/api/user/change-password")
     @Operation(summary = "changes the current user's password")
-    public ResponseEntity<String> changePasswordOfUser(
+    public ResponseEntity<String> changeUserPassword(
+            @NotBlank
             @Parameter(description = "New password of user", required = true)
             @RequestParam String newPassword) {
         return appUserService.changePassword(newPassword);

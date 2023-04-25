@@ -86,17 +86,6 @@ public class AppUserService {
         }
     }
 
-    private static void checkIfRequiredDataExists(AppUser appUser) {
-        String email = appUser.getEmail();
-        String password = appUser.getPassword();
-        String firstName = appUser.getFirstName();
-        String lastName = appUser.getLastName();
-        if (email == null ||  password == null || firstName == null || lastName == null
-                || "".equals(email) || "".equals(password) || "".equals(firstName) || "".equals(lastName)) {
-            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in AppUser\n");
-        }
-    }
-
     private String generateToken(AppUser appUser) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(appUser.getEmail());
         return jwtUtil.generateToken(userDetails);
@@ -121,15 +110,11 @@ public class AppUserService {
                     "Changing password is not allowed at this endpoint."
             );
         }
-        if ("".equals(appUser.getLastName()) || "".equals(appUser.getFirstName())) {
-            throw new CustomExceptions.MissingAttributeException("Last and first name can not be empty.");
-        }
     }
 
     // logic
 
     public ResponseEntity<String> registerCustomer(AppUser appUser) {
-        checkIfRequiredDataExists(appUser);
         checkIfEmailIsAlreadyRegistered(appUser);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_USER"));
@@ -143,7 +128,6 @@ public class AppUserService {
         if (!"organizer".equals(secretKey)) {
             throw new IllegalArgumentException("Secret key for registering an organizer account is not matching.");
         }
-        checkIfRequiredDataExists(appUser);
         checkIfEmailIsAlreadyRegistered(appUser);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_ORGANIZER"));
@@ -157,7 +141,6 @@ public class AppUserService {
         if (!"admin".equals(secretKey)) {
             throw new IllegalArgumentException("Secret key for registering an admin account is not matching.");
         }
-        checkIfRequiredDataExists(appUser);
         checkIfEmailIsAlreadyRegistered(appUser);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
@@ -173,9 +156,6 @@ public class AppUserService {
     }
 
     public ResponseEntity<String> changePassword(String newPassword) {
-        if ("".equals(newPassword) || newPassword == null) {
-            throw new CustomExceptions.MissingAttributeException("Password can not be empty.");
-        }
         AppUser currentUser = getCurrentUser();
         if (passwordEncoder.matches(newPassword, currentUser.getPassword())) {
             throw new CustomExceptions.MissingAttributeException("New password can not be the old password.");
