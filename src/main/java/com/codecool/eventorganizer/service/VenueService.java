@@ -47,12 +47,7 @@ public class VenueService {
         if (venue.isInactive()) {
             throw new IllegalArgumentException("Venue can not be inactive when creating/updating.");
         }
-        int capacity = venue.getCapacity();
-        String name = venue.getName();
         VenueAddress venueAddress = venue.getVenueAddress();
-        if (capacity <= 0 || name == null || "".equals(name) || venueAddress == null) {
-            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in venue.");
-        }
         VenueAddress savedVenueAddress = addressService.getVenueAddressById(venueAddress.getId())  ;
         if (!venueAddress.equals(savedVenueAddress)) {
             throw new IllegalArgumentException("VenueAddress' data does not match with the one in database.");

@@ -1,7 +1,9 @@
 package com.codecool.eventorganizer.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,15 +22,14 @@ public class Venue {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @NotNull
+    @NotBlank
     private String name;
     private URL homePage;
-    @NotNull
     private boolean isThereRefund;
-    @NotNull
+    @Min(1)
     private int capacity;
     @OneToOne
-    @NotNull
+    @Valid
     private VenueAddress venueAddress;
     private boolean inactive;
 
