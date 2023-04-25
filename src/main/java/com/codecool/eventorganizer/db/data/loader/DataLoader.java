@@ -193,17 +193,18 @@ public class DataLoader implements CommandLineRunner {
         Event fever333AtDurerKertKisteremPast = new Event(null, durerKertKisTerem, fever333, organizer1,
                 BigDecimal.valueOf(6000), 150, 10, ZonedDateTime.now().minusDays(5),
                 90, 2, false);
-        fever333AtDurerKertKisteremPast = eventRepository.save(fever333AtDurerKertKisteremPast);
+        // TODO ask how to "bypass" Hibernate validation
+        // fever333AtDurerKertKisteremPast = eventRepository.save(fever333AtDurerKertKisteremPast);
         Event fever333AtDurerKertKisteremFuture = new Event(null, durerKertKisTerem, fever333, organizer1,
                 BigDecimal.valueOf(7000), 150, 130, ZonedDateTime.now().plusDays(15),
                 80, 2, false);
         fever333AtDurerKertKisteremFuture = eventRepository.save(fever333AtDurerKertKisteremFuture);
         Event fever333AtA38FutureCancelled = new Event(null, a38, fever333, organizer2,
-                BigDecimal.valueOf(8000), 450, 450, ZonedDateTime.now().minusDays(3),
+                BigDecimal.valueOf(8000), 450, 450, ZonedDateTime.now().plusDays(3),
                 100, 2, true);
         fever333AtA38FutureCancelled = eventRepository.save(fever333AtA38FutureCancelled);
         Event fever333AtBudapestParkFuture = new Event(null, a38, fever333, organizer2,
-                BigDecimal.valueOf(8000), 9000, 5487, ZonedDateTime.now().minusDays(3),
+                BigDecimal.valueOf(8000), 9000, 5487, ZonedDateTime.now().plusDays(3),
                 100, 2, false);
 
         // booked events
