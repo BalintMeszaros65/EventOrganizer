@@ -74,10 +74,10 @@ public class PerformanceService {
 
     public ResponseEntity<String> switchActiveStateOfPerformance(UUID id) {
         Performance performance = getPerformanceById(id);
-        boolean performanceIsInactive = performance.isInactive();
-        performance.setInactive(!performanceIsInactive);
+        boolean inactive = performance.isInactive();
+        performance.setInactive(!inactive);
         performanceRepository.save(performance);
-        return ResponseEntity.status(HttpStatus.OK).body(performanceIsInactive ? "Performance successfully activated."
+        return ResponseEntity.status(HttpStatus.OK).body(inactive ? "Performance successfully activated."
                 : "Performance successfully inactivated.");
     }
 }
