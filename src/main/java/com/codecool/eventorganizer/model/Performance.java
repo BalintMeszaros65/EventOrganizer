@@ -24,7 +24,8 @@ public class Performance {
     private UUID id;
     @NotBlank
     private String name;
-    @org.hibernate.validator.constraints.URL
+    // TODO ask why it is not working
+//    @org.hibernate.validator.constraints.URL
     private URL homePage;
     @Valid
     @NotNull
