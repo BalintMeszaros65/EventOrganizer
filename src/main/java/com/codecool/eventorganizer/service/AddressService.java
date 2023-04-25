@@ -39,15 +39,8 @@ public class AddressService {
 
     // helper methods
 
-    private void checkIfRequiredDataExists(Address address) {
+    private void checkIfCityMatchesInDatabase(Address address) {
         City city = address.getCity();
-        String zipCode = address.getZipCode();
-        String street = address.getStreet();
-        String house = address.getHouse();
-        if (city == null || zipCode == null || street == null || house == null || "".equals(zipCode)
-                || "". equals(street) || "".equals(house)) {
-            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in country.");
-        }
         City savedCity = cityService.getCityById(city.getId());
         if (!city.equals(savedCity)) {
             throw new IllegalArgumentException("City's data does not match with the one in database.");
@@ -63,7 +56,7 @@ public class AddressService {
     // logic
 
     public ResponseEntity<String> createVenueAddress(VenueAddress venueAddress) {
-        checkIfRequiredDataExists(venueAddress);
+        checkIfCityMatchesInDatabase(venueAddress);
         if (venueAddress.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
@@ -72,7 +65,7 @@ public class AddressService {
     }
 
     public ResponseEntity<String> updateVenueAddress(VenueAddress venueAddress) {
-        checkIfRequiredDataExists(venueAddress);
+        checkIfCityMatchesInDatabase(venueAddress);
         checkIfVenueAddressExists(venueAddress.getId());
         venueAddressRepository.save(venueAddress);
         return ResponseEntity.status(HttpStatus.OK).body("VenueAddress successfully updated.");

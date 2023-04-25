@@ -1,7 +1,8 @@
 package com.codecool.eventorganizer.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,14 +20,14 @@ public abstract class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @NotNull
+    @Valid
     @ManyToOne
     private City city;
-    @NotNull
+    @NotBlank
     private String zipCode;
-    @NotNull
+    @NotBlank
     private String street;
-    @NotNull
+    @NotBlank
     private String house;
 
     @Override
