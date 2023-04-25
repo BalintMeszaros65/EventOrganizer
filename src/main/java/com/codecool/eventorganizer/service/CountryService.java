@@ -39,13 +39,6 @@ public class CountryService {
 
     // helper methods
 
-    private static void checkIfRequiredDataExists(Country country) {
-        String name = country.getName();
-        if (name == null || "".equals(name)) {
-            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in country.");
-        }
-    }
-
     private void checkIfCountryExists(UUID id) {
         if (!countryRepository.existsById(id)) {
             throw new NoSuchElementException("Country not found by given id.");
@@ -55,7 +48,6 @@ public class CountryService {
     // logic
 
     public ResponseEntity<String> createCountry(Country country) {
-        checkIfRequiredDataExists(country);
         if (country.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
@@ -64,7 +56,6 @@ public class CountryService {
     }
 
     public ResponseEntity<String> updateCountry(Country country) {
-        checkIfRequiredDataExists(country);
         checkIfCountryExists(country.getId());
         countryRepository.save(country);
         return ResponseEntity.status(HttpStatus.OK).body("Country successfully updated.");
