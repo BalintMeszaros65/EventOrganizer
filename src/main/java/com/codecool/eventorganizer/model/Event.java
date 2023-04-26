@@ -1,6 +1,7 @@
 package com.codecool.eventorganizer.model;
 
 import com.codecool.eventorganizer.exception.CustomExceptions;
+import com.codecool.eventorganizer.utility.ZonedDateTimeFormatter;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -109,7 +110,7 @@ public class Event {
             ZonedDateTime endOfBooking = eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed);
             throw new CustomExceptions.IllegalEventStateException(
                 endOfBooking.isBefore(ZonedDateTime.now()) ?
-                    String.format("Booking for event ended at %s", endOfBooking)
+                    String.format("Booking for event ended at %s", endOfBooking.format(ZonedDateTimeFormatter.formatter))
                     : String.format("Not enough tickets left (%s)", availableTickets)
             );
         }
@@ -124,7 +125,8 @@ public class Event {
         } else {
             throw new CustomExceptions.IllegalEventStateException(
                 venue.isThereRefund() ?
-                String.format("Refunding for event ended at %s", eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed))
+                String.format("Refunding for event ended at %s", eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed)
+                        .format(ZonedDateTimeFormatter.formatter))
                 : "Refunding is not allowed by the venue."
             );
         }
