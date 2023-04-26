@@ -24,9 +24,9 @@ public class Genre {
     // @org.hibernate.validator.constraints.UUID
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @NotBlank(message = "Name attribute must not be null, empty or blank.")
+    @NotBlank
     private String name;
-    @NotBlank(message = "Type attribute must not be null, empty or blank.")
+    @NotBlank
     private String type;
 
     @Override

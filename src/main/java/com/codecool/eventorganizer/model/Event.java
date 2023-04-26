@@ -41,8 +41,7 @@ public class Event {
     private BigDecimal basePrice;
     @Positive
     private int ticketsSoldThroughOurApp;
-    /* no validation required due to setting it to max when creating Event and calculating the remaining tickets
-        when updating Event */
+    @PositiveOrZero
     private int availableTickets;
     @Future
     @NotNull
@@ -51,6 +50,7 @@ public class Event {
     private int eventLengthInMinutes;
     @PositiveOrZero
     private int daysBeforeBookingIsClosed;
+    // TODO add insert only validation group
     private boolean isCancelled;
 
     public Genre getGenre() {

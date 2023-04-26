@@ -31,6 +31,7 @@ public class Performance {
     @NotNull
     @ManyToOne
     private Genre genre;
+    // TODO add insert only validation group
     private boolean inactive;
 
     @Override

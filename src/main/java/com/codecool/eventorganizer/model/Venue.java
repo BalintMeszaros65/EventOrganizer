@@ -2,9 +2,9 @@ package com.codecool.eventorganizer.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,12 +27,13 @@ public class Venue {
     private String name;
     private URL homePage;
     private boolean isThereRefund;
-    @Min(1)
+    @Positive
     private int capacity;
     @OneToOne
     @Valid
     @NotNull
     private VenueAddress venueAddress;
+    // TODO add insert only validation group
     private boolean inactive;
 
     @Override
