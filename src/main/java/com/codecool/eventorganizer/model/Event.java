@@ -49,7 +49,7 @@ public class Event {
     private ZonedDateTime eventStartingDateAndTime;
     @Positive
     private int eventLengthInMinutes;
-    @Min(value = 0)
+    @PositiveOrZero
     private int daysBeforeBookingIsClosed;
     private boolean isCancelled;
 
