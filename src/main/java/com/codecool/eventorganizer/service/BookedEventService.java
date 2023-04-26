@@ -8,7 +8,6 @@ import com.codecool.eventorganizer.repository.BookedEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -46,11 +45,6 @@ public class BookedEventService {
 
     private void checkIfRequiredDataExists(BookedEvent bookedEvent) {
         Event event = bookedEvent.getEvent();
-        BigDecimal amountPayed = bookedEvent.getAmountPayed();
-        if (event == null || bookedEvent.getAppUser() == null || amountPayed == null || amountPayed.compareTo(BigDecimal.ZERO) < 1
-                || bookedEvent.getTicketCount() <= 0 || bookedEvent.getDateOfBooking() == null) {
-            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in booked event.");
-        }
         if (bookedEvent.isRefunded()) {
             throw new IllegalStateException("Booked event can not be already refunded when creating.");
         }

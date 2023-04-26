@@ -3,6 +3,8 @@ package com.codecool.eventorganizer.controller;
 import com.codecool.eventorganizer.service.BookingAndRefundingService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -30,19 +32,19 @@ public class BookingAndRefundingController {
 
     @Secured("ROLE_USER")
     @PostMapping("/api/book-event/{event_id}/{ticket_count}")
-    public ResponseEntity<String> bookEvent(@PathVariable("event_id") UUID eventId, @PathVariable("ticket_count") int ticketCount) {
+    public ResponseEntity<String> bookEvent(@NotNull @PathVariable("event_id") UUID eventId, @Positive @PathVariable("ticket_count") int ticketCount) {
         return bookingAndRefundingService.bookEvent(eventId, ticketCount);
     }
 
     @Secured("ROLE_USER")
     @PutMapping("/api/refund-booked-event/{booked_event_id}")
-    public ResponseEntity<String> refundBookedEvent(@PathVariable("booked_event_id") UUID bookedEventId) {
+    public ResponseEntity<String> refundBookedEvent(@NotNull @PathVariable("booked_event_id") UUID bookedEventId) {
         return bookingAndRefundingService.refundBookedEvent(bookedEventId);
     }
 
     @Secured("ROLE_ORGANIZER")
     @PutMapping("/api/event/{event_id}/cancel")
-    public ResponseEntity<String> cancelEvent(@PathVariable("event_id") UUID eventId) {
+    public ResponseEntity<String> cancelEvent(@NotNull @PathVariable("event_id") UUID eventId) {
         return bookingAndRefundingService.cancelEvent(eventId);
     }
 }

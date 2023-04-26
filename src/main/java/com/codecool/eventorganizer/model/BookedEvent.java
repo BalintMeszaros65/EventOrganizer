@@ -2,7 +2,11 @@ package com.codecool.eventorganizer.model;
 
 import com.codecool.eventorganizer.exception.CustomExceptions;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,19 +26,23 @@ public class BookedEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    @Valid
     @NotNull
     @ManyToOne
     private Event event;
+    @DecimalMin(value = "0.0", inclusive = false)
     @NotNull
     private BigDecimal amountPayed;
-    @NotNull
+    @Positive
     private int ticketCount;
     @NotNull
+    @PastOrPresent
     private ZonedDateTime dateOfBooking;
+    @Valid
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private AppUser appUser;
-    @NotNull
+    // TODO add insert only validation group
     private boolean isRefunded;
 
     public BookedEvent(Event event, BigDecimal amountPayed, int ticketCount, AppUser appUser) {
