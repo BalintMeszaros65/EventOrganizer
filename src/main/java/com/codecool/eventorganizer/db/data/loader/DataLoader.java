@@ -205,6 +205,7 @@ public class DataLoader implements CommandLineRunner {
         Event fever333AtBudapestParkFuture = new Event(null, a38, fever333, organizer2,
                 BigDecimal.valueOf(8000), 9000, 5487, ZonedDateTime.now().plusDays(3),
                 100, 2, false);
+        fever333AtBudapestParkFuture = eventRepository.save(fever333AtBudapestParkFuture);
 
         // booked events
     }
