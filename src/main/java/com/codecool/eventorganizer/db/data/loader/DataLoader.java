@@ -191,10 +191,9 @@ public class DataLoader implements CommandLineRunner {
         // events
 
         Event fever333AtDurerKertKisteremPast = new Event(null, durerKertKisTerem, fever333, organizer1,
-                BigDecimal.valueOf(6000), 150, 10, ZonedDateTime.now().minusDays(5),
+                BigDecimal.valueOf(6000), 150, 10, ZonedDateTime.now().plusSeconds(5),
                 90, 2, false);
-        // TODO ask how to "bypass" Hibernate validation
-        // fever333AtDurerKertKisteremPast = eventRepository.save(fever333AtDurerKertKisteremPast);
+        fever333AtDurerKertKisteremPast = eventRepository.save(fever333AtDurerKertKisteremPast);
         Event fever333AtDurerKertKisteremFuture = new Event(null, durerKertKisTerem, fever333, organizer1,
                 BigDecimal.valueOf(7000), 150, 130, ZonedDateTime.now().plusDays(15),
                 80, 2, false);
