@@ -33,15 +33,15 @@ public class BookedEvent {
     private ZonedDateTime dateOfBooking;
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    private Customer customer;
+    private AppUser appUser;
     @NotNull
     private boolean isRefunded;
 
-    public BookedEvent(Event event, BigDecimal amountPayed, int ticketCount, Customer customer) {
+    public BookedEvent(Event event, BigDecimal amountPayed, int ticketCount, AppUser appUser) {
         this.event = event;
         this.amountPayed = amountPayed;
         this.ticketCount = ticketCount;
-        this.customer = customer;
+        this.appUser = appUser;
         this.dateOfBooking = ZonedDateTime.now();
         this.isRefunded = false;
     }
@@ -77,11 +77,11 @@ public class BookedEvent {
                 && Objects.equals(id, bookedEvent.id)
                 && Objects.equals(event, bookedEvent.event) && Objects.equals(amountPayed, bookedEvent.amountPayed)
                 && Objects.equals(dateOfBooking, bookedEvent.dateOfBooking)
-                && Objects.equals(customer, bookedEvent.customer);
+                && Objects.equals(appUser, bookedEvent.appUser);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, event, amountPayed, ticketCount, dateOfBooking, customer, isRefunded);
+        return Objects.hash(id, event, amountPayed, ticketCount, dateOfBooking, appUser, isRefunded);
     }
 }

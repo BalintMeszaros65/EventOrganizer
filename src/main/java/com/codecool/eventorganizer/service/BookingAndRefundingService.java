@@ -1,7 +1,7 @@
 package com.codecool.eventorganizer.service;
 
+import com.codecool.eventorganizer.model.AppUser;
 import com.codecool.eventorganizer.model.BookedEvent;
-import com.codecool.eventorganizer.model.Customer;
 import com.codecool.eventorganizer.model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,8 +26,8 @@ public class BookingAndRefundingService {
 
     // helper methods
 
-    private Customer getCurrentCustomer() {
-        return appUserService.getCurrentCustomer();
+    private AppUser getCurrentUser() {
+        return appUserService.getCurrentUser();
     }
 
     // logic
@@ -40,7 +40,7 @@ public class BookingAndRefundingService {
         eventService.bookTickets(event, ticketCount);
         // if booking tickets was successful, creates a booked event, saves it and returns it with generated id
         BookedEvent savedBookedEvent = bookedEventService.saveBookedEvent(
-                new BookedEvent(event, amountToBePayed, ticketCount, getCurrentCustomer())
+                new BookedEvent(event, amountToBePayed, ticketCount, getCurrentUser())
         );
         // saves booked event in current customer's booked events list
         appUserService.addBookedEventToCurrentCustomer(savedBookedEvent);

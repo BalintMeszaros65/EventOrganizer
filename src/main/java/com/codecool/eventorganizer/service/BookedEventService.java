@@ -3,7 +3,6 @@ package com.codecool.eventorganizer.service;
 import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.AppUser;
 import com.codecool.eventorganizer.model.BookedEvent;
-import com.codecool.eventorganizer.model.Customer;
 import com.codecool.eventorganizer.model.Event;
 import com.codecool.eventorganizer.repository.BookedEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,7 @@ public class BookedEventService {
     private void checkIfRequiredDataExists(BookedEvent bookedEvent) {
         Event event = bookedEvent.getEvent();
         BigDecimal amountPayed = bookedEvent.getAmountPayed();
-        if (event == null || bookedEvent.getCustomer() == null || amountPayed == null || amountPayed.compareTo(BigDecimal.ZERO) < 1
+        if (event == null || bookedEvent.getAppUser() == null || amountPayed == null || amountPayed.compareTo(BigDecimal.ZERO) < 1
                 || bookedEvent.getTicketCount() <= 0 || bookedEvent.getDateOfBooking() == null) {
             throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in booked event.");
         }
@@ -65,12 +64,8 @@ public class BookedEventService {
         return appUserService.getCurrentUser();
     }
 
-    private Customer getCurrentCustomer() {
-        return appUserService.getCurrentCustomer();
-    }
-
     private void checkIfCurrentCustomerEqualsBookedEventCustomer(BookedEvent bookedEvent) {
-        if (!getCurrentCustomer().equals(bookedEvent.getCustomer())) {
+        if (!getCurrentUser().equals(bookedEvent.getAppUser())) {
             throw new CustomExceptions.CurrentUserIsNotMatching(
                     "Current user does not match the user who booked the event."
             );
