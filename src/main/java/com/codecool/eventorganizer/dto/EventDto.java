@@ -4,6 +4,8 @@ import com.codecool.eventorganizer.model.BookedEvent;
 import com.codecool.eventorganizer.model.Event;
 import com.codecool.eventorganizer.model.Performance;
 import com.codecool.eventorganizer.model.Venue;
+import lombok.Getter;
+import lombok.Setter;
 import org.threeten.extra.Interval;
 
 import java.math.BigDecimal;
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
 public class EventDto {
     private final UUID id;
     private final Venue venue;
