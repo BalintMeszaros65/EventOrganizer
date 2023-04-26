@@ -109,8 +109,8 @@ public class Event {
             ZonedDateTime endOfBooking = eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed);
             throw new CustomExceptions.IllegalEventStateException(
                 endOfBooking.isBefore(ZonedDateTime.now()) ?
-                String.format("Not enough tickets left (%s)", availableTickets)
-                : String.format("Booking for event ended at %s", endOfBooking)
+                    String.format("Booking for event ended at %s", endOfBooking)
+                    : String.format("Not enough tickets left (%s)", availableTickets)
             );
         }
     }
@@ -132,12 +132,12 @@ public class Event {
 
     public boolean canBeBooked(int ticketCount) {
         return availableTickets >= ticketCount && !isCancelled &&
-            eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(ZonedDateTime.now());
+            ZonedDateTime.now().isBefore(eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed));
     }
 
     public boolean canBeRefunded() {
         return venue.isThereRefund() && !isCancelled &&
-            eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed).isBefore(ZonedDateTime.now());
+            ZonedDateTime.now().isBefore(eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed));
     }
 
     @Override
