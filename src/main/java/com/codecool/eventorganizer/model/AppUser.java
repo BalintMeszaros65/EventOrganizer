@@ -54,4 +54,17 @@ public class AppUser {
     public int hashCode() {
         return Objects.hash(id, email, password, firstName, lastName, roles);
     }
+
+    // TODO: 2023. 04. 26. delete after fix
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }

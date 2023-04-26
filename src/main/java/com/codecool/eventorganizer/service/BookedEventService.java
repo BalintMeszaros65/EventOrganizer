@@ -65,6 +65,11 @@ public class BookedEventService {
     }
 
     private void checkIfCurrentCustomerEqualsBookedEventCustomer(BookedEvent bookedEvent) {
+        // TODO: 2023. 04. 26. delete after fix
+        System.out.println(getCurrentUser());
+        System.out.println(bookedEvent.getAppUser());
+        System.out.println(getCurrentUser().equals(getCurrentUser()));
+        // TODO ask why it is not working :(
         if (!getCurrentUser().equals(bookedEvent.getAppUser())) {
             throw new CustomExceptions.CurrentUserIsNotMatching(
                     "Current user does not match the user who booked the event."
