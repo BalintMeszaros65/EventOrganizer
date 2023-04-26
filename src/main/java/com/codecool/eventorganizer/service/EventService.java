@@ -75,6 +75,10 @@ public class EventService {
         if (!performance.equals(savedPerformance)) {
             throw new IllegalArgumentException("Performance's data does not match with the one in database.");
         }
+        ZonedDateTime bookingClosed = event.getEventStartingDateAndTime().minusDays(event.getDaysBeforeBookingIsClosed());
+        if (bookingClosed.isBefore(ZonedDateTime.now())) {
+            throw new IllegalArgumentException("Event can not be created/updated if booking is closed.");
+        }
     }
 
     private void checkIfEventExists(UUID id) {
@@ -107,12 +111,12 @@ public class EventService {
     // logic
 
     public ResponseEntity<String> createEvent(Event event) {
-        checkIfRequiredDataExists(event);
-        event.initializeTicketsToBeSold(0);
-        event.setOrganizer(getCurrentUser());
         if (event.getId() != null) {
             throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
         }
+        checkIfRequiredDataExists(event);
+        event.initializeTicketsToBeSold(0);
+        event.setOrganizer(getCurrentUser());
         eventRepository.save(event);
         return ResponseEntity.status(HttpStatus.CREATED).body("Event successfully created.");
     }
