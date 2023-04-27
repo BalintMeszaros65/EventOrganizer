@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -49,18 +48,5 @@ public class Customer extends AppUser {
             bookedEvents = new ArrayList<>();
         }
         bookedEvents.add(bookedEvent);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Customer customer)) return false;
-        if (!super.equals(o)) return false;
-        return Objects.equals(getBookedEvents(), customer.getBookedEvents());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getBookedEvents());
     }
 }
