@@ -56,11 +56,11 @@ public class Customer extends AppUser {
         if (this == o) return true;
         if (!(o instanceof Customer customer)) return false;
         if (!super.equals(o)) return false;
-        return Objects.equals(bookedEvents, customer.bookedEvents);
+        return Objects.equals(getBookedEvents(), customer.getBookedEvents());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), bookedEvents);
+        return Objects.hash(super.hashCode(), getBookedEvents());
     }
 }

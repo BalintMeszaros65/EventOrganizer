@@ -80,16 +80,17 @@ public class BookedEvent {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BookedEvent bookedEvent)) return false;
-        return ticketCount == bookedEvent.ticketCount && isRefunded == bookedEvent.isRefunded
-                && Objects.equals(id, bookedEvent.id)
-                && Objects.equals(event, bookedEvent.event) && Objects.equals(amountPayed, bookedEvent.amountPayed)
-                && Objects.equals(dateOfBooking, bookedEvent.dateOfBooking)
-                && Objects.equals(appUser, bookedEvent.appUser);
+        if (!(o instanceof BookedEvent that)) return false;
+        return getTicketCount() == that.getTicketCount() && isRefunded() == that.isRefunded()
+                && Objects.equals(getId(), that.getId()) && Objects.equals(getEvent(), that.getEvent())
+                && Objects.equals(getAmountPayed(), that.getAmountPayed())
+                && Objects.equals(getDateOfBooking(), that.getDateOfBooking())
+                && Objects.equals(getAppUser(), that.getAppUser());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, event, amountPayed, ticketCount, dateOfBooking, appUser, isRefunded);
+        return Objects.hash(getId(), getEvent(), getAmountPayed(), getTicketCount(), getDateOfBooking(), getAppUser(),
+                isRefunded());
     }
 }

@@ -40,13 +40,15 @@ public class Venue {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Venue venue)) return false;
-        return isThereRefund == venue.isThereRefund && capacity == venue.capacity && inactive == venue.inactive
-                && Objects.equals(id, venue.id) && Objects.equals(name, venue.name)
-                && Objects.equals(homePage, venue.homePage) && Objects.equals(venueAddress, venue.venueAddress);
+        return isThereRefund() == venue.isThereRefund() && getCapacity() == venue.getCapacity()
+                && isInactive() == venue.isInactive() && Objects.equals(getId(), venue.getId())
+                && Objects.equals(getName(), venue.getName()) && Objects.equals(getHomePage(), venue.getHomePage())
+                && Objects.equals(getVenueAddress(), venue.getVenueAddress());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, homePage, isThereRefund, capacity, venueAddress, inactive);
+        return Objects.hash(getId(), getName(), getHomePage(), isThereRefund(), getCapacity(), getVenueAddress(),
+                isInactive());
     }
 }

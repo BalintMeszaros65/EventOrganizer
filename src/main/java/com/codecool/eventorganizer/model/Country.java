@@ -27,11 +27,11 @@ public class Country {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Country country)) return false;
-        return Objects.equals(id, country.id) && Objects.equals(name, country.name);
+        return Objects.equals(getId(), country.getId()) && Objects.equals(getName(), country.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(getId(), getName());
     }
 }

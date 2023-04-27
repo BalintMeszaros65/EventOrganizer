@@ -36,13 +36,13 @@ public abstract class Address {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Address address)) return false;
-        return Objects.equals(id, address.id) && Objects.equals(city, address.city)
-                && Objects.equals(zipCode, address.zipCode)
-                && Objects.equals(street, address.street) && Objects.equals(house, address.house);
+        return Objects.equals(getId(), address.getId()) && Objects.equals(getCity(), address.getCity())
+                && Objects.equals(getZipCode(), address.getZipCode()) && Objects.equals(getStreet(), address.getStreet())
+                && Objects.equals(getHouse(), address.getHouse());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, city, zipCode, street, house);
+        return Objects.hash(getId(), getCity(), getZipCode(), getStreet(), getHouse());
     }
 }

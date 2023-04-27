@@ -146,18 +146,20 @@ public class Event {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Event event)) return false;
-        return ticketsSoldThroughOurApp == event.ticketsSoldThroughOurApp && availableTickets == event.availableTickets
-                && eventLengthInMinutes == event.eventLengthInMinutes
-                && daysBeforeBookingIsClosed == event.daysBeforeBookingIsClosed && isCancelled == event.isCancelled
-                && Objects.equals(id, event.id) && Objects.equals(venue, event.venue)
-                && Objects.equals(performance, event.performance) && Objects.equals(organizer, event.organizer)
-                && Objects.equals(basePrice, event.basePrice)
-                && Objects.equals(eventStartingDateAndTime, event.eventStartingDateAndTime);
+        return getTicketsSoldThroughOurApp() == event.getTicketsSoldThroughOurApp()
+                && getAvailableTickets() == event.getAvailableTickets()
+                && getEventLengthInMinutes() == event.getEventLengthInMinutes()
+                && getDaysBeforeBookingIsClosed() == event.getDaysBeforeBookingIsClosed()
+                && isCancelled() == event.isCancelled() && Objects.equals(getId(), event.getId())
+                && Objects.equals(getVenue(), event.getVenue()) && Objects.equals(getPerformance(), event.getPerformance())
+                && Objects.equals(getOrganizer(), event.getOrganizer()) && Objects.equals(getBasePrice(), event.getBasePrice())
+                && Objects.equals(getEventStartingDateAndTime(), event.getEventStartingDateAndTime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, venue, performance, organizer, basePrice, ticketsSoldThroughOurApp, availableTickets,
-                eventStartingDateAndTime, eventLengthInMinutes, daysBeforeBookingIsClosed, isCancelled);
+        return Objects.hash(getId(), getVenue(), getPerformance(), getOrganizer(), getBasePrice(),
+                getTicketsSoldThroughOurApp(), getAvailableTickets(), getEventStartingDateAndTime(),
+                getEventLengthInMinutes(), getDaysBeforeBookingIsClosed(), isCancelled());
     }
 }

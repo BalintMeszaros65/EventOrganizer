@@ -24,13 +24,13 @@ public class VenueAddress extends Address {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof VenueAddress venueAddress)) return false;
+        if (!(o instanceof VenueAddress that)) return false;
         if (!super.equals(o)) return false;
-        return Objects.equals(googleMapsReference, venueAddress.googleMapsReference);
+        return Objects.equals(getGoogleMapsReference(), that.getGoogleMapsReference());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), googleMapsReference);
+        return Objects.hash(super.hashCode(), getGoogleMapsReference());
     }
 }

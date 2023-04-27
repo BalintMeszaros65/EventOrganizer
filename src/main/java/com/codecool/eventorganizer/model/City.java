@@ -32,11 +32,12 @@ public class City {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof City city)) return false;
-        return Objects.equals(id, city.id) && Objects.equals(country, city.country) && Objects.equals(name, city.name);
+        return Objects.equals(getId(), city.getId()) && Objects.equals(getCountry(), city.getCountry())
+                && Objects.equals(getName(), city.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, country, name);
+        return Objects.hash(getId(), getCountry(), getName());
     }
 }

@@ -45,26 +45,14 @@ public class AppUser {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AppUser appUser)) return false;
-        return Objects.equals(id, appUser.id) && Objects.equals(email, appUser.email)
-                && Objects.equals(password, appUser.password) && Objects.equals(firstName, appUser.firstName)
-                && Objects.equals(lastName, appUser.lastName) && Objects.equals(roles, appUser.roles);
+        return Objects.equals(getId(), appUser.getId()) && Objects.equals(getEmail(), appUser.getEmail())
+                && Objects.equals(getPassword(), appUser.getPassword())
+                && Objects.equals(getFirstName(), appUser.getFirstName())
+                && Objects.equals(getLastName(), appUser.getLastName()) && Objects.equals(getRoles(), appUser.getRoles());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, firstName, lastName, roles);
-    }
-
-    // TODO: 2023. 04. 26. delete after fix
-    @Override
-    public String toString() {
-        return "AppUser{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", roles=" + roles +
-                '}';
+        return Objects.hash(getId(), getEmail(), getPassword(), getFirstName(), getLastName(), getRoles());
     }
 }

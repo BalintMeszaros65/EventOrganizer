@@ -37,14 +37,14 @@ public class Performance {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Performance performance)) return false;
-        return inactive == performance.inactive && Objects.equals(id, performance.id)
-                && Objects.equals(name, performance.name) && Objects.equals(homePage, performance.homePage)
-                && Objects.equals(genre, performance.genre);
+        if (!(o instanceof Performance that)) return false;
+        return isInactive() == that.isInactive() && Objects.equals(getId(), that.getId())
+                && Objects.equals(getName(), that.getName()) && Objects.equals(getHomePage(), that.getHomePage())
+                && Objects.equals(getGenre(), that.getGenre());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, homePage, genre, inactive);
+        return Objects.hash(getId(), getName(), getHomePage(), getGenre(), isInactive());
     }
 }

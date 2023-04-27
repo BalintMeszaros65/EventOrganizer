@@ -33,11 +33,12 @@ public class Genre {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Genre genre)) return false;
-        return Objects.equals(id, genre.id) && Objects.equals(name, genre.name) && Objects.equals(type, genre.type);
+        return Objects.equals(getId(), genre.getId()) && Objects.equals(getName(), genre.getName())
+                && Objects.equals(getType(), genre.getType());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, type);
+        return Objects.hash(getId(), getName(), getType());
     }
 }
