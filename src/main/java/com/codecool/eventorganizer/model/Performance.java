@@ -3,7 +3,6 @@ package com.codecool.eventorganizer.model;
 import com.codecool.eventorganizer.utility.CreateValidation;
 import com.codecool.eventorganizer.utility.UpdateValidation;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,12 +27,11 @@ public class Performance {
     @Null(groups = CreateValidation.class, message = "Id must not exist when creating.")
     @NotNull(groups = UpdateValidation.class)
     private UUID id;
-    @NotBlank(groups = {CreateValidation.class, UpdateValidation.class})
+    @NotBlank
     private String name;
     // TODO ask if the annotation is not working due to URL not being a String
 //    @org.hibernate.validator.constraints.URL
     private URL homePage;
-    @Valid
     @NotNull
     @ManyToOne
     private Genre genre;

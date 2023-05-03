@@ -31,9 +31,9 @@ public class Genre {
     @Null(groups = CreateValidation.class, message = "Id must not exist when creating.")
     @NotNull(groups = UpdateValidation.class)
     private UUID id;
-    @NotBlank(groups = {CreateValidation.class, UpdateValidation.class})
+    @NotBlank
     private String name;
-    @NotBlank(groups = {CreateValidation.class, UpdateValidation.class})
+    @NotBlank
     private String type;
     @AssertFalse(groups = {CreateValidation.class, UpdateValidation.class},
             message = "Genre can not be inactive when creating/updating.")

@@ -3,7 +3,6 @@ package com.codecool.eventorganizer.model;
 import com.codecool.eventorganizer.utility.CreateValidation;
 import com.codecool.eventorganizer.utility.UpdateValidation;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,14 +24,13 @@ public class Venue {
     @Null(groups = CreateValidation.class, message = "Id must not exist when creating.")
     @NotNull(groups = UpdateValidation.class)
     private UUID id;
-    @NotBlank(groups = {CreateValidation.class, UpdateValidation.class})
+    @NotBlank
     private String name;
     private URL homePage;
     private boolean isThereRefund;
-    @Positive(groups = {CreateValidation.class, UpdateValidation.class})
+    @Positive
     private int capacity;
     @OneToOne
-    @Valid
     @NotNull
     private VenueAddress venueAddress;
     @AssertFalse(groups = {CreateValidation.class, UpdateValidation.class},
