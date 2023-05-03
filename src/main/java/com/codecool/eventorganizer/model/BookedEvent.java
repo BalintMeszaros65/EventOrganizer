@@ -42,7 +42,6 @@ public class BookedEvent {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private AppUser appUser;
-    // TODO add insert only validation group
     private boolean isRefunded;
 
     public BookedEvent(Event event, BigDecimal amountPayed, int ticketCount, AppUser appUser) {
