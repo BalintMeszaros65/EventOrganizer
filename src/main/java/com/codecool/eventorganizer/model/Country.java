@@ -1,5 +1,6 @@
 package com.codecool.eventorganizer.model;
 
+import com.codecool.eventorganizer.utility.BasicInfoValidation;
 import com.codecool.eventorganizer.utility.CreateValidation;
 import com.codecool.eventorganizer.utility.UpdateValidation;
 import jakarta.persistence.*;
@@ -23,9 +24,10 @@ public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Null(groups = CreateValidation.class, message = "Id must not exist when creating.")
-    @NotNull(groups = UpdateValidation.class)
+    @NotNull(groups = {UpdateValidation.class, BasicInfoValidation.class})
     private UUID id;
-    @NotBlank(groups = {CreateValidation.class, UpdateValidation.class})
+    @NotBlank(groups = {CreateValidation.class, UpdateValidation.class, BasicInfoValidation.class})
+    // TODO ask how to catch SQL exception for user friendly error message
     @Column(unique = true)
     private String name;
 

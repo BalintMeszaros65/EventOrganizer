@@ -3,7 +3,6 @@ package com.codecool.eventorganizer.model;
 import com.codecool.eventorganizer.utility.CreateValidation;
 import com.codecool.eventorganizer.utility.UpdateValidation;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
@@ -27,7 +26,8 @@ public class City {
     @NotNull(groups = UpdateValidation.class)
     private UUID id;
     @ManyToOne
-    @Valid
+    // TODO ask why it is validating groups instead of ignoring
+//    @Valid
     @NotNull
     private Country country;
     @NotBlank(groups = {CreateValidation.class, UpdateValidation.class})
