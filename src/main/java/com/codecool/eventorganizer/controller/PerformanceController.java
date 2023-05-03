@@ -41,6 +41,7 @@ public class PerformanceController {
     }
 
     @Secured("ROLE_ADMIN")
+    // TODO ask if method is ok
     @DeleteMapping("/api/performance/switch-active-state/{id}")
     public ResponseEntity<String> switchActiveStateOfPerformance(@NotNull @PathVariable UUID id) {
         return performanceService.switchActiveStateOfPerformance(id);

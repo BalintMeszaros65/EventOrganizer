@@ -28,17 +28,19 @@ public class Genre {
     private String name;
     @NotBlank
     private String type;
+    // TODO add insert only validation group
+    boolean inactive;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Genre genre)) return false;
-        return Objects.equals(getId(), genre.getId()) && Objects.equals(getName(), genre.getName())
-                && Objects.equals(getType(), genre.getType());
+        return isInactive() == genre.isInactive() && Objects.equals(getId(), genre.getId()) && Objects.equals(getName(),
+                genre.getName()) && Objects.equals(getType(), genre.getType());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getType());
+        return Objects.hash(getId(), getName(), getType(), isInactive());
     }
 }

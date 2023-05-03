@@ -43,9 +43,10 @@ public class GenreController {
     }
 
     @Secured("ROLE_ADMIN")
-    @DeleteMapping("/api/genre/delete/{id}")
-    public ResponseEntity<String> deleteGenre(@NotNull @PathVariable UUID id) {
-        return genreService.deleteGenre(id);
+    // TODO ask if method is ok
+    @DeleteMapping("/api/genre/switch-active-state/{id}")
+    public ResponseEntity<String> switchActiveStateOfGenre(@NotNull @PathVariable UUID id) {
+        return genreService.switchActiveStateOfGenre(id);
     }
 
     @Secured({"ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"})

@@ -48,6 +48,9 @@ public class PerformanceService {
             throw new IllegalArgumentException("Performance can not be inactive when creating/updating.");
         }
         Genre genre = performance.getGenre();
+        if (genre.isInactive()) {
+            throw new IllegalArgumentException("Genre can not be inactive when creating/updating Performance.");
+        }
         Genre savedGenre = genreService.getGenreById(genre.getId());
         if (!genre.equals(savedGenre)) {
             throw new IllegalArgumentException("Genre's data does not match with the one in database.");

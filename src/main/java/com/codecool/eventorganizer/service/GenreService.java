@@ -69,10 +69,12 @@ public class GenreService {
         return ResponseEntity.status(HttpStatus.OK).body("Genre successfully updated.");
     }
 
-    // TODO inactive flag maybe?
-    public ResponseEntity<String> deleteGenre(UUID id) {
-        checkIfGenreExists(id);
-        genreRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Genre successfully deleted.");
+    public ResponseEntity<String> switchActiveStateOfGenre(UUID id) {
+        Genre genre = getGenreById(id);
+        boolean inactive = genre.isInactive();
+        genre.setInactive(!inactive);
+        genreRepository.save(genre);
+        return ResponseEntity.status(HttpStatus.OK).body(inactive ? "Genre successfully activated."
+                : "Genre successfully inactivated.");
     }
 }
