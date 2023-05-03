@@ -53,19 +53,19 @@ public class DataLoader implements CommandLineRunner {
 
         // music dummy data
         // genres
-        Genre rock = new Genre(null, "rock", "music");
+        Genre rock = new Genre(null, "rock", "music", false);
         rock = genreRepository.save(rock);
-        Genre punk = new Genre(null, "punk", "music");
+        Genre punk = new Genre(null, "punk", "music", false);
         punk = genreRepository.save(punk);
-        Genre punkHardcore = new Genre(null, "punk-hardcore", "music");
+        Genre punkHardcore = new Genre(null, "punk-hardcore", "music", false);
         punkHardcore = genreRepository.save(punkHardcore);
-        Genre metal = new Genre(null, "metal", "music");
+        Genre metal = new Genre(null, "metal", "music", false);
         metal = genreRepository.save(metal);
-        Genre drumAndBass = new Genre(null, "drum and bass", "music");
+        Genre drumAndBass = new Genre(null, "drum and bass", "music", false);
         drumAndBass = genreRepository.save(drumAndBass);
-        Genre goa = new Genre(null, "goa", "music");
+        Genre goa = new Genre(null, "goa", "music", false);
         goa = genreRepository.save(goa);
-        Genre electronicHardcore = new Genre(null, "electronic-hardcore", "music");
+        Genre electronicHardcore = new Genre(null, "electronic-hardcore", "music", false);
         electronicHardcore = genreRepository.save(electronicHardcore);
 
         // artists
