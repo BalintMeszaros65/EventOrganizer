@@ -1,6 +1,5 @@
 package com.codecool.eventorganizer.service;
 
-import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.Address;
 import com.codecool.eventorganizer.model.City;
 import com.codecool.eventorganizer.model.VenueAddress;
@@ -57,9 +56,6 @@ public class AddressService {
 
     public ResponseEntity<String> createVenueAddress(VenueAddress venueAddress) {
         checkIfCityMatchesInDatabase(venueAddress);
-        if (venueAddress.getId() != null) {
-            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
-        }
         venueAddressRepository.save(venueAddress);
         return ResponseEntity.status(HttpStatus.CREATED).body("VenueAddress successfully created.");
     }

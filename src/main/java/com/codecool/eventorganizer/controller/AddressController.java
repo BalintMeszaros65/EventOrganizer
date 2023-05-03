@@ -2,13 +2,15 @@ package com.codecool.eventorganizer.controller;
 
 import com.codecool.eventorganizer.model.VenueAddress;
 import com.codecool.eventorganizer.service.AddressService;
+import com.codecool.eventorganizer.utility.CreateValidation;
+import com.codecool.eventorganizer.utility.UpdateValidation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,14 +35,14 @@ public class AddressController {
     @Secured({"ROLE_ORGANIZER", "ROLE_ADMIN"})
     @PostMapping("/api/venue-address/create")
     @Operation(summary = "creates a venue address")
-    public ResponseEntity<String> createVenueAddress(@Valid @RequestBody VenueAddress venueAddress) {
+    public ResponseEntity<String> createVenueAddress(@Validated(CreateValidation.class) @RequestBody VenueAddress venueAddress) {
         return addressService.createVenueAddress(venueAddress);
     }
 
     @Secured({"ROLE_ORGANIZER", "ROLE_ADMIN"})
     @PutMapping("/api/venue-address/update")
     @Operation(summary = "updates a venue address")
-    public ResponseEntity<String> updateVenueAddress(@Valid @RequestBody VenueAddress venueAddress) {
+    public ResponseEntity<String> updateVenueAddress(@Validated(UpdateValidation.class) @RequestBody VenueAddress venueAddress) {
         return addressService.updateVenueAddress(venueAddress);
     }
 }
