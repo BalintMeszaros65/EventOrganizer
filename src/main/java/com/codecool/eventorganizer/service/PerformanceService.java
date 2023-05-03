@@ -44,9 +44,6 @@ public class PerformanceService {
     }
 
     private void checkIfRequiredDataExists(Performance performance) {
-        if (performance.isInactive()) {
-            throw new IllegalArgumentException("Performance can not be inactive when creating/updating.");
-        }
         Genre genre = performance.getGenre();
         if (genre.isInactive()) {
             throw new IllegalArgumentException("Genre can not be inactive when creating/updating Performance.");

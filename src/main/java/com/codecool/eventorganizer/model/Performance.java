@@ -1,9 +1,13 @@
 package com.codecool.eventorganizer.model;
 
+import com.codecool.eventorganizer.utility.CreateValidation;
+import com.codecool.eventorganizer.utility.UpdateValidation;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +25,10 @@ import java.util.UUID;
 public class Performance {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Null(groups = CreateValidation.class, message = "Id must not exist when creating.")
+    @NotNull(groups = UpdateValidation.class)
     private UUID id;
-    @NotBlank
+    @NotBlank(groups = {CreateValidation.class, UpdateValidation.class})
     private String name;
     // TODO ask if the annotation is not working due to URL not being a String
 //    @org.hibernate.validator.constraints.URL
@@ -31,7 +37,8 @@ public class Performance {
     @NotNull
     @ManyToOne
     private Genre genre;
-    // TODO add insert only validation group
+    @AssertFalse(groups = {CreateValidation.class, UpdateValidation.class},
+            message = "Performance can not be inactive when creating/updating.")
     private boolean inactive;
 
     @Override
