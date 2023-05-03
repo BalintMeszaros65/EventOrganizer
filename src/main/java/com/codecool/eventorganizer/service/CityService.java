@@ -1,6 +1,5 @@
 package com.codecool.eventorganizer.service;
 
-import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.City;
 import com.codecool.eventorganizer.model.Country;
 import com.codecool.eventorganizer.repository.CityRepository;
@@ -60,9 +59,6 @@ public class CityService {
 
     public ResponseEntity<String> createCity(City city) {
         checkIfCountryMatchesInDatabase(city);
-        if (city.getId() != null) {
-            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
-        }
         cityRepository.save(city);
         return ResponseEntity.status(HttpStatus.CREATED).body("City successfully created.");
     }
