@@ -1,12 +1,9 @@
 package com.codecool.eventorganizer.model;
 
 import com.codecool.eventorganizer.exception.CustomExceptions;
+import com.codecool.eventorganizer.utility.CreateValidation;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +22,8 @@ import java.util.UUID;
 public class BookedEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Null(groups = CreateValidation.class, message = "Id must not exist when creating.")
     private UUID id;
-    @Valid
     @NotNull
     @ManyToOne
     private Event event;
@@ -38,10 +35,10 @@ public class BookedEvent {
     @NotNull
     @PastOrPresent
     private ZonedDateTime dateOfBooking;
-    @Valid
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private AppUser appUser;
+    @AssertFalse(groups = CreateValidation.class, message = "BookedEvent can not be refunded when creating.")
     private boolean isRefunded;
 
     public BookedEvent(Event event, BigDecimal amountPayed, int ticketCount, AppUser appUser) {

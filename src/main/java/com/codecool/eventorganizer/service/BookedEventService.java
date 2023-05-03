@@ -5,8 +5,10 @@ import com.codecool.eventorganizer.model.AppUser;
 import com.codecool.eventorganizer.model.BookedEvent;
 import com.codecool.eventorganizer.model.Event;
 import com.codecool.eventorganizer.repository.BookedEventRepository;
+import com.codecool.eventorganizer.utility.CreateValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -45,9 +47,6 @@ public class BookedEventService {
 
     private void checkIfRequiredDataExists(BookedEvent bookedEvent) {
         Event event = bookedEvent.getEvent();
-        if (bookedEvent.isRefunded()) {
-            throw new IllegalStateException("Booked event can not be already refunded when creating.");
-        }
         Event savedEvent = eventService.getEventById(event.getId());
         if (!event.equals(savedEvent)) {
             throw new IllegalArgumentException("Event's data does not match with the one in database.");
@@ -68,11 +67,8 @@ public class BookedEventService {
 
     // logic
 
-    public BookedEvent saveBookedEvent(BookedEvent bookedEvent) {
+    public BookedEvent saveBookedEvent(@Validated(CreateValidation.class) BookedEvent bookedEvent) {
         checkIfRequiredDataExists(bookedEvent);
-        if (bookedEvent.getId() != null) {
-            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
-        }
         return bookedEventRepository.save(bookedEvent);
     }
 
