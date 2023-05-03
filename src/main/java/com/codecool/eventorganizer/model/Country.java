@@ -26,7 +26,7 @@ public class Country {
     @Null(groups = CreateValidation.class, message = "Id must not exist when creating.")
     @NotNull(groups = {UpdateValidation.class, BasicInfoValidation.class})
     private UUID id;
-    @NotBlank(groups = {CreateValidation.class, UpdateValidation.class, BasicInfoValidation.class})
+    @NotBlank
     // TODO ask how to catch SQL exception for user friendly error message
     @Column(unique = true)
     private String name;

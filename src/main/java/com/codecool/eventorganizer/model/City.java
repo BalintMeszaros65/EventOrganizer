@@ -26,9 +26,9 @@ public class City {
     @NotNull(groups = UpdateValidation.class)
     private UUID id;
     @ManyToOne
-    @NotNull(groups = {CreateValidation.class, UpdateValidation.class})
+    @NotNull
     private Country country;
-    @NotBlank(groups = {CreateValidation.class, UpdateValidation.class})
+    @NotBlank
     private String name;
 
     @Override
