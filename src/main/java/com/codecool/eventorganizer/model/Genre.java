@@ -35,8 +35,8 @@ public class Genre {
     private String name;
     @NotBlank(groups = {CreationInfoValidation.class, UpdateInfoValidation.class})
     private String type;
-    @AssertFalse(groups = {CreationInfoValidation.class, UpdateInfoValidation.class}, message = "Genre must be active" +
-            "when creating/updating.")
+    @AssertFalse(groups = {CreationInfoValidation.class, UpdateInfoValidation.class},
+            message = "Genre must be active when creating/updating.")
     private boolean inactive;
 
     @Override
