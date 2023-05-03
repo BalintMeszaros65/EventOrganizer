@@ -2,13 +2,15 @@ package com.codecool.eventorganizer.controller;
 
 import com.codecool.eventorganizer.model.Venue;
 import com.codecool.eventorganizer.service.VenueService;
+import com.codecool.eventorganizer.utility.CreateValidation;
+import com.codecool.eventorganizer.utility.UpdateValidation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -30,13 +32,13 @@ public class VenueController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/api/venue/create")
-    public ResponseEntity<String> createVenue(@Valid @RequestBody Venue venue) {
+    public ResponseEntity<String> createVenue(@Validated(CreateValidation.class) @RequestBody Venue venue) {
         return venueService.createVenue(venue);
     }
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/api/venue/update")
-    public ResponseEntity<String> updateVenue(@Valid @RequestBody Venue venue) {
+    public ResponseEntity<String> updateVenue(@Validated(UpdateValidation.class) @RequestBody Venue venue) {
         return venueService.updateVenue(venue);
     }
 

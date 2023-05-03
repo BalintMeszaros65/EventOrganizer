@@ -1,6 +1,5 @@
 package com.codecool.eventorganizer.service;
 
-import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.Genre;
 import com.codecool.eventorganizer.model.Performance;
 import com.codecool.eventorganizer.repository.PerformanceRepository;
@@ -58,9 +57,6 @@ public class PerformanceService {
 
     public ResponseEntity<String> createPerformance(Performance performance) {
         checkIfRequiredDataExists(performance);
-        if (performance.getId() != null) {
-            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
-        }
         performanceRepository.save(performance);
         return ResponseEntity.status(HttpStatus.CREATED).body("Performance successfully created.");
     }

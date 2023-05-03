@@ -1,10 +1,10 @@
 package com.codecool.eventorganizer.model;
 
+import com.codecool.eventorganizer.utility.CreateValidation;
+import com.codecool.eventorganizer.utility.UpdateValidation;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,18 +22,21 @@ import java.util.UUID;
 public class Venue {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Null(groups = CreateValidation.class, message = "Id must not exist when creating.")
+    @NotNull(groups = UpdateValidation.class)
     private UUID id;
-    @NotBlank
+    @NotBlank(groups = {CreateValidation.class, UpdateValidation.class})
     private String name;
     private URL homePage;
     private boolean isThereRefund;
-    @Positive
+    @Positive(groups = {CreateValidation.class, UpdateValidation.class})
     private int capacity;
     @OneToOne
     @Valid
     @NotNull
     private VenueAddress venueAddress;
-    // TODO add insert only validation group
+    @AssertFalse(groups = {CreateValidation.class, UpdateValidation.class},
+            message = "Venue can not be inactive when creating/updating.")
     private boolean inactive;
 
     @Override

@@ -1,6 +1,5 @@
 package com.codecool.eventorganizer.service;
 
-import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.Venue;
 import com.codecool.eventorganizer.model.VenueAddress;
 import com.codecool.eventorganizer.repository.VenueRepository;
@@ -58,9 +57,6 @@ public class VenueService {
 
     public ResponseEntity<String> createVenue(Venue venue) {
         checkIfRequiredDataExists(venue);
-        if (venue.getId() != null) {
-            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
-        }
         venueRepository.save(venue);
         return ResponseEntity.status(HttpStatus.CREATED).body("Venue successfully created.");
     }
