@@ -1,6 +1,5 @@
 package com.codecool.eventorganizer.service;
 
-import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.Genre;
 import com.codecool.eventorganizer.repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +55,6 @@ public class GenreService {
     // logic
 
     public ResponseEntity<String> createGenre(Genre genre) {
-        if (genre.getId() != null) {
-            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
-        }
         genreRepository.save(genre);
         return ResponseEntity.status(HttpStatus.CREATED).body("Genre successfully created.");
     }

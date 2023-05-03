@@ -1,10 +1,15 @@
 package com.codecool.eventorganizer.model;
 
+import com.codecool.eventorganizer.utility.CreationInfoValidation;
+import com.codecool.eventorganizer.utility.UpdateInfoValidation;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,13 +28,16 @@ public class Genre {
     // TODO ask if the annotation is not working due to UUID not being a CharSequence
     // @org.hibernate.validator.constraints.UUID
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Null(groups = CreationInfoValidation.class, message = "Id must not exist when creating.")
+    @NotNull(groups = UpdateInfoValidation.class)
     private UUID id;
-    @NotBlank
+    @NotBlank(groups = {CreationInfoValidation.class, UpdateInfoValidation.class})
     private String name;
-    @NotBlank
+    @NotBlank(groups = {CreationInfoValidation.class, UpdateInfoValidation.class})
     private String type;
-    // TODO add insert only validation group
-    boolean inactive;
+    @AssertFalse(groups = {CreationInfoValidation.class, UpdateInfoValidation.class}, message = "Genre must be active" +
+            "when creating/updating.")
+    private boolean inactive;
 
     @Override
     public boolean equals(Object o) {

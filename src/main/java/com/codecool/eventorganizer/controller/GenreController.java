@@ -2,14 +2,16 @@ package com.codecool.eventorganizer.controller;
 
 import com.codecool.eventorganizer.model.Genre;
 import com.codecool.eventorganizer.service.GenreService;
+import com.codecool.eventorganizer.utility.CreationInfoValidation;
+import com.codecool.eventorganizer.utility.UpdateInfoValidation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -32,13 +34,13 @@ public class GenreController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/api/genre/create")
-    public ResponseEntity<String> createGenre(@Valid @RequestBody Genre genre) {
+    public ResponseEntity<String> createGenre(@Validated(CreationInfoValidation.class) @RequestBody Genre genre) {
         return genreService.createGenre(genre);
     }
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/api/genre/update")
-    public ResponseEntity<String> updateGenre(@Valid @RequestBody Genre genre) {
+    public ResponseEntity<String> updateGenre(@Validated(UpdateInfoValidation.class) @RequestBody Genre genre) {
         return genreService.updateGenre(genre);
     }
 
