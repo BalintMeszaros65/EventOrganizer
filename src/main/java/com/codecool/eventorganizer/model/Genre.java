@@ -1,7 +1,7 @@
 package com.codecool.eventorganizer.model;
 
-import com.codecool.eventorganizer.utility.CreationInfoValidation;
-import com.codecool.eventorganizer.utility.UpdateInfoValidation;
+import com.codecool.eventorganizer.utility.CreateValidation;
+import com.codecool.eventorganizer.utility.UpdateValidation;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,15 +28,15 @@ public class Genre {
     // TODO ask if the annotation is not working due to UUID not being a CharSequence
     // @org.hibernate.validator.constraints.UUID
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Null(groups = CreationInfoValidation.class, message = "Id must not exist when creating.")
-    @NotNull(groups = UpdateInfoValidation.class)
+    @Null(groups = CreateValidation.class, message = "Id must not exist when creating.")
+    @NotNull(groups = UpdateValidation.class)
     private UUID id;
-    @NotBlank(groups = {CreationInfoValidation.class, UpdateInfoValidation.class})
+    @NotBlank(groups = {CreateValidation.class, UpdateValidation.class})
     private String name;
-    @NotBlank(groups = {CreationInfoValidation.class, UpdateInfoValidation.class})
+    @NotBlank(groups = {CreateValidation.class, UpdateValidation.class})
     private String type;
-    @AssertFalse(groups = {CreationInfoValidation.class, UpdateInfoValidation.class},
-            message = "Genre must be active when creating/updating.")
+    @AssertFalse(groups = {CreateValidation.class, UpdateValidation.class},
+            message = "Genre can not be inactive when creating/updating.")
     private boolean inactive;
 
     @Override

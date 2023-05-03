@@ -1,4 +1,4 @@
 package com.codecool.eventorganizer.utility;
 
-public interface UpdateInfoValidation {
+public interface UpdateValidation {
 }
