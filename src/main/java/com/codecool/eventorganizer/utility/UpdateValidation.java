@@ -1,4 +1,6 @@
 package com.codecool.eventorganizer.utility;
 
-public interface UpdateValidation {
+import jakarta.validation.groups.Default;
+
+public interface UpdateValidation extends Default {
 }

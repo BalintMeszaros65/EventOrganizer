@@ -1,4 +1,6 @@
 package com.codecool.eventorganizer.utility;
 
-public interface CreateValidation {
+import jakarta.validation.groups.Default;
+
+public interface CreateValidation extends Default {
 }
