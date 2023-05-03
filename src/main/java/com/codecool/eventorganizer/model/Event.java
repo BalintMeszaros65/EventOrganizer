@@ -1,9 +1,10 @@
 package com.codecool.eventorganizer.model;
 
 import com.codecool.eventorganizer.exception.CustomExceptions;
+import com.codecool.eventorganizer.utility.CreateValidation;
+import com.codecool.eventorganizer.utility.UpdateValidation;
 import com.codecool.eventorganizer.utility.ZonedDateTimeFormatter;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,16 +24,15 @@ import java.util.UUID;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Null(groups = CreateValidation.class, message = "Id must not exist when creating.")
+    @NotNull(groups = UpdateValidation.class)
     private UUID id;
-    @Valid
     @NotNull
     @ManyToOne
     private Venue venue;
-    @Valid
     @NotNull
     @ManyToOne
     private Performance performance;
-    @Valid
     @NotNull
     @ManyToOne
     private AppUser organizer;
@@ -50,7 +50,7 @@ public class Event {
     private int eventLengthInMinutes;
     @PositiveOrZero
     private int daysBeforeBookingIsClosed;
-    // TODO add insert only validation group
+    @AssertFalse(groups = {CreateValidation.class, UpdateValidation.class})
     private boolean isCancelled;
 
     public Genre getGenre() {

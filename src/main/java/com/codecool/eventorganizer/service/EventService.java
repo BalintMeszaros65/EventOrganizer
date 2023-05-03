@@ -57,9 +57,6 @@ public class EventService {
     // helper methods
 
     private void checkIfRequiredDataExists(Event event) {
-        if (event.isCancelled()) {
-            throw new IllegalArgumentException("Cancelled event can not be created/updated.");
-        }
         Venue venue = event.getVenue();
         Performance performance = event.getPerformance();
         if (venue.isInactive()) {
@@ -112,9 +109,6 @@ public class EventService {
     // logic
 
     public ResponseEntity<String> createEvent(Event event) {
-        if (event.getId() != null) {
-            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
-        }
         checkIfRequiredDataExists(event);
         event.initializeTicketsToBeSold(0);
         event.setOrganizer(getCurrentUser());

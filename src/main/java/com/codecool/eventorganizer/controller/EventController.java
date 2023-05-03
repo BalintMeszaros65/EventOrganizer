@@ -3,13 +3,15 @@ package com.codecool.eventorganizer.controller;
 import com.codecool.eventorganizer.dto.EventDto;
 import com.codecool.eventorganizer.model.Event;
 import com.codecool.eventorganizer.service.EventService;
+import com.codecool.eventorganizer.utility.CreateValidation;
+import com.codecool.eventorganizer.utility.UpdateValidation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -44,13 +46,13 @@ public class EventController {
 
     @Secured("ROLE_ORGANIZER")
     @PostMapping("/api/event/create")
-    public ResponseEntity<String> createEvent(@Valid @RequestBody Event event) {
+    public ResponseEntity<String> createEvent(@Validated(CreateValidation.class) @RequestBody Event event) {
         return eventService.createEvent(event);
     }
 
     @Secured("ROLE_ORGANIZER")
     @PutMapping("/api/event/update")
-    public ResponseEntity<String> updateEvent(@Valid @RequestBody Event event) {
+    public ResponseEntity<String> updateEvent(@Validated(UpdateValidation.class) @RequestBody Event event) {
         return eventService.updateEvent(event);
     }
 
