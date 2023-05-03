@@ -26,9 +26,7 @@ public class City {
     @NotNull(groups = UpdateValidation.class)
     private UUID id;
     @ManyToOne
-    // TODO ask why it is validating groups instead of ignoring
-//    @Valid
-    @NotNull
+    @NotNull(groups = {CreateValidation.class, UpdateValidation.class})
     private Country country;
     @NotBlank(groups = {CreateValidation.class, UpdateValidation.class})
     private String name;
