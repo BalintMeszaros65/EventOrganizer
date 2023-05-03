@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -50,14 +50,14 @@ public class GenreController {
 
     @Secured({"ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"})
     @GetMapping("/api/genre/types")
-    public List<String> getGenreTypes() {
+    public Set<String> getGenreTypes() {
         return genreService.getAllGenreTypes();
     }
 
     @Secured({"ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"})
     @GetMapping("/api/genre/get-all-by-type/{type}")
     // TODO ask why it is not working
-    public List<Genre> getAllGenreByType(@NotBlank @PathVariable String type) {
+    public Set<Genre> getAllGenreByType(@NotBlank @PathVariable String type) {
         return genreService.getAllGenreByType(type);
     }
 }

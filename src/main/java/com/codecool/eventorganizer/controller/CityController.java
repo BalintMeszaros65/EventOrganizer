@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -51,7 +51,7 @@ public class CityController {
 
     @Secured({"ROLE_ORGANIZER", "ROLE_ADMIN"})
     @GetMapping("/api/city/get-all-by-country")
-    public List<City> getAllCityByCountry(@Valid @RequestBody Country country) {
+    public Set<City> getAllCityByCountry(@Valid @RequestBody Country country) {
         return cityService.getAllCityByCountry(country);
     }
 }

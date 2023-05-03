@@ -8,9 +8,9 @@ import com.codecool.eventorganizer.repository.BookedEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -37,7 +37,7 @@ public class BookedEventService {
         }
     }
 
-    public List<BookedEvent> getBookedEventsByEvent(Event event) {
+    public Set<BookedEvent> getBookedEventsByEvent(Event event) {
         return bookedEventRepository.findAllByEvent(event);
     }
 
@@ -83,7 +83,7 @@ public class BookedEventService {
     }
 
     public void refundAllByEventOrganizer(Event event) {
-        List<BookedEvent> bookedEventsToBeCancelled = getBookedEventsByEvent(event);
+        Set<BookedEvent> bookedEventsToBeCancelled = getBookedEventsByEvent(event);
         bookedEventsToBeCancelled.forEach(BookedEvent::refundByEventOrganizer);
         bookedEventRepository.saveAll(bookedEventsToBeCancelled);
     }

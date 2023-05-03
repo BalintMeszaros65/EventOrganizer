@@ -8,16 +8,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, UUID> {
-    List<Event> findAllByPerformance(Performance performance);
+    Set<Event> findAllByPerformance(Performance performance);
     @Query("""
     SELECT event FROM Event event
     WHERE event.isCancelled = false AND event.eventStartingDateAndTime > :zonedDateTime
     """)
-    List<Event> findAllNotCancelledAfterZonedDateTime(ZonedDateTime zonedDateTime);
-    List<Event> findAllByOrganizer(AppUser organizer);
+    Set<Event> findAllNotCancelledAfterZonedDateTime(ZonedDateTime zonedDateTime);
+    Set<Event> findAllByOrganizer(AppUser organizer);
 }

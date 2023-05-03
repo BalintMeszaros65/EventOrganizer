@@ -50,7 +50,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // TODO frontend?
 // TODO android app?
 // TODO React Native
-// TODO change unnecessary Lists to Sets
 public class EventOrganizerApplication {
 
 	public static void main(String[] args) {

@@ -9,8 +9,9 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -21,10 +22,10 @@ import java.util.UUID;
 public class Customer extends AppUser {
     // TODO billing address later?
     @OneToMany
-    List<BookedEvent> bookedEvents;
+    Set<BookedEvent> bookedEvents;
 
     public Customer(UUID id, String email, String password, String firstName, String lastName, List<String> roles,
-                    List<BookedEvent> bookedEvents) {
+                    Set<BookedEvent> bookedEvents) {
         super(id, email, password, firstName, lastName, roles);
         this.bookedEvents = bookedEvents;
     }
@@ -45,7 +46,7 @@ public class Customer extends AppUser {
 
     public void storeBookedEvent(BookedEvent bookedEvent) {
         if (bookedEvents == null) {
-            bookedEvents = new ArrayList<>();
+            bookedEvents = new HashSet<>();
         }
         bookedEvents.add(bookedEvent);
     }

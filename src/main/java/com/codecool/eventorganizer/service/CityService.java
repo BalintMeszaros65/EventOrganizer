@@ -9,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -36,8 +36,8 @@ public class CityService {
         }
     }
 
-    public List<City> getAllCityByCountry(Country country) {
-        return cityRepository.findAllByCountry(country);
+    public Set<City> getAllCityByCountry(Country country) {
+        return cityRepository.findAllDistinctByCountry(country);
     }
 
     // helper methods

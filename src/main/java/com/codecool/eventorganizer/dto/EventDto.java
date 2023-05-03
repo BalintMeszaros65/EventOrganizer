@@ -10,8 +10,8 @@ import org.threeten.extra.Interval;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -23,11 +23,11 @@ public class EventDto {
     private final BigDecimal basePrice;
     private final ZonedDateTime eventStartingDateAndTime;
     private final int eventLengthInMinutes;
-    private final List<BookedEvent> overlappedBookedEvents;
+    private final Set<BookedEvent> overlappedBookedEvents;
 
-    // creates a DTO from Event and stores all Booked Events overlapping it (if there is any),
-    // so the customer can be informed about it
-    public EventDto(Event event, List<BookedEvent> bookedEventList) {
+    /* creates a DTO from Event and stores all Booked Events overlapping it (if there is any),
+     so the customer can be informed about it */
+    public EventDto(Event event, Set<BookedEvent> bookedEventList) {
         this.id = event.getId();
         this.venue = event.getVenue();
         this.performance = event.getPerformance();
@@ -37,11 +37,11 @@ public class EventDto {
         this.overlappedBookedEvents = getOverlappedBookedEvents(event, bookedEventList);
     }
 
-    private List<BookedEvent> getOverlappedBookedEvents(Event event, List<BookedEvent> bookedEventList) {
+    private Set<BookedEvent> getOverlappedBookedEvents(Event event, Set<BookedEvent> bookedEventList) {
         ZonedDateTime eventStartingDateAndTime = event.getEventStartingDateAndTime();
         ZonedDateTime eventEndingDateAndTime = eventStartingDateAndTime.plusMinutes(eventLengthInMinutes);
         Interval eventInterval = Interval.of(eventStartingDateAndTime.toInstant(), eventEndingDateAndTime.toInstant());
-        List<BookedEvent> overlappedBookedEvents = new ArrayList<>();
+        Set<BookedEvent> overlappedBookedEvents = new HashSet<>();
         for (BookedEvent bookedEvent : bookedEventList) {
             if (!bookedEvent.isRefunded()) {
                 Event eventOfBookedEvent = bookedEvent.getEvent();

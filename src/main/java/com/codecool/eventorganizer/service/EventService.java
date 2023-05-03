@@ -10,10 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -32,7 +33,7 @@ public class EventService {
 
     // basic CRUD operations
 
-    public List<Event> getUpcomingEvents() {
+    public Set<Event> getUpcomingEvents() {
         return eventRepository.findAllNotCancelledAfterZonedDateTime(ZonedDateTime.now());
     }
 
@@ -45,11 +46,11 @@ public class EventService {
         }
     }
 
-    public List<Event> getAllEventsByPerformance(Performance performance) {
+    public Set<Event> getAllEventsByPerformance(Performance performance) {
         return eventRepository.findAllByPerformance(performance);
     }
 
-    public List<Event> getAllEventsByOrganizer() {
+    public Set<Event> getAllEventsByOrganizer() {
         return eventRepository.findAllByOrganizer(getCurrentUser());
     }
 
@@ -156,12 +157,12 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    public List<EventDto> getUpcomingEventsForCustomer() {
-        List<Event> upcomingEvents = getUpcomingEvents();
+    public Set<EventDto> getUpcomingEventsForCustomer() {
+        Set<Event> upcomingEvents = getUpcomingEvents();
         Customer currentUser = getCurrentCustomer();
-        List<BookedEvent> bookedEvents = currentUser.getBookedEvents();
+        Set<BookedEvent> bookedEvents = currentUser.getBookedEvents();
         return upcomingEvents.stream()
                 .map(event -> new EventDto(event, bookedEvents))
-                .toList();
+                .collect(Collectors.toSet());
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -32,13 +32,13 @@ public class EventController {
 
     @Secured("ROLE_USER")
     @GetMapping("/api/event/get-events/customer")
-    public List<EventDto> getUpcomingEventsForCustomer() {
+    public Set<EventDto> getUpcomingEventsForCustomer() {
         return eventService.getUpcomingEventsForCustomer();
     }
 
     @Secured("ROLE_ORGANIZER")
     @GetMapping("/api/event/get-events/organizer")
-    public List<Event> getAllEventsByOrganizer() {
+    public Set<Event> getAllEventsByOrganizer() {
         return eventService.getAllEventsByOrganizer();
     }
 
