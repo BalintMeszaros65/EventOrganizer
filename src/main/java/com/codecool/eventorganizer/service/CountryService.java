@@ -1,6 +1,5 @@
 package com.codecool.eventorganizer.service;
 
-import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.Country;
 import com.codecool.eventorganizer.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +47,6 @@ public class CountryService {
     // logic
 
     public ResponseEntity<String> createCountry(Country country) {
-        if (country.getId() != null) {
-            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
-        }
         countryRepository.save(country);
         return ResponseEntity.status(HttpStatus.CREATED).body("Country successfully created.");
     }
