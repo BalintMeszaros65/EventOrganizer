@@ -84,6 +84,9 @@ public class Event {
     }
 
     public BigDecimal currentPriceOfTickets(int ticketCount) {
+        if (ticketCount <= 0) {
+            throw new IllegalArgumentException("Can not calculate price for 0 or negative number of tickets.");
+        }
         BigDecimal currentPrice = BigDecimal.ZERO;
         for (int i = 0; i < ticketCount; i++) {
             if (availableTickets - i > ticketsSoldThroughOurApp * 0.9) {
