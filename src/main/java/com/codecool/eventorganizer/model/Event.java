@@ -125,24 +125,24 @@ public class Event {
         if (ticketCount <= 0) {
             throw new IllegalArgumentException("Can not refund 0 or negative number of tickets.");
         }
-        if (canBeRefunded()) {
-            availableTickets += ticketCount;
-        } else {
-            if (isCancelled) {
-                throw new CustomExceptions.IllegalEventStateException("Cancelled event can not be refunded.");
-            }
-            throw new CustomExceptions.IllegalEventStateException(
-                venue.isThereRefund() ?
-                String.format("Refunding for event ended at %s", eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed)
-                        .format(ZonedDateTimeFormatter.formatter))
-                : "Refunding is not allowed by the venue."
-            );
+        if (isCancelled) {
+            throw new CustomExceptions.IllegalEventStateException("Cancelled event can not be refunded.");
         }
+        if (!venue.isThereRefund()) {
+            throw new CustomExceptions.IllegalEventStateException("Refunding is not allowed by the venue.");
+        }
+        ZonedDateTime endOfRefunding = eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed);
+        if (endOfRefunding.isBefore(ZonedDateTime.now())) {
+            throw new CustomExceptions.IllegalEventStateException(
+                    String.format("Refunding for event ended at %s",
+                            endOfRefunding.format(ZonedDateTimeFormatter.formatter)));
+        }
+        availableTickets += ticketCount;
     }
 
     public boolean canBeRefunded() {
         return venue.isThereRefund() && !isCancelled &&
-            ZonedDateTime.now().isBefore(eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed));
+                ZonedDateTime.now().isBefore(eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed));
     }
 
     @Override
