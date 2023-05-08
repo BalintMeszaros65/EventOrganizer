@@ -107,19 +107,18 @@ public class Event {
         if (ticketCount <= 0) {
             throw new IllegalArgumentException("Can not buy 0 or negative number of tickets.");
         }
-        if (canBeBooked(ticketCount)) {
-            availableTickets -= ticketCount;
-        } else {
-            if (isCancelled) {
-                throw new CustomExceptions.IllegalEventStateException("Cancelled event can not be booked.");
-            }
-            ZonedDateTime endOfBooking = eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed);
-            throw new CustomExceptions.IllegalEventStateException(
-                endOfBooking.isBefore(ZonedDateTime.now()) ?
-                    String.format("Booking for event ended at %s", endOfBooking.format(ZonedDateTimeFormatter.formatter))
-                    : String.format("Not enough tickets left (%s)", availableTickets)
-            );
+        if (isCancelled) {
+            throw new CustomExceptions.IllegalEventStateException("Cancelled event can not be booked.");
         }
+        ZonedDateTime endOfBooking = eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed);
+        if (endOfBooking.isBefore(ZonedDateTime.now())) {
+            throw new CustomExceptions.IllegalEventStateException(String.format("Booking for event ended at %s",
+                    endOfBooking.format(ZonedDateTimeFormatter.formatter)));
+        }
+        if (availableTickets < ticketCount)
+            throw new CustomExceptions.IllegalEventStateException(String.format("Not enough tickets left (%s)",
+                    availableTickets));
+        availableTickets -= ticketCount;
     }
 
     public void refundTickets(int ticketCount) {
@@ -139,11 +138,6 @@ public class Event {
                 : "Refunding is not allowed by the venue."
             );
         }
-    }
-
-    public boolean canBeBooked(int ticketCount) {
-        return availableTickets >= ticketCount && !isCancelled &&
-            ZonedDateTime.now().isBefore(eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed));
     }
 
     public boolean canBeRefunded() {
