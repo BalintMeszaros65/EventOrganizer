@@ -275,5 +275,77 @@ public class EventTests {
         }
     }
 
+    @Nested
+    @DisplayName("refundTickets when")
+    class RefundTickets {
+        @Test
+        @DisplayName("ticketCount is negative")
+        void shouldThrowIllegalArgumentException() {
+            Exception exception = assertThrows(IllegalArgumentException.class,
+                    () -> event.refundTickets(-1));
+            assertEquals("Can not refund 0 or negative number of tickets.", exception.getMessage());
+        }
 
+        @Test
+        @DisplayName("ticketCount is 0")
+        void shouldThrowIllegalArgumentException2() {
+            Exception exception = assertThrows(IllegalArgumentException.class,
+                    () -> event.refundTickets(0));
+            assertEquals("Can not refund 0 or negative number of tickets.", exception.getMessage());
+        }
+
+        @Nested
+        @DisplayName("ticketCount is positive and")
+        class TicketCountIsPositive {
+            int ticketCount = 5;
+
+            @Test
+            @DisplayName("Event is cancelled")
+            void shouldThrowIllegalEventStateException() {
+                Mockito.when(venue.isThereRefund()).thenReturn(true);
+                event.setCancelled(true);
+                event.setEventStartingDateAndTime(ZonedDateTime.now().plusDays(7));
+                event.setDaysBeforeBookingIsClosed(2);
+                Exception exception = assertThrows(CustomExceptions.IllegalEventStateException.class,
+                        () -> event.refundTickets(ticketCount));
+                assertEquals("Cancelled event can not be refunded.", exception.getMessage());
+            }
+
+            @Test
+            @DisplayName("refunding has ended")
+            void shouldThrowIllegalEventStateException2() {
+                Mockito.when(venue.isThereRefund()).thenReturn(true);
+                event.setCancelled(false);
+                event.setEventStartingDateAndTime(ZonedDateTime.now().plusDays(2));
+                event.setDaysBeforeBookingIsClosed(3);
+                Exception exception = assertThrows(CustomExceptions.IllegalEventStateException.class,
+                        () -> event.refundTickets(ticketCount));
+                assertTrue(exception.getMessage().contains("Refunding for event ended at"));
+            }
+
+            @Test
+            @DisplayName("there is no refunding by Venue")
+            void shouldThrowIllegalEventStateException3() {
+                Mockito.when(venue.isThereRefund()).thenReturn(false);
+                event.setCancelled(false);
+                event.setEventStartingDateAndTime(ZonedDateTime.now().plusDays(7));
+                event.setDaysBeforeBookingIsClosed(2);
+                Exception exception = assertThrows(CustomExceptions.IllegalEventStateException.class,
+                        () -> event.refundTickets(ticketCount));
+                assertEquals("Refunding is not allowed by the venue.", exception.getMessage());
+            }
+
+            @Test
+            @DisplayName("tickets can be refunded")
+            void shouldIncreaseAvailableTicketsByTicketCount() {
+                event.setAvailableTickets(20);
+                Mockito.when(venue.isThereRefund()).thenReturn(true);
+                event.setCancelled(false);
+                event.setEventStartingDateAndTime(ZonedDateTime.now().plusDays(7));
+                event.setDaysBeforeBookingIsClosed(2);
+                event.refundTickets(ticketCount);
+                assertEquals(25, event.getAvailableTickets());
+            }
+        }
+    }
 }
