@@ -126,7 +126,7 @@ public class EventService {
     }
 
     public void refundTickets(Event event, int ticketCount) {
-        event.refundTicket(ticketCount);
+        event.refundTickets(ticketCount);
         eventRepository.save(event);
     }
 
