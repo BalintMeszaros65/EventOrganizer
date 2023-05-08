@@ -31,11 +31,6 @@ public class EventTests {
     @InjectMocks
     Event event;
 
-    @BeforeEach
-    void setUp() {
-        Mockito.lenient().when(venue.getCapacity()).thenReturn(1000);
-    }
-
     @Test
     @DisplayName("getGenre")
         // TODO ask if it is needed (also null)
@@ -68,6 +63,10 @@ public class EventTests {
     @Nested
     @DisplayName("initializeTicketsToBeSold when")
     class InitializeTicketsToBeSold {
+        @BeforeEach
+        void setUp() {
+            Mockito.when(venue.getCapacity()).thenReturn(1000);
+        }
 
         @Test
         @DisplayName("ticketsSoldThroughOurApp is higher than Venue capacity")
@@ -175,6 +174,7 @@ public class EventTests {
         @DisplayName("ticketCount is positive")
         void shouldReturnCorrectAmount() {
             // test data
+            Mockito.when(venue.getCapacity()).thenReturn(1000);
             int ticketCount = 500;
             event.setBasePrice(BigDecimal.valueOf(1000));
             event.setTicketsSoldThroughOurApp(1000);
@@ -302,7 +302,6 @@ public class EventTests {
             @Test
             @DisplayName("Event is cancelled")
             void shouldThrowIllegalEventStateException() {
-                Mockito.when(venue.isThereRefund()).thenReturn(true);
                 event.setCancelled(true);
                 event.setEventStartingDateAndTime(ZonedDateTime.now().plusDays(7));
                 event.setDaysBeforeBookingIsClosed(2);
