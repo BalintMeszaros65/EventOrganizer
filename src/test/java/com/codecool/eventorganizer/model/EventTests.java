@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,6 +38,7 @@ public class EventTests {
 
     @Test
     @DisplayName("getGenre")
+        // TODO ask if it is needed (also null)
     void shouldReturnGenre() {
         Mockito.when(performance.getGenre()).thenReturn(genre);
         assertEquals(genre, event.getGenre());
@@ -153,26 +155,21 @@ public class EventTests {
     @Nested
     @DisplayName("currentPriceOfTickets when")
     class CurrentPriceOfTickets {
-        @Nested
-        @DisplayName("ticketCount is not positive")
-        class TicketCountIsNotPositive {
-            @Test
-            @DisplayName("ticketCount is negative")
-            void shouldThrowIllegalArgumentException() {
-                Exception exception = assertThrows(IllegalArgumentException.class,
-                        () -> event.currentPriceOfTickets(-1));
-                assertEquals("Can not calculate price for 0 or negative number of tickets.", exception.getMessage());
-            }
-
-            @Test
-            @DisplayName("ticketCount is 0")
-            void shouldThrowIllegalArgumentException2() {
-                Exception exception = assertThrows(IllegalArgumentException.class,
-                        () -> event.currentPriceOfTickets(0));
-                assertEquals("Can not calculate price for 0 or negative number of tickets.", exception.getMessage());
-            }
+        @Test
+        @DisplayName("ticketCount is negative")
+        void shouldThrowIllegalArgumentException() {
+            Exception exception = assertThrows(IllegalArgumentException.class,
+                    () -> event.currentPriceOfTickets(-1));
+            assertEquals("Can not calculate price for 0 or negative number of tickets.", exception.getMessage());
         }
 
+        @Test
+        @DisplayName("ticketCount is 0")
+        void shouldThrowIllegalArgumentException2() {
+            Exception exception = assertThrows(IllegalArgumentException.class,
+                    () -> event.currentPriceOfTickets(0));
+            assertEquals("Can not calculate price for 0 or negative number of tickets.", exception.getMessage());
+        }
 
         @Test
         @DisplayName("ticketCount is positive")
@@ -204,4 +201,79 @@ public class EventTests {
             assertEquals(expected, event.currentPriceOfTickets(ticketCount));
         }
     }
+
+    @Nested
+    @DisplayName("bookTickets when")
+    class BookTickets {
+        @Test
+        @DisplayName("ticketCount is negative")
+        void shouldThrowIllegalArgumentException() {
+            Exception exception = assertThrows(IllegalArgumentException.class,
+                    () -> event.bookTickets(-1));
+            assertEquals("Can not buy 0 or negative number of tickets.", exception.getMessage());
+        }
+
+        @Test
+        @DisplayName("ticketCount is 0")
+        void shouldThrowIllegalArgumentException2() {
+            Exception exception = assertThrows(IllegalArgumentException.class,
+                    () -> event.bookTickets(0));
+            assertEquals("Can not buy 0 or negative number of tickets.", exception.getMessage());
+        }
+
+        @Nested
+        @DisplayName("ticketCount is positive and")
+        class TicketCountIsPositive {
+            int ticketCount = 5;
+
+            @Test
+            @DisplayName("Event is cancelled")
+            void shouldThrowIllegalEventStateException() {
+                event.setAvailableTickets(500);
+                event.setCancelled(true);
+                event.setEventStartingDateAndTime(ZonedDateTime.now().plusDays(7));
+                event.setDaysBeforeBookingIsClosed(2);
+                Exception exception = assertThrows(CustomExceptions.IllegalEventStateException.class,
+                        () -> event.bookTickets(ticketCount));
+                assertEquals("Cancelled event can not be booked.", exception.getMessage());
+            }
+
+            @Test
+            @DisplayName("booking has ended")
+            void shouldThrowIllegalEventStateException2() {
+                event.setAvailableTickets(500);
+                event.setCancelled(false);
+                event.setEventStartingDateAndTime(ZonedDateTime.now().plusDays(2));
+                event.setDaysBeforeBookingIsClosed(3);
+                Exception exception = assertThrows(CustomExceptions.IllegalEventStateException.class,
+                        () -> event.bookTickets(ticketCount));
+                assertTrue(exception.getMessage().contains("Booking for event ended at"));
+            }
+
+            @Test
+            @DisplayName("not enough tickets left")
+            void shouldThrowIllegalEventStateException3() {
+                event.setAvailableTickets(4);
+                event.setCancelled(false);
+                event.setEventStartingDateAndTime(ZonedDateTime.now().plusDays(7));
+                event.setDaysBeforeBookingIsClosed(3);
+                Exception exception = assertThrows(CustomExceptions.IllegalEventStateException.class,
+                        () -> event.bookTickets(ticketCount));
+                assertTrue(exception.getMessage().contains("Not enough tickets left"));
+            }
+
+            @Test
+            @DisplayName("tickets can be booked")
+            void shouldDecreaseAvailableTicketsByTicketCount() {
+                event.setAvailableTickets(15);
+                event.setCancelled(false);
+                event.setEventStartingDateAndTime(ZonedDateTime.now().plusDays(7));
+                event.setDaysBeforeBookingIsClosed(3);
+                event.bookTickets(ticketCount);
+                assertEquals(10, event.getAvailableTickets());
+            }
+        }
+    }
+
+
 }
