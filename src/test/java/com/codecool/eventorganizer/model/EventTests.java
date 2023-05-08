@@ -33,7 +33,7 @@ public class EventTests {
 
     @Test
     @DisplayName("getGenre")
-        // TODO ask if it is needed (also null)
+        // TODO ask if it is needed (also null check)
     void shouldReturnGenre() {
         Mockito.when(performance.getGenre()).thenReturn(genre);
         assertEquals(genre, event.getGenre());
@@ -345,6 +345,50 @@ public class EventTests {
                 event.refundTickets(ticketCount);
                 assertEquals(25, event.getAvailableTickets());
             }
+        }
+    }
+
+    @Nested
+    @DisplayName("canBeRefunded when")
+    class CanBeRefunded {
+        @Test
+        @DisplayName("there is no refunding by Venue")
+        void shouldReturnFalse() {
+            Mockito.when(venue.isThereRefund()).thenReturn(false);
+            event.setCancelled(false);
+            event.setEventStartingDateAndTime(ZonedDateTime.now().plusDays(7));
+            event.setDaysBeforeBookingIsClosed(2);
+            assertFalse(event.canBeRefunded());
+        }
+
+        @Test
+        @DisplayName("Event is cancelled")
+        void shouldReturnFalse2() {
+            Mockito.when(venue.isThereRefund()).thenReturn(true);
+            event.setCancelled(true);
+            event.setEventStartingDateAndTime(ZonedDateTime.now().plusDays(7));
+            event.setDaysBeforeBookingIsClosed(2);
+            assertFalse(event.canBeRefunded());
+        }
+
+        @Test
+        @DisplayName("refunding has ended")
+        void shouldReturnFalse3() {
+            Mockito.when(venue.isThereRefund()).thenReturn(true);
+            event.setCancelled(false);
+            event.setEventStartingDateAndTime(ZonedDateTime.now().plusDays(3));
+            event.setDaysBeforeBookingIsClosed(4);
+            assertFalse(event.canBeRefunded());
+        }
+
+        @Test
+        @DisplayName("Event can be refunded")
+        void shouldReturnTrue() {
+            Mockito.when(venue.isThereRefund()).thenReturn(true);
+            event.setCancelled(false);
+            event.setEventStartingDateAndTime(ZonedDateTime.now().plusDays(7));
+            event.setDaysBeforeBookingIsClosed(2);
+            assertTrue(event.canBeRefunded());
         }
     }
 }
