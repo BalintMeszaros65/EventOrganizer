@@ -29,8 +29,6 @@ public class Performance {
     private UUID id;
     @NotBlank
     private String name;
-    // TODO ask if the annotation is not working due to URL not being a String
-//    @org.hibernate.validator.constraints.URL
     private URL homePage;
     @NotNull
     @ManyToOne

@@ -25,8 +25,6 @@ import java.util.UUID;
 @Setter
 public class Genre {
     @Id
-    // TODO ask if the annotation is not working due to UUID not being a CharSequence
-    // @org.hibernate.validator.constraints.UUID
     @GeneratedValue(strategy = GenerationType.UUID)
     @Null(groups = CreateValidation.class, message = "Id must not exist when creating.")
     @NotNull(groups = UpdateValidation.class)
