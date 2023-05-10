@@ -185,6 +185,7 @@ public class EventTests {
             BigDecimal basePrice = event.getBasePrice();
             // logic
             // TODO ask if there is a better way, also if you need to check edge case
+            // check sum, check if early/super early is lower than basePrice
             BigDecimal expected = BigDecimal.ZERO;
             for (int i = 0; i < ticketCount; i++) {
                 if (availableTickets - i > ticketsSoldThroughOurApp * 0.9) {

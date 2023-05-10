@@ -44,6 +44,7 @@ public class PerformanceController {
 
     @Secured("ROLE_ADMIN")
     // TODO ask if method is ok
+    // split it to 2 endpoints PUT, DELETE
     @DeleteMapping("/api/performance/switch-active-state/{id}")
     public ResponseEntity<String> switchActiveStateOfPerformance(@NotNull @PathVariable UUID id) {
         return performanceService.switchActiveStateOfPerformance(id);

@@ -28,6 +28,7 @@ public class Country {
     private UUID id;
     @NotBlank
     // TODO ask how to catch SQL exception for user friendly error message
+    // frontend's problem
     @Column(unique = true)
     private String name;
 
