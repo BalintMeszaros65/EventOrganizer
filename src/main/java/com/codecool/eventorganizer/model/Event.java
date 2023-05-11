@@ -87,20 +87,20 @@ public class Event {
         if (ticketCount <= 0) {
             throw new IllegalArgumentException("Can not calculate price for 0 or negative number of tickets.");
         }
-        BigDecimal currentPrice = BigDecimal.ZERO;
+        BigDecimal price = BigDecimal.ZERO;
         for (int i = 0; i < ticketCount; i++) {
             if (availableTickets - i > ticketsSoldThroughOurApp * 0.9) {
                 // super early bird price
-                currentPrice = currentPrice.add(basePrice.multiply(BigDecimal.valueOf(0.8)));
+                price = price.add(basePrice.multiply(BigDecimal.valueOf(0.8)));
             } else if (availableTickets - i > ticketsSoldThroughOurApp * 0.8) {
                 // early bird price
-                currentPrice = currentPrice.add(basePrice.multiply(BigDecimal.valueOf(0.9)));
+                price = price.add(basePrice.multiply(BigDecimal.valueOf(0.9)));
             } else {
                 // regular price
-                currentPrice = currentPrice.add(basePrice);
+                price = price.add(basePrice);
             }
         }
-        return currentPrice;
+        return price;
     }
 
     public void bookTickets(int ticketCount) {
