@@ -22,6 +22,7 @@ import java.util.UUID;
         name = "Performance",
         description = "Operations about performance"
 )
+@Validated
 public class PerformanceController {
     private final PerformanceService performanceService;
 

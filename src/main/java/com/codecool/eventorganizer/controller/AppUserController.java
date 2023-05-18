@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
     name = "User",
     description = "Operations about user"
 )
+@Validated
 public class AppUserController {
 
     private final AppUserService appUserService;

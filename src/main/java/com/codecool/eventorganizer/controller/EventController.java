@@ -24,6 +24,7 @@ import java.util.UUID;
         name = "Event",
         description = "Operations about event"
 )
+@Validated
 public class EventController {
     private final EventService eventService;
 

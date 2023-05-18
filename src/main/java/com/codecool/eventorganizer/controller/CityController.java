@@ -25,6 +25,7 @@ import java.util.UUID;
         name = "City",
         description = "Operations about city"
 )
+@Validated
 public class CityController {
 
     private final CityService cityService;

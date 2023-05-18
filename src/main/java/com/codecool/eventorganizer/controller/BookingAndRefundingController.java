@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +23,7 @@ import java.util.UUID;
         name = "Booking and refunding",
         description = "Operations about booking and refunding"
 )
+@Validated
 public class BookingAndRefundingController {
     private final BookingAndRefundingService bookingAndRefundingService;
 

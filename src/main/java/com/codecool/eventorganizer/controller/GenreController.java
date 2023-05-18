@@ -24,6 +24,7 @@ import java.util.UUID;
         name = "Genre",
         description = "Operations about genre"
 )
+@Validated
 public class GenreController {
     private final GenreService genreService;
 

@@ -22,6 +22,7 @@ import java.util.UUID;
         name = "Venue",
         description = "Operations about venue"
 )
+@Validated
 public class VenueController {
     private final VenueService venueService;
 

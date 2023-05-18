@@ -23,6 +23,7 @@ import java.util.UUID;
         name = "Country",
         description = "Operations about country"
 )
+@Validated
 public class CountryController {
     private final CountryService countryService;
 
