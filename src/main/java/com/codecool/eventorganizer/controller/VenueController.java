@@ -43,9 +43,14 @@ public class VenueController {
     }
 
     @Secured("ROLE_ADMIN")
-    // TODO ask if method is ok
+    @PutMapping("/api/venue/switch-active-status/{id}")
+    public ResponseEntity<String> activateVenue(@NotNull @PathVariable UUID id) {
+        return venueService.activateVenue(id);
+    }
+
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/api/venue/switch-active-status/{id}")
-    public ResponseEntity<String> switchActiveStateOfVenue(@NotNull @PathVariable UUID id) {
-        return venueService.switchActiveStateOfVenue(id);
+    public ResponseEntity<String> inactivateVenue(@NotNull @PathVariable UUID id) {
+        return venueService.inactivateVenue(id);
     }
 }

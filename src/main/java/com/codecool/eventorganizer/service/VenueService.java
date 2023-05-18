@@ -68,12 +68,17 @@ public class VenueService {
         return ResponseEntity.status(HttpStatus.OK).body("Venue successfully updated.");
     }
 
-    public ResponseEntity<String> switchActiveStateOfVenue(UUID id) {
+    public ResponseEntity<String> activateVenue(UUID id) {
         Venue venue = getVenueById(id);
-        boolean inactive = venue.isInactive();
-        venue.setInactive(!inactive);
+        venue.setInactive(false);
         venueRepository.save(venue);
-        return ResponseEntity.status(HttpStatus.OK).body(inactive ? "Venue successfully activated."
-                : "Venue successfully inactivated.");
+        return ResponseEntity.status(HttpStatus.OK).body("Venue successfully activated.");
+    }
+
+    public ResponseEntity<String> inactivateVenue(UUID id) {
+        Venue venue = getVenueById(id);
+        venue.setInactive(true);
+        venueRepository.save(venue);
+        return ResponseEntity.status(HttpStatus.OK).body("Venue successfully inactivated.");
     }
 }
