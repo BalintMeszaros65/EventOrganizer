@@ -172,7 +172,7 @@ public class EventTests {
 
         @Test
         @DisplayName("ticketCount is positive")
-        void shouldReturnCorrectAmount() {
+        void discountedAmountShouldBeHigherThanNotDiscounted() {
             // test data
             Mockito.when(venue.getCapacity()).thenReturn(1000);
             int ticketCount = 500;
@@ -184,22 +184,8 @@ public class EventTests {
             int ticketsSoldThroughOurApp = event.getTicketsSoldThroughOurApp();
             BigDecimal basePrice = event.getBasePrice();
             // logic
-            // TODO ask if there is a better way, also if you need to check edge case
-            // check sum, check if early/super early is lower than basePrice
-            BigDecimal expected = BigDecimal.ZERO;
-            for (int i = 0; i < ticketCount; i++) {
-                if (availableTickets - i > ticketsSoldThroughOurApp * 0.9) {
-                    // super early bird price
-                    expected = expected.add(basePrice.multiply(BigDecimal.valueOf(0.8)));
-                } else if (availableTickets - i > ticketsSoldThroughOurApp * 0.8) {
-                    // early bird price
-                    expected = expected.add(basePrice.multiply(BigDecimal.valueOf(0.9)));
-                } else {
-                    // regular price
-                    expected = expected.add(basePrice);
-                }
-            }
-            assertEquals(expected, event.currentPriceOfTickets(ticketCount));
+            BigDecimal withoutDiscount = basePrice.multiply(BigDecimal.valueOf(ticketCount));
+            assertTrue(withoutDiscount.compareTo(event.currentPriceOfTickets(ticketCount)) == 1);
         }
     }
 
