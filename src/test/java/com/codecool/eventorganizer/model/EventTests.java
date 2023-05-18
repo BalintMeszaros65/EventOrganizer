@@ -33,7 +33,6 @@ public class EventTests {
 
     @Test
     @DisplayName("getGenre")
-        // TODO ask if it is needed (also null check)
     void shouldReturnGenre() {
         Mockito.when(performance.getGenre()).thenReturn(genre);
         assertEquals(genre, event.getGenre());
