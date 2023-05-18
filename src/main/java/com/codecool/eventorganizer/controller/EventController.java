@@ -1,6 +1,7 @@
 package com.codecool.eventorganizer.controller;
 
-import com.codecool.eventorganizer.dto.EventDto;
+import com.codecool.eventorganizer.dto.EventDtoForCreateAndUpdate;
+import com.codecool.eventorganizer.dto.EventDtoForCustomer;
 import com.codecool.eventorganizer.model.Event;
 import com.codecool.eventorganizer.service.EventService;
 import com.codecool.eventorganizer.utility.CreateValidation;
@@ -35,7 +36,7 @@ public class EventController {
 
     @Secured("ROLE_USER")
     @GetMapping("/api/event/get-events/customer")
-    public Set<EventDto> getUpcomingEventsForCustomer() {
+    public Set<EventDtoForCustomer> getUpcomingEventsForCustomer() {
         return eventService.getUpcomingEventsForCustomer();
     }
 
@@ -47,14 +48,16 @@ public class EventController {
 
     @Secured("ROLE_ORGANIZER")
     @PostMapping("/api/event/create")
-    public ResponseEntity<String> createEvent(@Validated(CreateValidation.class) @RequestBody Event event) {
-        return eventService.createEvent(event);
+    public ResponseEntity<String> createEvent(@Validated(CreateValidation.class)
+                                                  @RequestBody EventDtoForCreateAndUpdate eventDtoForCreateAndUpdate) {
+        return eventService.createEvent(eventDtoForCreateAndUpdate);
     }
 
     @Secured("ROLE_ORGANIZER")
     @PutMapping("/api/event/update")
-    public ResponseEntity<String> updateEvent(@Validated(UpdateValidation.class) @RequestBody Event event) {
-        return eventService.updateEvent(event);
+    public ResponseEntity<String> updateEvent(@Validated(UpdateValidation.class)
+                                                  @RequestBody EventDtoForCreateAndUpdate eventDtoForCreateAndUpdate) {
+        return eventService.updateEvent(eventDtoForCreateAndUpdate);
     }
 
     @Secured("ROLE_ADMIN")

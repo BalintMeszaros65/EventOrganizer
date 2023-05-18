@@ -1,6 +1,7 @@
 package com.codecool.eventorganizer.service;
 
-import com.codecool.eventorganizer.dto.EventDto;
+import com.codecool.eventorganizer.dto.EventDtoForCreateAndUpdate;
+import com.codecool.eventorganizer.dto.EventDtoForCustomer;
 import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.*;
 import com.codecool.eventorganizer.repository.EventRepository;
@@ -65,30 +66,10 @@ public class EventService {
         if (performance.isInactive()) {
             throw new IllegalArgumentException("Event can not be created/updated with inactive performance.");
         }
-        Venue savedVenue = venueService.getVenueById(venue.getId());
-        Performance savedPerformance = performanceService.getPerformanceById(performance.getId());
-        if (!venue.equals(savedVenue)) {
-            throw new IllegalArgumentException("Venue's data does not match with the one in database.");
-        }
-        if (!performance.equals(savedPerformance)) {
-            throw new IllegalArgumentException("Performance's data does not match with the one in database.");
-        }
         ZonedDateTime bookingClosed = event.getEventStartingDateAndTime().minusDays(event.getDaysBeforeBookingIsClosed());
         if (bookingClosed.isBefore(ZonedDateTime.now())) {
             throw new IllegalArgumentException("Event can not be created/updated if booking is closed.");
         }
-    }
-
-    private void checkIfEventExists(UUID id) {
-        if (!eventRepository.existsById(id)) {
-            throw new NoSuchElementException("Event not found by given id.");
-        }
-    }
-
-    private void setupUpdatedEventAvailableTickets(Event updatedEvent) {
-        Event savedEvent = getEventById(updatedEvent.getId());
-        int ticketsAlreadySold = savedEvent.getTicketsSoldThroughOurApp() - savedEvent.getAvailableTickets();
-        updatedEvent.initializeTicketsToBeSold(ticketsAlreadySold);
     }
 
     private AppUser getCurrentUser() {
@@ -106,21 +87,38 @@ public class EventService {
         }
     }
 
+    private void setupUpdatedEvent(EventDtoForCreateAndUpdate eventDto, Event event) {
+        int ticketsAlreadySold = event.getTicketsSoldThroughOurApp() - event.getAvailableTickets();
+        Venue venue = venueService.getVenueById(eventDto.getVenueId());
+        Performance performance = performanceService.getPerformanceById(eventDto.getPerformanceId());
+        event.setVenue(venue);
+        event.setPerformance(performance);
+        event.setBasePrice(eventDto.getBasePrice());
+        event.setTicketsSoldThroughOurApp(eventDto.getTicketsSoldThroughOurApp());
+        event.initializeAvailableTickets(ticketsAlreadySold);
+        event.setEventStartingDateAndTime(eventDto.getEventStartingDateAndTime());
+        event.setEventLengthInMinutes(eventDto.getEventLengthInMinutes());
+        event.setDaysBeforeBookingIsClosed(eventDto.getDaysBeforeBookingIsClosed());
+    }
+
     // logic
 
-    public ResponseEntity<String> createEvent(Event event) {
+    public ResponseEntity<String> createEvent(EventDtoForCreateAndUpdate eventDto) {
+        Venue venue = venueService.getVenueById(eventDto.getVenueId());
+        Performance performance = performanceService.getPerformanceById(eventDto.getPerformanceId());
+        Event event = new Event(eventDto.getId(), venue, performance, getCurrentUser(), eventDto.getBasePrice(),
+                eventDto.getTicketsSoldThroughOurApp(), eventDto.getTicketsSoldThroughOurApp(), eventDto.getEventStartingDateAndTime(),
+                eventDto.getEventLengthInMinutes(), eventDto.getDaysBeforeBookingIsClosed(), false);
         checkIfRequiredDataExists(event);
-        event.initializeTicketsToBeSold(0);
-        event.setOrganizer(getCurrentUser());
         eventRepository.save(event);
         return ResponseEntity.status(HttpStatus.CREATED).body("Event successfully created.");
     }
 
-    public ResponseEntity<String> updateEvent(Event event) {
+    public ResponseEntity<String> updateEvent(EventDtoForCreateAndUpdate eventDto) {
+        Event event = getEventById(eventDto.getId());
         checkIfCurrentUserEqualsEventOrganizer(event);
-        checkIfEventExists(event.getId());
+        setupUpdatedEvent(eventDto, event);
         checkIfRequiredDataExists(event);
-        setupUpdatedEventAvailableTickets(event);
         eventRepository.save(event);
         return ResponseEntity.status(HttpStatus.OK).body("Event successfully updated.");
     }
@@ -151,12 +149,12 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    public Set<EventDto> getUpcomingEventsForCustomer() {
+    public Set<EventDtoForCustomer> getUpcomingEventsForCustomer() {
         Set<Event> upcomingEvents = getUpcomingEvents();
         Customer currentUser = getCurrentCustomer();
         Set<BookedEvent> bookedEvents = currentUser.getBookedEvents();
         return upcomingEvents.stream()
-                .map(event -> new EventDto(event, bookedEvents))
+                .map(event -> new EventDtoForCustomer(event, bookedEvents))
                 .collect(Collectors.toSet());
     }
 }
