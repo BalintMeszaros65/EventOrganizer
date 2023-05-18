@@ -65,7 +65,6 @@ public class GenreController {
 
     @Secured({"ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"})
     @GetMapping("/api/genre/get-all-by-type/{type}")
-    // TODO ask why it is not working
     public Set<Genre> getAllGenreByType(@NotBlank @PathVariable String type) {
         return genreService.getAllGenreByType(type);
     }
