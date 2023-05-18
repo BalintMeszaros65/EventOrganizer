@@ -65,12 +65,17 @@ public class GenreService {
         return ResponseEntity.status(HttpStatus.OK).body("Genre successfully updated.");
     }
 
-    public ResponseEntity<String> switchActiveStateOfGenre(UUID id) {
+    public ResponseEntity<String> activateGenre(UUID id) {
         Genre genre = getGenreById(id);
-        boolean inactive = genre.isInactive();
-        genre.setInactive(!inactive);
+        genre.setInactive(false);
         genreRepository.save(genre);
-        return ResponseEntity.status(HttpStatus.OK).body(inactive ? "Genre successfully activated."
-                : "Genre successfully inactivated.");
+        return ResponseEntity.status(HttpStatus.OK).body("Genre successfully activated.");
+    }
+
+    public ResponseEntity<String> inactivateGenre(UUID id) {
+        Genre genre = getGenreById(id);
+        genre.setInactive(true);
+        genreRepository.save(genre);
+        return ResponseEntity.status(HttpStatus.OK).body("Genre successfully inactivated.");
     }
 }

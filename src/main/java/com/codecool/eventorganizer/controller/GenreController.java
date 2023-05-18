@@ -45,10 +45,15 @@ public class GenreController {
     }
 
     @Secured("ROLE_ADMIN")
-    // TODO ask if method is ok
+    @PutMapping("/api/genre/switch-active-state/{id}")
+    public ResponseEntity<String> activateGenre(@NotNull @PathVariable UUID id) {
+        return genreService.activateGenre(id);
+    }
+
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/api/genre/switch-active-state/{id}")
-    public ResponseEntity<String> switchActiveStateOfGenre(@NotNull @PathVariable UUID id) {
-        return genreService.switchActiveStateOfGenre(id);
+    public ResponseEntity<String> inactivateGenre(@NotNull @PathVariable UUID id) {
+        return genreService.inactivateGenre(id);
     }
 
     @Secured({"ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"})
