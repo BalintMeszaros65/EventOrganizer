@@ -68,12 +68,17 @@ public class PerformanceService {
         return ResponseEntity.status(HttpStatus.OK).body("Performance successfully updated.");
     }
 
-    public ResponseEntity<String> switchActiveStateOfPerformance(UUID id) {
+    public ResponseEntity<String> activatePerformance(UUID id) {
         Performance performance = getPerformanceById(id);
-        boolean inactive = performance.isInactive();
-        performance.setInactive(!inactive);
+        performance.setInactive(false);
         performanceRepository.save(performance);
-        return ResponseEntity.status(HttpStatus.OK).body(inactive ? "Performance successfully activated."
-                : "Performance successfully inactivated.");
+        return ResponseEntity.status(HttpStatus.OK).body("Performance successfully activated.");
+    }
+
+    public ResponseEntity<String> inactivatePerformance(UUID id) {
+        Performance performance = getPerformanceById(id);
+        performance.setInactive(true);
+        performanceRepository.save(performance);
+        return ResponseEntity.status(HttpStatus.OK).body("Performance successfully inactivated.");
     }
 }
