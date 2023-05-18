@@ -74,7 +74,7 @@ public class EventTests {
             int ticketsAlreadySold = 0;
             event.setTicketsSoldThroughOurApp(ticketsSoldThroughOurApp);
             Exception exception = assertThrows(CustomExceptions.TicketCountException.class,
-                    () -> event.initializeTicketsToBeSold(ticketsAlreadySold));
+                    () -> event.initializeAvailableTickets(ticketsAlreadySold));
             assertTrue(exception.getMessage().contains("Can not sell more tickets than venue's max capacity"));
         }
 
@@ -88,7 +88,7 @@ public class EventTests {
                 int ticketsSoldThroughOurApp = 1000;
                 int ticketsAlreadySold = 0;
                 event.setTicketsSoldThroughOurApp(ticketsSoldThroughOurApp);
-                event.initializeTicketsToBeSold(ticketsAlreadySold);
+                event.initializeAvailableTickets(ticketsAlreadySold);
                 assertEquals(ticketsSoldThroughOurApp, event.getAvailableTickets());
             }
 
@@ -98,7 +98,7 @@ public class EventTests {
                 int ticketsSoldThroughOurApp = 1000;
                 int ticketsAlreadySold = 250;
                 event.setTicketsSoldThroughOurApp(ticketsSoldThroughOurApp);
-                event.initializeTicketsToBeSold(ticketsAlreadySold);
+                event.initializeAvailableTickets(ticketsAlreadySold);
                 assertEquals(ticketsSoldThroughOurApp - ticketsAlreadySold, event.getAvailableTickets());
             }
 
@@ -109,7 +109,7 @@ public class EventTests {
                 int ticketsAlreadySold = 2500;
                 event.setTicketsSoldThroughOurApp(ticketsSoldThroughOurApp);
                 Exception exception = assertThrows(CustomExceptions.TicketCountException.class,
-                        () -> event.initializeTicketsToBeSold(ticketsAlreadySold));
+                        () -> event.initializeAvailableTickets(ticketsAlreadySold));
                 assertTrue(exception.getMessage().contains("Can not sell less tickets than already sold tickets"));
             }
         }
@@ -123,7 +123,7 @@ public class EventTests {
                 int ticketsSoldThroughOurApp = 500;
                 int ticketsAlreadySold = 0;
                 event.setTicketsSoldThroughOurApp(ticketsSoldThroughOurApp);
-                event.initializeTicketsToBeSold(ticketsAlreadySold);
+                event.initializeAvailableTickets(ticketsAlreadySold);
                 assertEquals(ticketsSoldThroughOurApp, event.getAvailableTickets());
             }
 
@@ -133,7 +133,7 @@ public class EventTests {
                 int ticketsSoldThroughOurApp = 900;
                 int ticketsAlreadySold = 250;
                 event.setTicketsSoldThroughOurApp(ticketsSoldThroughOurApp);
-                event.initializeTicketsToBeSold(ticketsAlreadySold);
+                event.initializeAvailableTickets(ticketsAlreadySold);
                 assertEquals(ticketsSoldThroughOurApp - ticketsAlreadySold, event.getAvailableTickets());
             }
 
@@ -144,7 +144,7 @@ public class EventTests {
                 int ticketsAlreadySold = 250;
                 event.setTicketsSoldThroughOurApp(ticketsSoldThroughOurApp);
                 Exception exception = assertThrows(CustomExceptions.TicketCountException.class,
-                        () -> event.initializeTicketsToBeSold(ticketsAlreadySold));
+                        () -> event.initializeAvailableTickets(ticketsAlreadySold));
                 assertTrue(exception.getMessage().contains("Can not sell less tickets than already sold tickets"));
             }
         }
@@ -177,7 +177,7 @@ public class EventTests {
             int ticketCount = 500;
             event.setBasePrice(BigDecimal.valueOf(1000));
             event.setTicketsSoldThroughOurApp(1000);
-            event.initializeTicketsToBeSold(0);
+            event.initializeAvailableTickets(0);
             // data coming from setup and test data
             int availableTickets = event.getAvailableTickets();
             int ticketsSoldThroughOurApp = event.getTicketsSoldThroughOurApp();
