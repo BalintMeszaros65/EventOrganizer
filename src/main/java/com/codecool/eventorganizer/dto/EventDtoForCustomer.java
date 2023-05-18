@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class EventDto {
+public class EventDtoForCustomer {
     private final UUID id;
     private final Venue venue;
     private final Performance performance;
@@ -27,7 +27,7 @@ public class EventDto {
 
     /* creates a DTO from Event and stores all Booked Events overlapping it (if there is any),
      so the customer can be informed about it */
-    public EventDto(Event event, Set<BookedEvent> bookedEventList) {
+    public EventDtoForCustomer(Event event, Set<BookedEvent> bookedEventList) {
         this.id = event.getId();
         this.venue = event.getVenue();
         this.performance = event.getPerformance();
