@@ -73,4 +73,19 @@ public class Customer extends AppUser {
         weightedMap.keySet().removeIf(Objects::isNull);
         return weightedMap;
     }
+
+    public Object getTopRecommendationFromWeightedMap(HashMap<Object, Double> weightedMap) {
+        return Collections.max(weightedMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
+
+    public Object getTopRecommendation() {
+        HashMap<Object, Double> weightedMap = createWeightedRecommendationMapFromBookedEvents();
+        return getTopRecommendationFromWeightedMap(weightedMap);
+    }
+
+    public Object getRecommendationByClassType(Class<?> type) {
+        HashMap<Object, Double> weightedMap = createWeightedRecommendationMapFromBookedEvents();
+        weightedMap.keySet().removeIf(object -> !object.getClass().isInstance(type));
+        return getTopRecommendationFromWeightedMap(weightedMap);
+    }
 }
