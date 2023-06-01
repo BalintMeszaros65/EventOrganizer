@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor
@@ -25,6 +26,16 @@ public class Customer extends AppUser {
                     Set<BookedEvent> bookedEvents) {
         super(id, email, password, firstName, lastName, roles);
         this.bookedEvents = bookedEvents;
+    }
+
+    public void storeBookedEvent(BookedEvent bookedEvent) {
+        if (bookedEvent == null) {
+            throw new IllegalArgumentException("BookedEvent can not be null.");
+        }
+        if (bookedEvents == null) {
+            bookedEvents = new HashSet<>();
+        }
+        bookedEvents.add(bookedEvent);
     }
 
     public BigDecimal calculateAveragePricePaidForOneTicket() {
@@ -46,13 +57,20 @@ public class Customer extends AppUser {
         }
     }
 
-    public void storeBookedEvent(BookedEvent bookedEvent) {
-        if (bookedEvent == null) {
-            throw new IllegalArgumentException("BookedEvent can not be null.");
+    public HashMap<Object, Double> createWeightedRecommendationMapFromBookedEvents() {
+        HashMap<Object, Double> weightedMap = new HashMap<>();
+        Set<Event> distinctEvents = bookedEvents.stream()
+                .map(BookedEvent::getEvent)
+                .collect(Collectors.toSet());
+        for (Event event : distinctEvents) {
+            weightedMap.merge(event.getPerformance(), 1.6, Double::sum);
+            weightedMap.merge(event.getOrganizer(), 1.5, Double::sum);
+            weightedMap.merge(event.getGenre(), 1.4, Double::sum);
+            weightedMap.merge(event.getVenue(), 1.3, Double::sum);
+            weightedMap.merge(event.getCity(), 1.2, Double::sum);
+            weightedMap.merge(event.getCountry(), 1.1, Double::sum);
         }
-        if (bookedEvents == null) {
-            bookedEvents = new HashSet<>();
-        }
-        bookedEvents.add(bookedEvent);
+        weightedMap.keySet().removeIf(Objects::isNull);
+        return weightedMap;
     }
 }
