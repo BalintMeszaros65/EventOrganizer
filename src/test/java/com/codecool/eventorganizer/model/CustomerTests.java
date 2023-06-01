@@ -123,4 +123,7 @@ public class CustomerTests {
             }
         }
     }
+
+    // TODO createWeightedRecommendationMapFromBookedEvents
+    // TODO getRecommendationByType
 }
