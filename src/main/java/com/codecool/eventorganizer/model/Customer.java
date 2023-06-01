@@ -35,6 +35,9 @@ public class Customer extends AppUser {
                     .filter(Objects::nonNull)
                     .map(BookedEvent::getTicketCount)
                     .reduce(0, Integer::sum);
+            if (numberOfTickets == 0) {
+                return BigDecimal.ZERO;
+            }
             BigDecimal amountPaid = bookedEvents.stream()
                     .filter(Objects::nonNull)
                     .map(BookedEvent::getAmountPayed)
