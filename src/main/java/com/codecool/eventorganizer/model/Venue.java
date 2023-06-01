@@ -37,6 +37,15 @@ public class Venue {
             message = "Venue can not be inactive when creating/updating.")
     private boolean inactive;
 
+
+    public City getCity() {
+        return venueAddress.getCity();
+    }
+
+    public Country getCountry() {
+        return venueAddress.getCountry();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

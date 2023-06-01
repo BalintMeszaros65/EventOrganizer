@@ -57,6 +57,14 @@ public class Event {
         return performance.getGenre();
     }
 
+    public City getCity() {
+        return venue.getCity();
+    }
+
+    public Country getCounty() {
+        return venue.getCountry();
+    }
+
     public void cancel() {
         if (isCancelled) {
             throw new CustomExceptions.IllegalEventStateException(

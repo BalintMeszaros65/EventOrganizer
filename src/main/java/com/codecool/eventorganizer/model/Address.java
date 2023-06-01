@@ -48,4 +48,8 @@ public abstract class Address {
     public int hashCode() {
         return Objects.hash(getId(), getCity(), getZipCode(), getStreet(), getHouse());
     }
+
+    public Country getCountry() {
+        return city.getCountry();
+    }
 }
