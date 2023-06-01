@@ -25,9 +25,6 @@ public class EventTests {
     Performance performance;
     @Mock
     Genre genre;
-    @Mock
-    AppUser organizer;
-
     @InjectMocks
     Event event;
 
