@@ -9,10 +9,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor
@@ -35,9 +32,11 @@ public class Customer extends AppUser {
             return BigDecimal.ZERO;
         } else {
             int numberOfTickets = bookedEvents.stream()
+                    .filter(Objects::nonNull)
                     .map(BookedEvent::getTicketCount)
                     .reduce(0, Integer::sum);
             BigDecimal amountPaid = bookedEvents.stream()
+                    .filter(Objects::nonNull)
                     .map(BookedEvent::getAmountPayed)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
             return amountPaid.divide(BigDecimal.valueOf(numberOfTickets), RoundingMode.HALF_UP);
@@ -45,6 +44,9 @@ public class Customer extends AppUser {
     }
 
     public void storeBookedEvent(BookedEvent bookedEvent) {
+        if (bookedEvent == null) {
+            throw new IllegalArgumentException("BookedEvent can not be null.");
+        }
         if (bookedEvents == null) {
             bookedEvents = new HashSet<>();
         }
