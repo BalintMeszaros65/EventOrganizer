@@ -35,7 +35,7 @@ public class EventService {
     // basic CRUD operations
 
     public Set<Event> getUpcomingEvents() {
-        return eventRepository.findAllNotCancelledAfterZonedDateTime(ZonedDateTime.now());
+        return eventRepository.findAllUpcomingAndValid(ZonedDateTime.now());
     }
 
     public Event getEventById(UUID id) {
@@ -47,16 +47,32 @@ public class EventService {
         }
     }
 
-    public Set<Event> getAllEventsByPerformance(Performance performance) {
-        return eventRepository.findAllByPerformance(performance);
+    public Set<Event> getUpcomingEventsByPerformance(Performance performance) {
+        return eventRepository.findAllUpcomingAndValidByPerformance(performance, ZonedDateTime.now());
     }
 
-    public Set<Event> getAllEventsByOrganizer(AppUser organizer) {
-        return eventRepository.findAllByOrganizer(organizer);
+    public Set<Event> getUpcomingEventsByOrganizer(AppUser organizer) {
+        return eventRepository.findAllUpcomingAndValidByOrganizer(organizer, ZonedDateTime.now());
+    }
+
+    public Set<Event> getUpcomingEventsByGenre(Genre genre) {
+        return eventRepository.findAllUpcomingAndValidByGenre(genre, ZonedDateTime.now());
+    }
+
+    public Set<Event> getUpcomingEventsByVenue(Venue venue) {
+        return eventRepository.findAllUpcomingAndValidByVenue(venue, ZonedDateTime.now());
+    }
+
+    public Set<Event> getUpcomingEventsByCity(City city) {
+        return eventRepository.findAllUpcomingAndValidByCity(city, ZonedDateTime.now());
+    }
+
+    public Set<Event> getUpcomingEventsByCountry(Country country) {
+        return eventRepository.findAllUpcomingAndValidByCountry(country, ZonedDateTime.now());
     }
 
     public Set<Event> getAllEventsByCurrentOrganizer() {
-        return getAllEventsByOrganizer(getCurrentUser());
+        return eventRepository.findAllByOrganizer(getCurrentUser());
     }
 
     // helper methods
