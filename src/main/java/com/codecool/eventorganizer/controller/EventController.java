@@ -43,7 +43,7 @@ public class EventController {
     @Secured("ROLE_ORGANIZER")
     @GetMapping("/api/event/get-events/organizer")
     public Set<Event> getAllEventsByOrganizer() {
-        return eventService.getAllEventsByOrganizer();
+        return eventService.getAllEventsByCurrentOrganizer();
     }
 
     @Secured("ROLE_ORGANIZER")

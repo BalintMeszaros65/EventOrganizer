@@ -51,8 +51,12 @@ public class EventService {
         return eventRepository.findAllByPerformance(performance);
     }
 
-    public Set<Event> getAllEventsByOrganizer() {
-        return eventRepository.findAllByOrganizer(getCurrentUser());
+    public Set<Event> getAllEventsByOrganizer(AppUser organizer) {
+        return eventRepository.findAllByOrganizer(organizer);
+    }
+
+    public Set<Event> getAllEventsByCurrentOrganizer() {
+        return getAllEventsByOrganizer(getCurrentUser());
     }
 
     // helper methods
