@@ -61,7 +61,7 @@ public class Event {
         return venue.getCity();
     }
 
-    public Country getCounty() {
+    public Country getCountry() {
         return venue.getCountry();
     }
 
