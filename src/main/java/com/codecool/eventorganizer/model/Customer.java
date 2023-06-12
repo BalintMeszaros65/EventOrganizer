@@ -57,7 +57,7 @@ public class Customer extends AppUser {
         }
     }
 
-    public HashMap<Object, Double> createWeightedRecommendationMapFromBookedEvents() {
+    private HashMap<Object, Double> createWeightedRecommendationMapFromBookedEvents() {
         HashMap<Object, Double> weightedMap = new HashMap<>();
         Set<Event> distinctEvents = bookedEvents.stream()
                 .map(BookedEvent::getEvent)
@@ -74,7 +74,7 @@ public class Customer extends AppUser {
         return weightedMap;
     }
 
-    public Object getTopRecommendationFromWeightedMap(HashMap<Object, Double> weightedMap) {
+    private Object getTopRecommendationFromWeightedMap(HashMap<Object, Double> weightedMap) {
         return Collections.max(weightedMap.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 
