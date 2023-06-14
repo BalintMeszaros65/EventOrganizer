@@ -13,7 +13,9 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -151,6 +153,17 @@ public class Event {
     public boolean canBeRefunded() {
         return venue.isThereRefund() && !isCancelled &&
                 ZonedDateTime.now().isBefore(eventStartingDateAndTime.minusDays(daysBeforeBookingIsClosed));
+    }
+
+    public Set<RecommendationWeightable> getRecommendationWeightables() {
+        HashSet<RecommendationWeightable> recommendationWeightables = new HashSet<>();
+        recommendationWeightables.add(performance);
+        recommendationWeightables.add(organizer);
+        recommendationWeightables.add(getGenre());
+        recommendationWeightables.add(venue);
+        recommendationWeightables.add(getCity());
+        recommendationWeightables.add(getCountry());
+        return recommendationWeightables;
     }
 
     @Override
