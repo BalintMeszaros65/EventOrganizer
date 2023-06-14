@@ -176,11 +176,11 @@ public class DataLoader implements CommandLineRunner {
                 passwordEncoder.encode("customer2"), "customer", "2",
                 List.of("ROLE_USER"), null);
         customer2 = customerRepository.save(customer2);
-        AppUser organizer1 = new AppUser(null, "organizer1@gmail.com",
+        Organizer organizer1 = new Organizer(null, "organizer1@gmail.com",
                 passwordEncoder.encode("organizer1"), "organizer", "1",
                 List.of("ROLE_ORGANIZER"));
         organizer1 = appUserRepository.save(organizer1);
-        AppUser organizer2 = new AppUser(null, "organizer2@gmail.com",
+        Organizer organizer2 = new Organizer(null, "organizer2@gmail.com",
                 passwordEncoder.encode("organizer2"), "organizer", "2",
                 List.of("ROLE_ORGANIZER"));
         organizer2 = appUserRepository.save(organizer2);

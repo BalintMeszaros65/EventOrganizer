@@ -4,6 +4,7 @@ import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.AppUser;
 import com.codecool.eventorganizer.model.BookedEvent;
 import com.codecool.eventorganizer.model.Customer;
+import com.codecool.eventorganizer.model.Organizer;
 import com.codecool.eventorganizer.repository.AppUserRepository;
 import com.codecool.eventorganizer.repository.CustomerRepository;
 import com.codecool.eventorganizer.security.JwtUtil;
@@ -123,17 +124,17 @@ public class AppUserService {
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }
 
-    public ResponseEntity<String> registerOrganizer(AppUser appUser, String secretKey) {
+    public ResponseEntity<String> registerOrganizer(Organizer organizer, String secretKey) {
         // TODO change placeholder to generated link and generated secret key and use those with Spring Email
         if (!"organizer".equals(secretKey)) {
             throw new IllegalArgumentException("Secret key for registering an organizer account is not matching.");
         }
-        checkIfEmailIsAlreadyRegistered(appUser);
-        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-        appUser.setRoles(List.of("ROLE_ORGANIZER"));
-        checkIfIdDoesNotExist(appUser);
-        appUserRepository.save(appUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
+        checkIfEmailIsAlreadyRegistered(organizer);
+        organizer.setPassword(passwordEncoder.encode(organizer.getPassword()));
+        organizer.setRoles(List.of("ROLE_ORGANIZER"));
+        checkIfIdDoesNotExist(organizer);
+        appUserRepository.save(organizer);
+        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(organizer));
     }
 
     public ResponseEntity<String> registerAdmin(AppUser appUser, String secretKey) {

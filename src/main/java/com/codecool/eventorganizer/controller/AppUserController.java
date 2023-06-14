@@ -1,6 +1,7 @@
 package com.codecool.eventorganizer.controller;
 
 import com.codecool.eventorganizer.model.AppUser;
+import com.codecool.eventorganizer.model.Organizer;
 import com.codecool.eventorganizer.service.AppUserService;
 import com.codecool.eventorganizer.utility.BasicInfoValidation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,10 +61,10 @@ public class AppUserController {
     @Operation(summary = "registers an organizer")
     public ResponseEntity<String> registerOrganizer(
             @Validated(BasicInfoValidation.class)
-            @RequestBody AppUser appUser,
+            @RequestBody Organizer organizer,
             @Parameter(description = "Secret key for organizer registration", required = true)
             @PathVariable(name = "secret_key") String secretKey) {
-        return appUserService.registerOrganizer(appUser, secretKey);
+        return appUserService.registerOrganizer(organizer, secretKey);
     }
 
     @PostMapping("/api/admin/register/{secret_key}")

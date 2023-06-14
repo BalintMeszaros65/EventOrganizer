@@ -35,7 +35,7 @@ public class Event {
     private Performance performance;
     @NotNull
     @ManyToOne
-    private AppUser organizer;
+    private Organizer organizer;
     @DecimalMin(value = "0.0", inclusive = false)
     @NotNull
     private BigDecimal basePrice;

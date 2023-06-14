@@ -126,7 +126,7 @@ public class EventService {
     public ResponseEntity<String> createEvent(EventDtoForCreateAndUpdate eventDto) {
         Venue venue = venueService.getVenueById(eventDto.getVenueId());
         Performance performance = performanceService.getPerformanceById(eventDto.getPerformanceId());
-        Event event = new Event(eventDto.getId(), venue, performance, getCurrentUser(), eventDto.getBasePrice(),
+        Event event = new Event(eventDto.getId(), venue, performance, (Organizer) getCurrentUser(), eventDto.getBasePrice(),
                 eventDto.getTicketsSoldThroughOurApp(), eventDto.getTicketsSoldThroughOurApp(), eventDto.getEventStartingDateAndTime(),
                 eventDto.getEventLengthInMinutes(), eventDto.getDaysBeforeBookingIsClosed(), false);
         checkIfRequiredDataExists(event);
