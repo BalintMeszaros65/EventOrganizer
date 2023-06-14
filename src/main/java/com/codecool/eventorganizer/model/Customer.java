@@ -57,34 +57,31 @@ public class Customer extends AppUser {
         }
     }
 
-    private HashMap<Object, Double> createWeightedRecommendationMapFromBookedEvents() {
-        HashMap<Object, Double> weightedMap = new HashMap<>();
+    private HashMap<Object, Integer> createWeightedRecommendationMapFromBookedEvents() {
+        HashMap<Object, Integer> weightedMap = new HashMap<>();
         Set<Event> distinctEvents = bookedEvents.stream()
                 .map(BookedEvent::getEvent)
                 .collect(Collectors.toSet());
         for (Event event : distinctEvents) {
-            weightedMap.merge(event.getPerformance(), 1.6, Double::sum);
-            weightedMap.merge(event.getOrganizer(), 1.5, Double::sum);
-            weightedMap.merge(event.getGenre(), 1.4, Double::sum);
-            weightedMap.merge(event.getVenue(), 1.3, Double::sum);
-            weightedMap.merge(event.getCity(), 1.2, Double::sum);
-            weightedMap.merge(event.getCountry(), 1.1, Double::sum);
+            for (RecommendationWeightable weightable : event.getRecommendationWeightables()) {
+                weightedMap.merge(weightable, weightable.calculateWeight(), Integer::sum);
+            }
         }
         weightedMap.keySet().removeIf(Objects::isNull);
         return weightedMap;
     }
 
-    private Object getTopRecommendationFromWeightedMap(HashMap<Object, Double> weightedMap) {
+    private Object getTopRecommendationFromWeightedMap(HashMap<Object, Integer> weightedMap) {
         return Collections.max(weightedMap.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 
     public Object getTopRecommendation() {
-        HashMap<Object, Double> weightedMap = createWeightedRecommendationMapFromBookedEvents();
+        HashMap<Object, Integer> weightedMap = createWeightedRecommendationMapFromBookedEvents();
         return getTopRecommendationFromWeightedMap(weightedMap);
     }
 
     public Object getRecommendationByClassType(Class<?> type) {
-        HashMap<Object, Double> weightedMap = createWeightedRecommendationMapFromBookedEvents();
+        HashMap<Object, Integer> weightedMap = createWeightedRecommendationMapFromBookedEvents();
         weightedMap.keySet().removeIf(object -> !object.getClass().isInstance(type));
         return getTopRecommendationFromWeightedMap(weightedMap);
     }
