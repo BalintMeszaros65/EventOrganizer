@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// TODO getRecommendationWeightable
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Event")
 public class EventTests {
