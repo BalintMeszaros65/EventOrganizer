@@ -31,8 +31,8 @@ public class SecurityConfiguration {
             "/swagger-ui/**",
             "/swagger-ui.html",
             "/api/user/register",
-            "/api/organizer/register",
-            "/api/admin/register",
+            "/api/organizer/register/**",
+            "/api/admin/register/**",
             "/api/user/login",
     };
 
