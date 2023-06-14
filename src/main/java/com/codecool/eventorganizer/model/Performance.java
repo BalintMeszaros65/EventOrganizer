@@ -21,7 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Performance {
+public class Performance implements RecommendationWeightable{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Null(groups = CreateValidation.class, message = "Id must not exist when creating.")
@@ -49,5 +49,10 @@ public class Performance {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName(), getHomePage(), getGenre(), isInactive());
+    }
+
+    @Override
+    public int calculateWeight() {
+        return 15;
     }
 }
