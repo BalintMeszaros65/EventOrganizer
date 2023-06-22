@@ -38,18 +38,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		)
 	)
 )
-// TODO continue Swagger documentation
+// TODO continue Swagger/Javadoc documentation
 // TODO DTOs
 // TODO unit tests
+
 // TODO integration tests
+
 // TODO Spring Email? timed tasks
-// TODO Spring Websocket?
+
+// TODO frontend? (React Native)
+// TODO Spring Websocket? (Event view frontend)
+
+
 // TODO payment mocking?
 // TODO Docker?
 // TODO deploy?
-// TODO frontend?
 // TODO android app?
-// TODO React Native
 public class EventOrganizerApplication {
 
 	public static void main(String[] args) {
