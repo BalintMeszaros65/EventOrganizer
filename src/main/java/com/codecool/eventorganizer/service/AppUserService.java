@@ -29,15 +29,17 @@ public class AppUserService {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final EmailService emailService;
 
     @Autowired
     public AppUserService(AppUserRepository appUserRepository, CustomerRepository customerRepository,
-                          UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+                          UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, EmailService emailService) {
         this.appUserRepository = appUserRepository;
         this.customerRepository = customerRepository;
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.emailService = emailService;
     }
 
     // basic CRUD operations
@@ -121,6 +123,8 @@ public class AppUserService {
         appUser.setRoles(List.of("ROLE_USER"));
         checkIfIdDoesNotExist(appUser);
         appUserRepository.save(appUser);
+        // TODO replace with registration confirmation email
+        emailService.sendEmail(appUser.getEmail(), "Registration to Event Organizer", "Successful");
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }
 
@@ -134,6 +138,7 @@ public class AppUserService {
         organizer.setRoles(List.of("ROLE_ORGANIZER"));
         checkIfIdDoesNotExist(organizer);
         appUserRepository.save(organizer);
+        // TODO replace with registration confirmation email
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(organizer));
     }
 
@@ -147,6 +152,7 @@ public class AppUserService {
         appUser.setRoles(List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
         checkIfIdDoesNotExist(appUser);
         appUserRepository.save(appUser);
+        // TODO replace with registration confirmation email
         return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
     }
 
