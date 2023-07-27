@@ -22,9 +22,9 @@ public class Customer extends AppUser {
     @OneToMany
     Set<BookedEvent> bookedEvents;
 
-    public Customer(UUID id, String email, String password, String firstName, String lastName, List<String> roles,
+    public Customer(String email, String password, String firstName, String lastName, List<String> roles,
                     Set<BookedEvent> bookedEvents) {
-        super(id, email, password, firstName, lastName, roles);
+        super(null, email, password, firstName, lastName, roles, false);
         this.bookedEvents = bookedEvents;
     }
 

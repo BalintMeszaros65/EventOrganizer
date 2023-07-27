@@ -168,24 +168,28 @@ public class DataLoader implements CommandLineRunner {
 
         // users
 
-        Customer customer1 = new Customer(null, "customer1@gmail.com",
+        Customer customer1 = new Customer("customer1@gmail.com",
                 passwordEncoder.encode("customer1"), "customer", "1",
                 List.of("ROLE_USER"), null);
+        customer1.setEnabled(true);
         customer1 = customerRepository.save(customer1);
-        Customer customer2 = new Customer(null, "customer2@gmail.com",
+        Customer customer2 = new Customer("customer2@gmail.com",
                 passwordEncoder.encode("customer2"), "customer", "2",
                 List.of("ROLE_USER"), null);
+        customer2.setEnabled(true);
         customer2 = customerRepository.save(customer2);
-        Organizer organizer1 = new Organizer(null, "organizer1@gmail.com",
+        Organizer organizer1 = new Organizer("organizer1@gmail.com",
                 passwordEncoder.encode("organizer1"), "organizer", "1",
                 List.of("ROLE_ORGANIZER"));
+        organizer1.setEnabled(true);
         organizer1 = appUserRepository.save(organizer1);
-        Organizer organizer2 = new Organizer(null, "organizer2@gmail.com",
+        Organizer organizer2 = new Organizer("organizer2@gmail.com",
                 passwordEncoder.encode("organizer2"), "organizer", "2",
                 List.of("ROLE_ORGANIZER"));
+        organizer2.setEnabled(true);
         organizer2 = appUserRepository.save(organizer2);
         AppUser admin = new AppUser(null, "admin@gmail.com", passwordEncoder.encode("admin"),
-                "admin", "admin", List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
+                "admin", "admin", List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"), true);
         admin = appUserRepository.save(admin);
 
         // events
