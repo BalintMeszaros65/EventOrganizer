@@ -72,9 +72,11 @@ public class AppUserService {
         }
     }
 
-    public void createRegistrationVerificationToken(String token, AppUser appUser) {
+    public String createRegistrationVerificationToken(AppUser appUser) {
+        String token = UUID.randomUUID().toString();
         RegistrationVerificationToken registrationVerificationToken = new RegistrationVerificationToken(token, appUser);
         verificationTokenRepository.save(registrationVerificationToken);
+        return token;
     }
 
     public Optional<RegistrationVerificationToken> getRegistrationVerificationToken(String token) {
@@ -132,10 +134,12 @@ public class AppUserService {
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_USER"));
         checkIfIdDoesNotExist(appUser);
-        appUserRepository.save(appUser);
-        // TODO replace with registration confirmation email
-        emailService.sendEmail(appUser.getEmail(), "Registration to Event Organizer", "Successful");
-        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
+        AppUser savedAppUser = appUserRepository.save(appUser);
+        String token = createRegistrationVerificationToken(savedAppUser);
+        emailService.sendEmail(appUser.getEmail(), "Registration to Event Organizer",
+                "Please confirm your registration to Event Organizer" + "\r\n" +
+                        "http://localhost:8080/api/user/register/confirm?token=" + token);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Account created, confirmation email sent.");
     }
 
     public ResponseEntity<String> registerOrganizer(Organizer organizer, String secretKey) {
@@ -147,9 +151,12 @@ public class AppUserService {
         organizer.setPassword(passwordEncoder.encode(organizer.getPassword()));
         organizer.setRoles(List.of("ROLE_ORGANIZER"));
         checkIfIdDoesNotExist(organizer);
-        appUserRepository.save(organizer);
-        // TODO replace with registration confirmation email
-        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(organizer));
+        AppUser savedAppUser = appUserRepository.save(organizer);
+        String token = createRegistrationVerificationToken(savedAppUser);
+        emailService.sendEmail(savedAppUser.getEmail(), "Registration to Event Organizer",
+                "Please confirm your registration to Event Organizer" + "\r\n" +
+                        "http://localhost:8080/api/user/register/confirm?token=" + token);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Account created, confirmation email sent.");
     }
 
     public ResponseEntity<String> registerAdmin(AppUser appUser, String secretKey) {
@@ -161,9 +168,12 @@ public class AppUserService {
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser.setRoles(List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
         checkIfIdDoesNotExist(appUser);
-        appUserRepository.save(appUser);
-        // TODO replace with registration confirmation email
-        return ResponseEntity.status(HttpStatus.CREATED).body(generateToken(appUser));
+        AppUser savedAppUser = appUserRepository.save(appUser);
+        String token = createRegistrationVerificationToken(savedAppUser);
+        emailService.sendEmail(appUser.getEmail(), "Registration to Event Organizer",
+                "Please confirm your registration to Event Organizer" + "\r\n" +
+                        "http://localhost:8080/api/user/register/confirm?token=" + token);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Account created, confirmation email sent.");
     }
 
     public ResponseEntity<String> updateUserInformation(AppUser appUser) {
