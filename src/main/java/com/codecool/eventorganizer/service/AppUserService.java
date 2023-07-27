@@ -1,12 +1,10 @@
 package com.codecool.eventorganizer.service;
 
 import com.codecool.eventorganizer.exception.CustomExceptions;
-import com.codecool.eventorganizer.model.AppUser;
-import com.codecool.eventorganizer.model.BookedEvent;
-import com.codecool.eventorganizer.model.Customer;
-import com.codecool.eventorganizer.model.Organizer;
+import com.codecool.eventorganizer.model.*;
 import com.codecool.eventorganizer.repository.AppUserRepository;
 import com.codecool.eventorganizer.repository.CustomerRepository;
+import com.codecool.eventorganizer.repository.RegistrationVerificationTokenRepository;
 import com.codecool.eventorganizer.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -30,16 +29,18 @@ public class AppUserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final EmailService emailService;
+    private final RegistrationVerificationTokenRepository verificationTokenRepository;
 
     @Autowired
     public AppUserService(AppUserRepository appUserRepository, CustomerRepository customerRepository,
-                          UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, EmailService emailService) {
+                          UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, EmailService emailService, RegistrationVerificationTokenRepository verificationTokenRepository) {
         this.appUserRepository = appUserRepository;
         this.customerRepository = customerRepository;
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
         this.emailService = emailService;
+        this.verificationTokenRepository = verificationTokenRepository;
     }
 
     // basic CRUD operations
