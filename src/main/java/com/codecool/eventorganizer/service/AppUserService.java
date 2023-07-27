@@ -72,6 +72,15 @@ public class AppUserService {
         }
     }
 
+    public void createRegistrationVerificationToken(String token, AppUser appUser) {
+        RegistrationVerificationToken registrationVerificationToken = new RegistrationVerificationToken(token, appUser);
+        verificationTokenRepository.save(registrationVerificationToken);
+    }
+
+    public Optional<RegistrationVerificationToken> getRegistrationVerificationToken(String token) {
+        return verificationTokenRepository.findByToken(token);
+    }
+
     //helper methods
 
     public AppUser getCurrentUser() {
