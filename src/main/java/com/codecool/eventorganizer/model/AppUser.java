@@ -40,19 +40,20 @@ public class AppUser {
     @NotEmpty
     @ElementCollection(fetch = FetchType.EAGER)
     List<String> roles;
+    private boolean enabled;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AppUser appUser)) return false;
-        return Objects.equals(getId(), appUser.getId()) && Objects.equals(getEmail(), appUser.getEmail())
-                && Objects.equals(getPassword(), appUser.getPassword())
+        return isEnabled() == appUser.isEnabled() && Objects.equals(getId(), appUser.getId())
+                && Objects.equals(getEmail(), appUser.getEmail()) && Objects.equals(getPassword(), appUser.getPassword())
                 && Objects.equals(getFirstName(), appUser.getFirstName())
                 && Objects.equals(getLastName(), appUser.getLastName()) && Objects.equals(getRoles(), appUser.getRoles());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getEmail(), getPassword(), getFirstName(), getLastName(), getRoles());
+        return Objects.hash(getId(), getEmail(), getPassword(), getFirstName(), getLastName(), getRoles(), isEnabled());
     }
 }
