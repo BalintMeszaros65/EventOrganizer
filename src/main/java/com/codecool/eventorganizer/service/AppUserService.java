@@ -176,6 +176,21 @@ public class AppUserService {
         return ResponseEntity.status(HttpStatus.CREATED).body("Account created, confirmation email sent.");
     }
 
+    public ResponseEntity<String> confirmRegistration(String token) {
+        Optional<RegistrationVerificationToken> optionalToken = getRegistrationVerificationToken(token);
+        if (optionalToken.isEmpty()) {
+            throw new IllegalArgumentException("Invalid confirmation token.");
+        }
+        RegistrationVerificationToken validToken = optionalToken.get();
+        if (validToken.getExpirationDateTime().isBefore(ZonedDateTime.now())) {
+            throw new IllegalArgumentException("Confirmation token expired.");
+        }
+        AppUser appUser = validToken.getAppUser();
+        appUser.setEnabled(true);
+        appUserRepository.save(appUser);
+        return ResponseEntity.status(HttpStatus.OK).body(generateToken(appUser));
+    }
+
     public ResponseEntity<String> updateUserInformation(AppUser appUser) {
         checkIfUpdatedInformationIsValid(appUser);
         appUserRepository.save(appUser);
