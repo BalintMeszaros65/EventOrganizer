@@ -77,6 +77,12 @@ public class AppUserController {
         return appUserService.registerAdmin(appUser, secretKey);
     }
 
+    @GetMapping("/api/user/register/confirm")
+    @Operation(summary = "confirms registration")
+    public ResponseEntity<String> confirmRegistration(@RequestParam("token") String token) {
+        return appUserService.confirmRegistration(token);
+    }
+
     @Secured({"ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"})
     @SecurityRequirement(name = "Bearer Authentication")
     @SecurityRequirement(name = "Basic Authentication")
