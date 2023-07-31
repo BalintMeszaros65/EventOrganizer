@@ -50,7 +50,7 @@ public class EventDtoForCustomer {
                         .plusMinutes(eventOfBookedEvent.getEventLengthInMinutes());
                 Interval bookedEventInterval = Interval.of(bookedEventStartingDateAndTime.toInstant(),
                         bookedEventEndingDateAndTime.toInstant());
-                if (eventInterval.overlaps(bookedEventInterval)) {
+                if (eventInterval.overlaps(bookedEventInterval) && !eventOfBookedEvent.equals(event)) {
                     overlappedBookedEvents.add(bookedEvent);
                 }
             }
