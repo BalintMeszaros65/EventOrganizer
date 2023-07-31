@@ -22,10 +22,8 @@ public class Customer extends AppUser {
     @OneToMany
     Set<BookedEvent> bookedEvents;
 
-    public Customer(String email, String password, String firstName, String lastName, List<String> roles,
-                    Set<BookedEvent> bookedEvents) {
+    public Customer(String email, String password, String firstName, String lastName, List<String> roles) {
         super(null, email, password, firstName, lastName, roles, false);
-        this.bookedEvents = bookedEvents;
     }
 
     public void storeBookedEvent(BookedEvent bookedEvent) {
