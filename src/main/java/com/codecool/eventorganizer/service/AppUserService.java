@@ -1,11 +1,13 @@
 package com.codecool.eventorganizer.service;
 
+import com.codecool.eventorganizer.dto.AppUserDtoForCreate;
 import com.codecool.eventorganizer.exception.CustomExceptions;
 import com.codecool.eventorganizer.model.*;
 import com.codecool.eventorganizer.repository.AppUserRepository;
 import com.codecool.eventorganizer.repository.CustomerRepository;
 import com.codecool.eventorganizer.repository.RegistrationVerificationTokenRepository;
 import com.codecool.eventorganizer.security.JwtUtil;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Validated
 public class AppUserService {
     private final AppUserRepository appUserRepository;
     private final CustomerRepository customerRepository;
@@ -95,8 +99,8 @@ public class AppUserService {
         return getCustomerByEmail(email);
     }
 
-    private void checkIfEmailIsAlreadyRegistered(AppUser appUser) {
-        if (appUserRepository.existsByEmail(appUser.getEmail())) {
+    private void checkIfEmailIsAlreadyRegistered(AppUserDtoForCreate appUserDto) {
+        if (appUserRepository.existsByEmail(appUserDto.getEmail())) {
             throw new CustomExceptions.EmailAlreadyUsedException("Email is already registered.\n");
         }
     }
@@ -106,52 +110,24 @@ public class AppUserService {
         return jwtUtil.generateToken(userDetails);
     }
 
-    private static void checkIfIdDoesNotExist(AppUser appUser) {
-        if (appUser.getId() != null) {
-            throw new CustomExceptions.IdCanNotExistWhenCreatingEntityException();
-        }
-    }
-
-    private void checkIfUpdatedInformationIsValid(AppUser appUser) {
-        AppUser currentUser = getCurrentUser();
-        if (!currentUser.getId().equals(appUser.getId())) {
-            throw new IllegalArgumentException("Current user's id does not match with the given one.");
-        }
-        if (!currentUser.getEmail().equals(appUser.getEmail())) {
-            throw new CustomExceptions.EmailCanNotBeChangedException("You can not change your registered email.");
-        }
-        if (!currentUser.getPassword().equals(appUser.getPassword())) {
-            throw new CustomExceptions.PasswordCanNotBeChangedException(
-                    "Changing password is not allowed at this endpoint."
-            );
-        }
-    }
-
     // logic
 
-    public ResponseEntity<String> registerCustomer(AppUser appUser) {
-        checkIfEmailIsAlreadyRegistered(appUser);
-        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-        appUser.setRoles(List.of("ROLE_USER"));
-        checkIfIdDoesNotExist(appUser);
-        AppUser savedAppUser = appUserRepository.save(appUser);
-        String token = createRegistrationVerificationToken(savedAppUser);
-        emailService.sendEmail(appUser.getEmail(), "Registration to Event Organizer",
-                "Please confirm your registration to Event Organizer" + "\r\n" +
-                        "http://localhost:8080/api/user/register/confirm?token=" + token);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Account created, confirmation email sent.");
+    private AppUser createAppUserFromDto(AppUserDtoForCreate appUserDto, List<String> roles, String type) {
+        return switch (type) {
+            case "admin" -> new AppUser(null, appUserDto.getEmail(), passwordEncoder.encode(appUserDto.getPassword()),
+                    appUserDto.getFirstName(), appUserDto.getLastName(), roles, false);
+            case "organizer" -> new Organizer(appUserDto.getEmail(), passwordEncoder.encode(appUserDto.getPassword()),
+                    appUserDto.getFirstName(), appUserDto.getLastName(), roles);
+            case "customer" -> new Customer(appUserDto.getEmail(), passwordEncoder.encode(appUserDto.getPassword()),
+                    appUserDto.getFirstName(), appUserDto.getLastName(), roles);
+            default -> throw new IllegalArgumentException("AppUser type not found");
+        };
     }
 
-    public ResponseEntity<String> registerOrganizer(Organizer organizer, String secretKey) {
-        // TODO change placeholder to generated link and generated secret key and use those with Spring Email
-        if (!"organizer".equals(secretKey)) {
-            throw new IllegalArgumentException("Secret key for registering an organizer account is not matching.");
-        }
-        checkIfEmailIsAlreadyRegistered(organizer);
-        organizer.setPassword(passwordEncoder.encode(organizer.getPassword()));
-        organizer.setRoles(List.of("ROLE_ORGANIZER"));
-        checkIfIdDoesNotExist(organizer);
-        AppUser savedAppUser = appUserRepository.save(organizer);
+    public ResponseEntity<String> registerCustomer(AppUserDtoForCreate appUserDto) {
+        checkIfEmailIsAlreadyRegistered(appUserDto);
+        AppUser appUser = createAppUserFromDto(appUserDto, List.of("ROLE_USER"), "customer");
+        AppUser savedAppUser = appUserRepository.save(appUser);
         String token = createRegistrationVerificationToken(savedAppUser);
         emailService.sendEmail(savedAppUser.getEmail(), "Registration to Event Organizer",
                 "Please confirm your registration to Event Organizer" + "\r\n" +
@@ -159,18 +135,31 @@ public class AppUserService {
         return ResponseEntity.status(HttpStatus.CREATED).body("Account created, confirmation email sent.");
     }
 
-    public ResponseEntity<String> registerAdmin(AppUser appUser, String secretKey) {
-        // TODO change placeholder to generated link and generated secret key and use those with Spring Email
+    public ResponseEntity<String> registerOrganizer(AppUserDtoForCreate appUserDto, String secretKey) {
+        // TODO change placeholder to generated secret key
+        if (!"organizer".equals(secretKey)) {
+            throw new IllegalArgumentException("Secret key for registering an organizer account is not matching.");
+        }
+        checkIfEmailIsAlreadyRegistered(appUserDto);
+        AppUser appUser = createAppUserFromDto(appUserDto, List.of("ROLE_ORGANIZER"), "organizer");
+        AppUser savedAppUser = appUserRepository.save(appUser);
+        String token = createRegistrationVerificationToken(savedAppUser);
+        emailService.sendEmail(savedAppUser.getEmail(), "Registration to Event Organizer",
+                "Please confirm your registration to Event Organizer" + "\r\n" +
+                        "http://localhost:8080/api/user/register/confirm?token=" + token);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Account created, confirmation email sent.");
+    }
+
+    public ResponseEntity<String> registerAdmin(AppUserDtoForCreate appUserDto, String secretKey) {
+        // TODO change placeholder to generated secret key
         if (!"admin".equals(secretKey)) {
             throw new IllegalArgumentException("Secret key for registering an admin account is not matching.");
         }
-        checkIfEmailIsAlreadyRegistered(appUser);
-        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-        appUser.setRoles(List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"));
-        checkIfIdDoesNotExist(appUser);
+        checkIfEmailIsAlreadyRegistered(appUserDto);
+        AppUser appUser = createAppUserFromDto(appUserDto, List.of("ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"), "admin");
         AppUser savedAppUser = appUserRepository.save(appUser);
         String token = createRegistrationVerificationToken(savedAppUser);
-        emailService.sendEmail(appUser.getEmail(), "Registration to Event Organizer",
+        emailService.sendEmail(savedAppUser.getEmail(), "Registration to Event Organizer",
                 "Please confirm your registration to Event Organizer" + "\r\n" +
                         "http://localhost:8080/api/user/register/confirm?token=" + token);
         return ResponseEntity.status(HttpStatus.CREATED).body("Account created, confirmation email sent.");
@@ -191,9 +180,11 @@ public class AppUserService {
         return ResponseEntity.status(HttpStatus.OK).body(generateToken(appUser));
     }
 
-    public ResponseEntity<String> updateUserInformation(AppUser appUser) {
-        checkIfUpdatedInformationIsValid(appUser);
-        appUserRepository.save(appUser);
+    public ResponseEntity<String> updateUserName(@NotBlank String firstName, @NotBlank String lastName) {
+        AppUser currentUser = getCurrentUser();
+        currentUser.setFirstName(firstName);
+        currentUser.setLastName(lastName);
+        appUserRepository.save(currentUser);
         return ResponseEntity.status(HttpStatus.OK).body("User information updated.");
     }
 
