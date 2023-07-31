@@ -1,7 +1,6 @@
 package com.codecool.eventorganizer.controller;
 
-import com.codecool.eventorganizer.model.AppUser;
-import com.codecool.eventorganizer.model.Organizer;
+import com.codecool.eventorganizer.dto.AppUserDtoForCreate;
 import com.codecool.eventorganizer.service.AppUserService;
 import com.codecool.eventorganizer.utility.BasicInfoValidation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -49,32 +49,32 @@ public class AppUserController {
         )
     })
     public ResponseEntity<String> registerUser(
-            @Validated(BasicInfoValidation.class)
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                description = "AppUser Object where id (generated), roles (generated) must be null."
+                description = "AppUserDto Object"
             )
-            @RequestBody AppUser appUser) {
-        return appUserService.registerCustomer(appUser);
+            @Valid
+            @RequestBody AppUserDtoForCreate appUserDtoForCreate) {
+        return appUserService.registerCustomer(appUserDtoForCreate);
     }
 
     @PostMapping("/api/organizer/register/{secret_key}")
     @Operation(summary = "registers an organizer")
     public ResponseEntity<String> registerOrganizer(
             @Validated(BasicInfoValidation.class)
-            @RequestBody Organizer organizer,
+            @RequestBody AppUserDtoForCreate appUserDtoForCreate,
             @Parameter(description = "Secret key for organizer registration", required = true)
             @PathVariable(name = "secret_key") String secretKey) {
-        return appUserService.registerOrganizer(organizer, secretKey);
+        return appUserService.registerOrganizer(appUserDtoForCreate, secretKey);
     }
 
     @PostMapping("/api/admin/register/{secret_key}")
     @Operation(summary = "registers an admin")
     public ResponseEntity<String> registerAdmin(
             @Validated(BasicInfoValidation.class)
-            @RequestBody AppUser appUser,
+            @RequestBody AppUserDtoForCreate appUserDtoForCreate,
             @Parameter(description = "Secret key for admin registration", required = true)
             @PathVariable(name = "secret_key") String secretKey) {
-        return appUserService.registerAdmin(appUser, secretKey);
+        return appUserService.registerAdmin(appUserDtoForCreate, secretKey);
     }
 
     @GetMapping("/api/user/register/confirm")
@@ -86,23 +86,24 @@ public class AppUserController {
     @Secured({"ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"})
     @SecurityRequirement(name = "Bearer Authentication")
     @SecurityRequirement(name = "Basic Authentication")
-    @PutMapping("/api/user/change-name")
-    @Operation(summary = "updates the current user's information")
+    @PatchMapping("/api/user/change-name")
+    @Operation(summary = "updates the current user's first and/or last name")
     public ResponseEntity<String> changeUserName(
-            @Validated(BasicInfoValidation.class)
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                description =
-                    "AppUser Object where id, email and password must not differ from the ones stored in database."
-            )
-            @RequestBody AppUser appUser) {
-        return appUserService.updateUserInformation(appUser);
+            @NotBlank
+            @Parameter(description = "New first name of user", required = true)
+            @RequestParam String firstName,
+            @NotBlank
+            @Parameter(description = "New last name of user", required = true)
+            @RequestParam String lastName) {
+        return appUserService.updateUserName(firstName, lastName);
     }
 
     @Secured({"ROLE_USER", "ROLE_ORGANIZER", "ROLE_ADMIN"})
     @SecurityRequirement(name = "Bearer Authentication")
     @SecurityRequirement(name = "Basic Authentication")
-    @PutMapping("/api/user/change-password")
+    @PatchMapping("/api/user/change-password")
     @Operation(summary = "changes the current user's password")
+    // TODO refactor to somehow mask new pw and send confirmation email
     public ResponseEntity<String> changeUserPassword(
             @NotBlank
             @Parameter(description = "New password of user", required = true)
