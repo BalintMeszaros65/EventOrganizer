@@ -113,6 +113,7 @@ public class AppUserService {
     // logic
 
     private AppUser createAppUserFromDto(AppUserDtoForCreate appUserDto, List<String> roles, String type) {
+        // TODO check if there is a more elegant way to do this
         return switch (type) {
             case "admin" -> new AppUser(null, appUserDto.getEmail(), passwordEncoder.encode(appUserDto.getPassword()),
                     appUserDto.getFirstName(), appUserDto.getLastName(), roles, false);
