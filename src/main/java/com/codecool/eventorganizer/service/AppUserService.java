@@ -113,7 +113,44 @@ public class AppUserService {
     // logic
 
     private AppUser createAppUserFromDto(AppUserDtoForCreate appUserDto, List<String> roles, String type) {
-        // TODO check if there is a more elegant way to do this
+        // TODO try to refactor by the sample (below) given on the consultation
+        /*
+        class Factory {
+
+            private static Map<String, Function<CommonArguments, Something>> registeredFactories = new HashMap<>();
+
+            public static Something getSomething(String marker, Object... args) {
+                if (registeredFactories.hasKey(marker)) {
+                    var commonArgs = createCommonArgs(args);
+                    return registeredFactories.get(marker).apply(commonArgs);
+                }
+                throw new IllegalArgumentException(String.format("Cannot create something for marker: %s.", marker));
+            }
+
+            public void register(String marker, Supplier<Something> creator) {
+                registeredFactories.put(marker, creator);
+            }
+        }
+
+
+        class CoolSomething extends Something {
+
+            static {
+                Factory.register("cool", commonArgs -> {
+                        // call ctor
+                    });
+            }
+
+        }
+
+
+        public class App {
+            public static void main(String[] args) {
+                System.out.println(Factory.getSomething("cool"));
+            }
+        }
+
+         */
         return switch (type) {
             case "admin" -> new AppUser(null, appUserDto.getEmail(), passwordEncoder.encode(appUserDto.getPassword()),
                     appUserDto.getFirstName(), appUserDto.getLastName(), roles, false);
